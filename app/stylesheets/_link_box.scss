@@ -1,0 +1,12 @@
+.link-box {
+  display: block;
+  padding: 3px;
+  margin: 3px;
+  background: #F5F5F5;
+  border: 1px solid #E1E1E1;
+}
+
+.link-box:link, .link-box:visited, .link-box:active {
+  color: black;
+  text-decoration: none;
+}
