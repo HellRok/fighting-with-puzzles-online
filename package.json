@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
+    "lodash": "^4.17.15",
     "mithril": "^2.0.4"
   },
   "scripts": {

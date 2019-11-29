@@ -1,5 +1,6 @@
 import m from 'mithril';
 import Layout from './layout';
+import Board from './_board';
 
 export default class Home {
   constructor() {
@@ -7,7 +8,8 @@ export default class Home {
 
   view() {
     return m(Layout, [
-      m('h1', 'HI THERE!')
+      m('h1', 'HI THERE!'),
+      m(Board)
     ]);
   }
 };
