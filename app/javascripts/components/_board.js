@@ -14,16 +14,14 @@ export default class Board {
     this.forEachSquare((x, y) => {
       _this.setSquare(new Gem(
         this, x, y,
-        sample(['red', 'green', 'blue', 'yellow'])
+        'green'
+        //sample(['red', 'green', 'blue', 'yellow'])
+        //sample(['red', 'green', 'blue'])
       ));
     });
 
 
     //debugging
-    this.growClusters();
-    this.createClusters();
-    console.log(this.clusters);
-    this.smashGems();
   }
 
   forEachSquare(func) {
@@ -62,28 +60,33 @@ export default class Board {
 
   createClusters() {
     this.forEachSquare((x, y) => {
+      if (this.clusters.length > 0) { return };
+
       const gem = this.getSquare(x, y);
+
       if (gem === undefined || gem.cluster !== undefined) { return undefined; }
 
       if (
-        gem.rightGem() && gem.rightGem().cluster === undefined && gem.rightGem().colour === gem.colour &&
-        gem.aboveGem() && gem.aboveGem().cluster === undefined && gem.aboveGem().colour === gem.colour &&
-        gem.aboveRightGem() && gem.aboveRightGem().cluster === undefined && gem.aboveRightGem().colour === gem.colour
+        gem.rightGem()      && !gem.rightGem().cluster      && gem.rightGem().colour      === gem.colour &&
+        gem.belowGem()      && !gem.belowGem().cluster      && gem.belowGem().colour      === gem.colour &&
+        gem.belowRightGem() && !gem.belowRightGem().cluster && gem.belowRightGem().colour === gem.colour
       ) {
-        console.log("CREATING CLUSTER");
+        console.log(`CREATING CLUSTER: ${x}, ${y}`);
         const cluster = new Cluster([
           gem,
           gem.rightGem(),
-          gem.aboveGem(),
-          gem.aboveRightGem(),
+          gem.belowGem(),
+          gem.belowRightGem(),
         ]);
 
         this.clusters.push(cluster);
 
         gem.cluster = cluster;
         gem.rightGem().cluster = cluster;
-        gem.aboveGem().cluster = cluster;
-        gem.aboveRightGem().cluster = cluster;
+        gem.belowGem().cluster = cluster;
+        gem.belowRightGem().cluster = cluster;
+
+        cluster.attemptGrowth();
       }
     });
   }
@@ -93,12 +96,32 @@ export default class Board {
 
   view() {
     const _this = this;
-    return m('.board', {
-      style: {
-        position: 'relative',
-      }
-    }, this.forEachSquare((x, y) => {
-      return m(_this.getSquare(x, y));
-    }));
+    return [
+      m('button', {
+        onclick: () => {
+          console.log('RANDOMISE');
+          this.clusters = window.clusters = [];
+          this.forEachSquare((x, y) => {
+            _this.setSquare(new Gem(
+              this, x, y,
+              'green'
+              //sample(['red', 'green', 'blue', 'yellow'])
+            ));
+          });
+          this.growClusters();
+          this.createClusters();
+          console.log(this.clusters);
+          window.clusters = this.clusters;
+          this.smashGems();
+        }
+      }, 'Randomise'),
+      m('.board', {
+        style: {
+          position: 'relative',
+        }
+      }, this.forEachSquare((x, y) => {
+        return m(_this.getSquare(x, y));
+      }))
+    ];
   }
 };

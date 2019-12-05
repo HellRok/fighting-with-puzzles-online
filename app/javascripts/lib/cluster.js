@@ -1,51 +1,83 @@
-import { min } from 'lodash/math';
+import { range } from 'lodash/util';
+import { min, max } from 'lodash/math';
+import { every } from 'lodash/collection';
 
-export default class Gem {
+export default class Cluster {
   constructor(gems) {
-    self.gems = gems;
-    console.log(gems);
-    self.width;
-    self.height;
+    this.board = gems[0].board;
+    this.colour = gems[0].colour;
+    this.gems = gems;
   }
 
   left() {
-    self.x = min(self.gems.map(gem => gem.x));
+    return min(this.gems.map(gem => gem.x));
   }
 
   right() {
-    self.x = max(self.gems.map(gem => gem.x));
+    return max(this.gems.map(gem => gem.x));
   }
 
   bottom() {
-    self.y = min(self.gems.map(gem => gem.y));
+    return min(this.gems.map(gem => gem.y));
   }
 
   top() {
-    self.y = max(self.gems.map(gem => gem.y));
+    return max(this.gems.map(gem => gem.y));
   }
 
   leftGems() {
-    if (this.x === 0) { return undefined };
-    return this.board.getGem(this.x - 1, this.y);
+    if (this.left() === 0) { return [] };
+
+    return range(this.bottom(), this.top() + 1).map(y => {
+      return this.board.getSquare(this.left() - 1, y);
+    });
   }
 
-  rightGem() {
-    if (this.x === (this.board.width - 1)) { return undefined };
-    return this.board.getGem(this.x + 1, this.y);
+  rightGems() {
+    if (this.right() === (this.board.width - 1)) { return [] };
+
+    return range(this.bottom(), this.top() + 1).map(y => {
+      return this.board.getSquare(this.right() + 1, y);
+    });
   }
 
-  belowGem() {
-    if (this.y === 0) { return undefined };
-    return this.board.getGem(this.x, this.y - 1);
+  belowGems() {
+    if (this.bottom() === 0) { return [] };
+
+    return range(this.left(), this.right() + 1).map(x => {
+      return this.board.getSquare(x, this.bottom() - 1);
+    });
   }
 
-  aboveGem() {
-    if (this.y === (this.board.height - 1)) { return undefined };
-    return this.board.getGem(this.x, this.y + 1);
+  aboveGems() {
+    if (this.top() === (this.board.height -1)) { return [] };
+
+    return range(this.left(), this.right() + 1).map(x => {
+      return this.board.getSquare(x, this.top() + 1);
+    });
+  }
+
+  addGems(gems) {
+    gems.forEach(gem => {
+      gem.cluster = this;
+      this.gems.push(gem);
+    });
   }
 
   attemptGrowth() {
-    // Growth order is up > right > left > down
+    let didGrow = false;
 
+    console.log([this.aboveGems(), this.rightGems(), this.leftGems(), this.belowGems()]);
+    // Growth order is up > right > left > down
+    [this.aboveGems(), this.rightGems(), this.leftGems(), this.belowGems()].forEach(gems => {
+      if (gems.length > 0 && every(gems, gem => {
+        return (gem && !gem.cluster && gem.colour === this.colour);
+      })) {
+        this.addGems(gems);
+        this.attemptGrowth()
+      }
+    });
+
+    return false;
   }
 };

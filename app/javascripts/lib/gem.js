@@ -17,6 +17,7 @@ export default class Gem {
         left: `${this.x * 1.5}rem`,
         top: `${(this.board.height - this.y) * 2}rem`,
         color: this.colour,
+        background: this.cluster ? 'lightgrey' : '',
       }
     }, '0');
   }
@@ -41,12 +42,12 @@ export default class Gem {
     return this.board.getSquare(this.x, this.y + 1);
   }
 
-  aboveRightGem() {
+  belowRightGem() {
     if (
-      this.y === (this.board.height - 1) ||
+      this.y === 0 ||
       this.x === (this.board.width - 1)
     ) { return undefined; }
 
-    return this.board.getSquare(this.x + 1, this.y + 1);
+    return this.board.getSquare(this.x + 1, this.y - 1);
   }
 };
