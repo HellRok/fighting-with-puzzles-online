@@ -1,0 +1,6 @@
+Dockerfile
+.git
+.bundle
+log
+node_modules
+tmp
