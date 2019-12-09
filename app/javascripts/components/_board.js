@@ -10,22 +10,40 @@ export default class Board {
     this.height = 12;
     this.data = [];
     this.clusters = [];
+  }
+
+  oncreate() {
+    this.canvas = document.querySelector('.board');
+    this.context = this.canvas.getContext('2d');
     const _this = this;
     this.forEachSquare((x, y) => {
       _this.setSquare(new Gem(
         this, x, y,
-        'green'
-        //sample(['red', 'green', 'blue', 'yellow'])
-        //sample(['red', 'green', 'blue'])
+        sample(['red', 'blue', 'orange', 'purple'])
       ));
     });
 
+    this.update();
+  }
 
-    //debugging
+  update() {
+    this.growClusters();
+    this.createClusters();
+    console.log(this.clusters);
+    window.clusters = this.clusters;
+    this.smashGems();
+    this.render();
+  }
+
+  render() {
+    const _this = this;
+    this.forEachSquare((x, y) => {
+      _this.getSquare(x, y).render(this.context);
+    });
   }
 
   forEachSquare(func) {
-    return range(this.height, 0, -1).map(y => {
+    return range(0, this.height).map(y => {
       return range(this.width).map(x => {
         return func(x, y);
       });
@@ -60,8 +78,6 @@ export default class Board {
 
   createClusters() {
     this.forEachSquare((x, y) => {
-      if (this.clusters.length > 0) { return };
-
       const gem = this.getSquare(x, y);
 
       if (gem === undefined || gem.cluster !== undefined) { return undefined; }
@@ -104,24 +120,16 @@ export default class Board {
           this.forEachSquare((x, y) => {
             _this.setSquare(new Gem(
               this, x, y,
-              'green'
-              //sample(['red', 'green', 'blue', 'yellow'])
+              sample(['red', 'blue', 'orange', 'purple'])
             ));
           });
-          this.growClusters();
-          this.createClusters();
-          console.log(this.clusters);
-          window.clusters = this.clusters;
-          this.smashGems();
+          this.update();
         }
       }, 'Randomise'),
-      m('.board', {
-        style: {
-          position: 'relative',
-        }
-      }, this.forEachSquare((x, y) => {
-        return m(_this.getSquare(x, y));
-      }))
+      m('canvas.board', {
+        width: (32 * this.width),
+        height: (32 * this.height)
+      })
     ];
   }
 };

@@ -50,7 +50,7 @@ export default class Cluster {
   }
 
   aboveGems() {
-    if (this.top() === (this.board.height -1)) { return [] };
+    if (this.top() === (this.board.height - 1)) { return [] };
 
     return range(this.left(), this.right() + 1).map(x => {
       return this.board.getSquare(x, this.top() + 1);
@@ -67,7 +67,6 @@ export default class Cluster {
   attemptGrowth() {
     let didGrow = false;
 
-    console.log([this.aboveGems(), this.rightGems(), this.leftGems(), this.belowGems()]);
     // Growth order is up > right > left > down
     [this.aboveGems(), this.rightGems(), this.leftGems(), this.belowGems()].forEach(gems => {
       if (gems.length > 0 && every(gems, gem => {

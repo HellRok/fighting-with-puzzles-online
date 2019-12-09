@@ -1,5 +1,3 @@
-import m from 'mithril';
-
 export default class Gem {
   constructor(board, x, y, colour) {
     this.board = board;
@@ -7,19 +5,86 @@ export default class Gem {
     this.y = y;
     this.colour = colour;
     this.cluster;
+    this.gems = document.querySelector('#gems');
   }
 
-  view() {
-    // Temporary for debugging
-    return m('.gem', {
-      style: {
-        position: 'absolute',
-        left: `${this.x * 1.5}rem`,
-        top: `${(this.board.height - this.y) * 2}rem`,
-        color: this.colour,
-        background: this.cluster ? 'lightgrey' : '',
+  render(context) {
+    context.drawImage(
+      this.gems,
+      ...this.sprite(),
+      this.x * 32, (this.board.height - this.y) * 32,
+      32, 32,
+    )
+  }
+
+  sprite() {
+    let colourOffset = 0;
+    let clusterOffset = 0;
+
+    if (this.colour === 'red') {
+      colourOffset = 0;
+    } else if (this.colour === 'blue') {
+      colourOffset = 1;
+    } else if (this.colour === 'orange') {
+      colourOffset = 2;
+    } else if (this.colour === 'purple') {
+      colourOffset = 3;
+    }
+
+    if (this.cluster) {
+      if (this.differentOrUndefined(this.aboveGem())) {
+        if (this.differentOrUndefined(this.leftGem())) {
+          clusterOffset = 1;
+        } else if (this.differentOrUndefined(this.rightGem())) {
+          clusterOffset = 3;
+        } else {
+          clusterOffset = 2;
+        }
       }
-    }, '0');
+
+      if (this.differentOrUndefined(this.rightGem())) {
+        if (this.differentOrUndefined(this.aboveGem())) {
+          clusterOffset = 3;
+        } else if (this.differentOrUndefined(this.belowGem())) {
+          clusterOffset = 6;
+        } else {
+          clusterOffset = 4;
+        }
+      }
+
+      if (this.differentOrUndefined(this.belowGem())) {
+        if (this.differentOrUndefined(this.leftGem())) {
+          clusterOffset = 6;
+        } else if (this.differentOrUndefined(this.rightGem())) {
+          clusterOffset = 8;
+        } else {
+          clusterOffset = 7;
+        }
+      }
+
+      if (this.differentOrUndefined(this.leftGem())) {
+        if (this.differentOrUndefined(this.aboveGem())) {
+          clusterOffset = 1;
+        } else if (this.differentOrUndefined(this.belowGem())) {
+          clusterOffset = 6;
+        } else {
+          clusterOffset = 5;
+        }
+      }
+    }
+
+
+    return [
+      clusterOffset * 32, colourOffset * 32,
+      32, 32
+    ];
+  }
+
+  differentOrUndefined(gem) {
+    return (
+      gem === undefined ||
+      gem && gem.cluster !== this.cluster
+    );
   }
 
   leftGem() {
