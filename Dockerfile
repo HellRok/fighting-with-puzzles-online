@@ -11,11 +11,11 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock /app/
 RUN gem install bundler && \
   apk update && \
-  apk add make libxml2 libxslt-dev g++ gcc libc-dev postgresql-dev sqlite-dev && \
+  apk add make libxml2 libxslt-dev g++ gcc libc-dev postgresql-dev && \
   rm -f /var/cache/apk/*
 RUN bundle install --without development test
 COPY . /app
-COPY --from=node_build app/public/assets app/public/assets
+COPY --from=node_build /app/public/assets /app/public/assets
 ENV HOST 0.0.0.0
 ENV RAILS_ENV production
 ENV MALLOC_ARENA_MAX 2

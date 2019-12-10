@@ -4,3 +4,4 @@ Dockerfile
 log
 node_modules
 tmp
+/public/assets/application.*
