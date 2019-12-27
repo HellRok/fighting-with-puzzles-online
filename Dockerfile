@@ -1,4 +1,4 @@
-FROM node:latest AS node_build
+FROM node:alpine AS node_build
 WORKDIR /app
 COPY package.json yarn.lock /app/
 RUN yarn install
@@ -13,7 +13,8 @@ RUN gem install bundler && \
   apk update && \
   apk add make libxml2 libxslt-dev g++ gcc libc-dev postgresql-dev && \
   rm -f /var/cache/apk/*
-RUN bundle install --without development test
+RUN bundle config set without 'development test' && \
+  bundle install
 COPY . /app
 COPY --from=node_build /app/public/assets /app/public/assets
 ENV HOST 0.0.0.0
