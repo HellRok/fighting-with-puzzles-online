@@ -5,14 +5,13 @@ export default class Gem {
     this.y = y;
     this.colour = colour;
     this.cluster;
-    this.gems = document.querySelector('#gems');
   }
 
   render(context) {
     context.drawImage(
-      this.gems,
+      this.board.theme,
       ...this.sprite(),
-      this.x * 32, (this.board.height - this.y) * 32,
+      this.x * 32, (this.board.height - this.y - 1) * 32,
       32, 32,
     )
   }
@@ -32,6 +31,8 @@ export default class Gem {
     }
 
     if (this.cluster) {
+      clusterOffset = 9;
+
       if (this.differentOrUndefined(this.aboveGem())) {
         if (this.differentOrUndefined(this.leftGem())) {
           clusterOffset = 1;

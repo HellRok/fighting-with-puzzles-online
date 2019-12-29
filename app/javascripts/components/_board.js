@@ -1,29 +1,23 @@
 import m from 'mithril';
 import { range } from 'lodash/util';
 import { sample } from 'lodash/collection';
+
 import Gem from '../lib/gem';
 import Cluster from '../lib/cluster';
 
 export default class Board {
   constructor() {
+    this.id = 1;
     this.width = 6;
     this.height = 12;
+    this.activePiece = [];
     this.data = [];
     this.clusters = [];
+    this.theme = document.querySelector('#gems');
   }
 
-  oncreate() {
-    this.canvas = document.querySelector('.board');
-    this.context = this.canvas.getContext('2d');
-    const _this = this;
-    this.forEachSquare((x, y) => {
-      _this.setSquare(new Gem(
-        this, x, y,
-        sample(['red', 'blue', 'orange', 'purple'])
-      ));
-    });
-
-    this.update();
+  context() {
+    return document.querySelector(`#board-${this.id}`).getContext('2d');
   }
 
   update() {
@@ -35,10 +29,19 @@ export default class Board {
     this.render();
   }
 
+  blank() {
+    this.context().clearRect(0, 0, 32 * this.width, 32 * this.height);
+  }
+
   render() {
     const _this = this;
+    this.blank();
+    this.activePiece.forEach((gem, _) => {
+      gem.render(_this.context());
+    });
     this.forEachSquare((x, y) => {
-      _this.getSquare(x, y).render(this.context);
+      const square = _this.getSquare(x, y);
+      if (square) { square.render(_this.context()); }
     });
   }
 
@@ -113,20 +116,23 @@ export default class Board {
   view() {
     const _this = this;
     return [
-      m('button', {
-        onclick: () => {
-          console.log('RANDOMISE');
-          this.clusters = window.clusters = [];
-          this.forEachSquare((x, y) => {
-            _this.setSquare(new Gem(
-              this, x, y,
-              sample(['red', 'blue', 'orange', 'purple'])
-            ));
-          });
-          this.update();
-        }
-      }, 'Randomise'),
+      m('div',
+        m('button', {
+          onclick: () => {
+            console.log('RANDOMISE');
+            this.clusters = window.clusters = [];
+            this.forEachSquare((x, y) => {
+              _this.setSquare(new Gem(
+                this, x, y,
+                sample(['orange', 'purple'])
+              ));
+            });
+            this.update();
+          }
+        }, 'Randomise'),
+      ),
       m('canvas.board', {
+        id: `board-${this.id}`,
         width: (32 * this.width),
         height: (32 * this.height)
       })
