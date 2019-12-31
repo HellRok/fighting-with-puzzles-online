@@ -31,6 +31,9 @@ export default class Player {
       cw:       false,
       switch:   false,
     }
+    this.state = {
+      gravityTimestamp: 0,
+    }
     this.settings = {
       das: 500,
       arr: 100,
@@ -38,6 +41,8 @@ export default class Player {
   }
 
   nextPiece() {
+    this.gravityTimestamp = timestamp();
+
     return [
       new Gem(this.board, 2, this.board.height - 1,
         sample(['red', 'blue', 'orange', 'purple'])
@@ -61,13 +66,13 @@ export default class Player {
   }
 
   moveActivePieceUp() {
-    if (max(this.board.activePiece.map(piece => piece.y)) > 0) {
+    if (min(this.board.activePiece.map(piece => piece.y)) < this.board.height - 1) {
       this.board.activePiece.forEach(piece => { piece.y = piece.y + 1 });
     }
   }
 
   moveActivePieceDown() {
-    if (min(this.board.activePiece.map(piece => piece.y)) < this.board.height - 1) {
+    if (max(this.board.activePiece.map(piece => piece.y)) > 0) {
       this.board.activePiece.forEach(piece => { piece.y = piece.y - 1 });
     }
   }
@@ -195,7 +200,15 @@ export default class Player {
     }
   }
 
+  gravity() {
+    if ((timestamp() - this.gravityTimestamp) > 500) {
+      this.gravityTimestamp = timestamp();
+      this.moveActivePieceDown();
+    }
+  }
+
   tick(delta) {
     this.input();
+    this.gravity();
   }
 }
