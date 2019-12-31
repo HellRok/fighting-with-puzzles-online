@@ -60,12 +60,97 @@ export default class Player {
     }
   }
 
+  moveActivePieceUp() {
+    if (max(this.board.activePiece.map(piece => piece.y)) > 0) {
+      this.board.activePiece.forEach(piece => { piece.y = piece.y + 1 });
+    }
+  }
+
+  moveActivePieceDown() {
+    if (min(this.board.activePiece.map(piece => piece.y)) < this.board.height - 1) {
+      this.board.activePiece.forEach(piece => { piece.y = piece.y - 1 });
+    }
+  }
+
+  kickActivePiece() {
+    if (min(this.board.activePiece.map(piece => piece.x)) < 0) {
+      this.moveActivePieceRight()
+    }
+
+    if (max(this.board.activePiece.map(piece => piece.x)) >= this.board.width) {
+      this.moveActivePieceLeft()
+    }
+
+    if (min(this.board.activePiece.map(piece => piece.y)) < 0) {
+      this.moveActivePieceUp()
+    }
+
+    if (max(this.board.activePiece.map(piece => piece.y)) >= this.board.height) {
+      this.moveActivePieceDown()
+    }
+  }
+
+  rotateActivePieceCW() {
+    const centrePiece = this.board.activePiece[0];
+    const offsidePiece = this.board.activePiece[1];
+
+    if (centrePiece.x === offsidePiece.x) {
+      if (centrePiece.y > offsidePiece.y) {
+        offsidePiece.y = centrePiece.y;
+        offsidePiece.x = centrePiece.x - 1;
+      } else {
+        offsidePiece.y = centrePiece.y;
+        offsidePiece.x = centrePiece.x + 1;
+      }
+    } else {
+      if (centrePiece.x > offsidePiece.x) {
+        offsidePiece.x = centrePiece.x;
+        offsidePiece.y = centrePiece.y + 1;
+      } else {
+        offsidePiece.x = centrePiece.x;
+        offsidePiece.y = centrePiece.y - 1;
+      }
+    }
+  }
+
+  rotateActivePieceCCW() {
+    const centrePiece = this.board.activePiece[0];
+    const offsidePiece = this.board.activePiece[1];
+
+    if (centrePiece.x === offsidePiece.x) {
+      if (centrePiece.y > offsidePiece.y) {
+        offsidePiece.y = centrePiece.y;
+        offsidePiece.x = centrePiece.x + 1;
+      } else {
+        offsidePiece.y = centrePiece.y;
+        offsidePiece.x = centrePiece.x - 1;
+      }
+    } else {
+      if (centrePiece.x > offsidePiece.x) {
+        offsidePiece.x = centrePiece.x;
+        offsidePiece.y = centrePiece.y - 1;
+      } else {
+        offsidePiece.x = centrePiece.x;
+        offsidePiece.y = centrePiece.y + 1;
+      }
+    }
+  }
+
   keyDown(event) {
     if (event.keyCode === window.keys.right) {
       this.keyState.right = true;
     }
+
     if (event.keyCode === window.keys.left) {
       this.keyState.left = true;
+    }
+
+    if (event.keyCode === window.keys.cw) {
+      this.keyState.cw = true;
+    }
+
+    if (event.keyCode === window.keys.ccw) {
+      this.keyState.ccw = true;
     }
   }
 
@@ -95,6 +180,18 @@ export default class Player {
         this.keyState.leftTimestamp = timestamp();
         this.moveActivePieceLeft();
       }
+    }
+
+    if (this.keyState.cw) {
+      this.rotateActivePieceCW();
+      this.kickActivePiece();
+      this.keyState.cw = false;
+    }
+
+    if (this.keyState.ccw) {
+      this.rotateActivePieceCCW();
+      this.kickActivePiece();
+      this.keyState.ccw = false;
     }
   }
 
