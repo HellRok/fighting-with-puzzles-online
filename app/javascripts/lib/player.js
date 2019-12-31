@@ -1,4 +1,4 @@
-import { sample } from 'lodash/collection';
+import { sample, sortBy } from 'lodash/collection';
 import { min, max } from 'lodash/math';
 
 import Gem from './gem';
@@ -157,6 +157,14 @@ export default class Player {
     if (event.keyCode === window.keys.ccw) {
       this.keyState.ccw = true;
     }
+
+    if (event.keyCode === window.keys.hardDrop) {
+      this.keyState.hardDrop = true;
+    }
+
+    if (event.keyCode === window.keys.softDrop) {
+      this.keyState.softDrop = true;
+    }
   }
 
   keyUp(event) {
@@ -198,13 +206,52 @@ export default class Player {
       this.kickActivePiece();
       this.keyState.ccw = false;
     }
+
+    if (this.keyState.hardDrop) {
+      this.lock();
+      this.keyState.hardDrop = false;
+    }
+
+    if (this.keyState.softDrop) {
+      this.gravityTimestamp = 0;
+      this.gravity();
+      this.keyState.softDrop = false;
+    }
   }
 
   gravity() {
     if ((timestamp() - this.gravityTimestamp) > 500) {
       this.gravityTimestamp = timestamp();
-      this.moveActivePieceDown();
+      let collision = false;
+
+      this.board.activePiece.forEach(gem => {
+        if (this.board.getSquare(gem.x, gem.y - 1) || gem.y === 0) {
+          collision = true;
+        }
+      });
+
+      if (collision) {
+        this.lock();
+      } else {
+        this.moveActivePieceDown();
+      }
     }
+  }
+
+  lock() {
+    if (this.board.activePiece[0].y !== this.board.activePiece[1].y) {
+      this.board.activePiece = sortBy(this.board.activePiece, gem => gem.y)
+    }
+
+    this.board.activePiece.forEach(gem => {
+      while (!this.board.getSquare(gem.x, gem.y - 1) && gem.y > 0) {
+        gem.y = gem.y - 1;
+      }
+      this.board.setSquare(gem);
+    });
+
+    this.board.activePiece = this.nextPiece();
+    this.board.update();
   }
 
   tick(delta) {

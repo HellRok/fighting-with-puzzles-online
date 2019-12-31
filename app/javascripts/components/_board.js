@@ -23,10 +23,8 @@ export default class Board {
   update() {
     this.growClusters();
     this.createClusters();
-    console.log(this.clusters);
     window.clusters = this.clusters;
     this.smashGems();
-    this.render();
   }
 
   blank() {
@@ -90,7 +88,6 @@ export default class Board {
         gem.belowGem()      && !gem.belowGem().cluster      && gem.belowGem().colour      === gem.colour &&
         gem.belowRightGem() && !gem.belowRightGem().cluster && gem.belowRightGem().colour === gem.colour
       ) {
-        console.log(`CREATING CLUSTER: ${x}, ${y}`);
         const cluster = new Cluster([
           gem,
           gem.rightGem(),
@@ -116,21 +113,6 @@ export default class Board {
   view() {
     const _this = this;
     return [
-      m('div',
-        m('button', {
-          onclick: () => {
-            console.log('RANDOMISE');
-            this.clusters = window.clusters = [];
-            this.forEachSquare((x, y) => {
-              _this.setSquare(new Gem(
-                this, x, y,
-                sample(['orange', 'purple'])
-              ));
-            });
-            this.update();
-          }
-        }, 'Randomise'),
-      ),
       m('canvas.board', {
         id: `board-${this.id}`,
         width: (32 * this.width),
