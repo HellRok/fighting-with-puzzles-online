@@ -2,7 +2,7 @@ import { sample, sortBy } from 'lodash/collection';
 import { min, max } from 'lodash/math';
 
 import Gem from './gem';
-import { timestamp, offsetPositions } from './helpers';
+import { timestamp, offsetPositions, randomPercent } from './helpers';
 
 window.keys = {
   left:     65,
@@ -45,10 +45,12 @@ export default class Player {
 
     return [
       new Gem(this.board, 2, this.board.height - 1,
-        sample(['red', 'blue', 'orange', 'purple'])
+        sample(['red', 'blue', 'orange', 'purple']),
+        (randomPercent() > 90)
       ),
       new Gem(this.board, 3, this.board.height - 1,
-        sample(['red', 'blue', 'orange', 'purple'])
+        sample(['red', 'blue', 'orange', 'purple']),
+        (randomPercent() > 90)
       ),
     ]
   }
@@ -218,7 +220,7 @@ export default class Player {
   }
 
   input() {
-    // TODO: real das/arr
+    // TODO: Real ARR
     if (this.keyState.right) {
       if (timestamp() - this.keyState.rightTimestamp > this.settings.das) {
         this.keyState.rightTimestamp = timestamp();

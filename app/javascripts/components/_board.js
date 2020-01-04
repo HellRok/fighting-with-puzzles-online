@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { range } from 'lodash/util';
-import { sample, some } from 'lodash/collection';
+import { filter, sample, some } from 'lodash/collection';
 import { min, max } from 'lodash/math';
 
 import Gem from '../lib/gem';
@@ -24,7 +24,6 @@ export default class Board {
   update() {
     this.growClusters();
     this.createClusters();
-    window.clusters = this.clusters;
     this.smashGems();
   }
 
@@ -126,6 +125,13 @@ export default class Board {
   }
 
   smashGems() {
+    const smashers = filter(this.data, gem => (gem && gem.smasher));
+    smashers.forEach(gem => gem.attemptSmash());
+    this.data.forEach(gem => {
+      if (gem && gem.toSmash) {
+        this.setSquare(undefined, gem.x, gem.y);
+      }
+    });
   }
 
   view() {

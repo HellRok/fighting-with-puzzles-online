@@ -1,3 +1,5 @@
+import { random } from 'lodash/number';
+
 export function timestamp() {
   return Date.now();
 }
@@ -9,4 +11,8 @@ export function offsetPositions(objs, offset) {
       y: obj.y + offset[1],
     }
   });
+}
+
+export function randomPercent() {
+  return random(1, 100);
 }
