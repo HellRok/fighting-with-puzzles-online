@@ -129,6 +129,20 @@ export default class Gem {
     }
   }
 
+  gravity() {
+    if (this.cluster) {
+      this.cluster.gravity()
+    } else {
+      this.board.setSquare(undefined, this.x, this.y);
+
+      while (this.board.isClear(offsetPositions([this], [0, -1]))) {
+        this.y = this.y - 1;
+      }
+
+      this.board.setSquare(this);
+    }
+  }
+
   differentOrUndefined(gem) {
     return (
       gem === undefined ||

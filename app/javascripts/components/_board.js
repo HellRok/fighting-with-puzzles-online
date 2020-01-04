@@ -132,6 +132,8 @@ export default class Board {
         this.setSquare(undefined, gem.x, gem.y);
       }
     });
+
+    this.data.forEach(gem => { gem && gem.gravity() });
   }
 
   view() {

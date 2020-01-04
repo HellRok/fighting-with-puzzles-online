@@ -280,10 +280,7 @@ export default class Player {
     }
 
     this.board.activePiece.forEach(gem => {
-      while (this.board.isClear(offsetPositions([gem], [0, -1]))) {
-        gem.y = gem.y - 1;
-      }
-      this.board.setSquare(gem);
+      gem.gravity();
     });
 
     this.board.activePiece = this.nextPiece();

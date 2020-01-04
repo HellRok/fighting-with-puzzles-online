@@ -1,6 +1,7 @@
 import { range } from 'lodash/util';
 import { min, max } from 'lodash/math';
 import { every } from 'lodash/collection';
+import { offsetPositions } from './helpers';
 
 export default class Cluster {
   constructor(gems) {
@@ -78,5 +79,15 @@ export default class Cluster {
     });
 
     return false;
+  }
+
+  gravity() {
+    this.gems.forEach(gem => this.board.setSquare(undefined, gem.x, gem.y));
+
+    while (this.board.isClear(offsetPositions(this.gems, [0, -1]))) {
+      this.y = this.y - 1;
+    }
+
+    this.gems.forEach(gem => this.board.setSquare(gem));
   }
 };
