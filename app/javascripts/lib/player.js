@@ -2,7 +2,7 @@ import { sample, sortBy } from 'lodash/collection';
 import { min, max } from 'lodash/math';
 
 import Gem from './gem';
-import { timestamp } from './helpers';
+import { timestamp, offsetPositions } from './helpers';
 
 window.keys = {
   left:     65,
@@ -54,90 +54,128 @@ export default class Player {
   }
 
   moveActivePieceRight() {
-    if (max(this.board.activePiece.map(piece => piece.x)) < this.board.width - 1) {
+    if (this.board.isClear(offsetPositions(this.board.activePiece, [1, 0]))) {
       this.board.activePiece.forEach(piece => { piece.x = piece.x + 1 });
     }
   }
 
   moveActivePieceLeft() {
-    if (min(this.board.activePiece.map(piece => piece.x)) > 0) {
+    if (this.board.isClear(offsetPositions(this.board.activePiece, [-1, 0]))) {
       this.board.activePiece.forEach(piece => { piece.x = piece.x - 1 });
     }
   }
 
   moveActivePieceUp() {
-    if (min(this.board.activePiece.map(piece => piece.y)) < this.board.height - 1) {
+    if (this.board.isClear(offsetPositions(this.board.activePiece, [0, 1]))) {
       this.board.activePiece.forEach(piece => { piece.y = piece.y + 1 });
     }
   }
 
   moveActivePieceDown() {
-    if (max(this.board.activePiece.map(piece => piece.y)) > 0) {
+    if (this.board.isClear(offsetPositions(this.board.activePiece, [0, -1]))) {
       this.board.activePiece.forEach(piece => { piece.y = piece.y - 1 });
     }
   }
 
-  kickActivePiece() {
-    if (min(this.board.activePiece.map(piece => piece.x)) < 0) {
-      this.moveActivePieceRight()
+  kick(pieces) {
+    if (this.board.isClear(pieces)) {
+      return pieces;
     }
 
-    if (max(this.board.activePiece.map(piece => piece.x)) >= this.board.width) {
-      this.moveActivePieceLeft()
+    // Next to each other, so only kick left/right
+    if (pieces[0].y === pieces[1].y) {
+      if (this.board.isClear(offsetPositions(pieces, [1, 0]))) {
+        return offsetPositions(pieces, [1, 0]);
+      }
+
+      if (this.board.isClear(offsetPositions(pieces, [-1, 0]))) {
+        return offsetPositions(pieces, [-1, 0]);
+      }
     }
 
-    if (min(this.board.activePiece.map(piece => piece.y)) < 0) {
-      this.moveActivePieceUp()
+    // One above the other, so only kick up/down
+    if (pieces[0].x === pieces[1].x) {
+      if (this.board.isClear(offsetPositions(pieces, [0, 1]))) {
+        return offsetPositions(pieces, [0, 1]);
+      }
+
+      if (this.board.isClear(offsetPositions(pieces, [0, -1]))) {
+        return offsetPositions(pieces, [0, -1]);
+      }
     }
 
-    if (max(this.board.activePiece.map(piece => piece.y)) >= this.board.height) {
-      this.moveActivePieceDown()
-    }
+    return false;
   }
 
   rotateActivePieceCW() {
     const centrePiece = this.board.activePiece[0];
     const offsidePiece = this.board.activePiece[1];
+    const translation = { x: 0, y: 0 }
 
     if (centrePiece.x === offsidePiece.x) {
       if (centrePiece.y > offsidePiece.y) {
-        offsidePiece.y = centrePiece.y;
-        offsidePiece.x = centrePiece.x - 1;
+        translation.y = centrePiece.y;
+        translation.x = centrePiece.x - 1;
       } else {
-        offsidePiece.y = centrePiece.y;
-        offsidePiece.x = centrePiece.x + 1;
+        translation.y = centrePiece.y;
+        translation.x = centrePiece.x + 1;
       }
     } else {
       if (centrePiece.x > offsidePiece.x) {
-        offsidePiece.x = centrePiece.x;
-        offsidePiece.y = centrePiece.y + 1;
+        translation.x = centrePiece.x;
+        translation.y = centrePiece.y + 1;
       } else {
-        offsidePiece.x = centrePiece.x;
-        offsidePiece.y = centrePiece.y - 1;
+        translation.x = centrePiece.x;
+        translation.y = centrePiece.y - 1;
       }
+    }
+
+    const newPositions = this.kick([
+      { x: centrePiece.x, y: centrePiece.y },
+      translation
+    ]);
+
+    if (newPositions) {
+      centrePiece.x  = newPositions[0].x;
+      centrePiece.y  = newPositions[0].y;
+      offsidePiece.x = newPositions[1].x;
+      offsidePiece.y = newPositions[1].y;
     }
   }
 
   rotateActivePieceCCW() {
     const centrePiece = this.board.activePiece[0];
     const offsidePiece = this.board.activePiece[1];
+    const translation = { x: 0, y: 0 }
 
     if (centrePiece.x === offsidePiece.x) {
       if (centrePiece.y > offsidePiece.y) {
-        offsidePiece.y = centrePiece.y;
-        offsidePiece.x = centrePiece.x + 1;
+        translation.y = centrePiece.y;
+        translation.x = centrePiece.x + 1;
       } else {
-        offsidePiece.y = centrePiece.y;
-        offsidePiece.x = centrePiece.x - 1;
+        translation.y = centrePiece.y;
+        translation.x = centrePiece.x - 1;
       }
     } else {
       if (centrePiece.x > offsidePiece.x) {
-        offsidePiece.x = centrePiece.x;
-        offsidePiece.y = centrePiece.y - 1;
+        translation.x = centrePiece.x;
+        translation.y = centrePiece.y - 1;
       } else {
-        offsidePiece.x = centrePiece.x;
-        offsidePiece.y = centrePiece.y + 1;
+        translation.x = centrePiece.x;
+        translation.y = centrePiece.y + 1;
       }
+    }
+
+    const newPositions = this.kick([
+      { x: centrePiece.x, y: centrePiece.y },
+      translation
+    ]);
+
+    if (newPositions) {
+      centrePiece.x  = newPositions[0].x;
+      centrePiece.y  = newPositions[0].y;
+      offsidePiece.x = newPositions[1].x;
+      offsidePiece.y = newPositions[1].y;
     }
   }
 
@@ -197,13 +235,11 @@ export default class Player {
 
     if (this.keyState.cw) {
       this.rotateActivePieceCW();
-      this.kickActivePiece();
       this.keyState.cw = false;
     }
 
     if (this.keyState.ccw) {
       this.rotateActivePieceCCW();
-      this.kickActivePiece();
       this.keyState.ccw = false;
     }
 
@@ -224,11 +260,9 @@ export default class Player {
       this.gravityTimestamp = timestamp();
       let collision = false;
 
-      this.board.activePiece.forEach(gem => {
-        if (this.board.getSquare(gem.x, gem.y - 1) || gem.y === 0) {
-          collision = true;
-        }
-      });
+      if (!this.board.isClear(offsetPositions(this.board.activePiece, [0, -1]))) {
+        collision = true;
+      }
 
       if (collision) {
         this.lock();
@@ -244,7 +278,7 @@ export default class Player {
     }
 
     this.board.activePiece.forEach(gem => {
-      while (!this.board.getSquare(gem.x, gem.y - 1) && gem.y > 0) {
+      while (this.board.isClear(offsetPositions([gem], [0, -1]))) {
         gem.y = gem.y - 1;
       }
       this.board.setSquare(gem);

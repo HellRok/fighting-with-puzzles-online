@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { range } from 'lodash/util';
-import { sample } from 'lodash/collection';
+import { sample, some } from 'lodash/collection';
+import { min, max } from 'lodash/math';
 
 import Gem from '../lib/gem';
 import Cluster from '../lib/cluster';
@@ -40,6 +41,23 @@ export default class Board {
     this.forEachSquare((x, y) => {
       const square = _this.getSquare(x, y);
       if (square) { square.render(_this.context()); }
+    });
+  }
+
+  /* This will get passed an array of objects that respond to .x and .y */
+  isClear(positions) {
+    const minX = min(positions.map(piece => piece.x));
+    const maxX = max(positions.map(piece => piece.x));
+    const minY = min(positions.map(piece => piece.y));
+    const maxY = max(positions.map(piece => piece.y));
+
+    if (minX < 0) { return false; }
+    if (minY < 0) { return false; }
+    if (maxX >= this.width) { return false; }
+    if (maxY >= this.height) { return false; }
+
+    return !some(positions, (position, a, b) => {
+      if (this.getSquare(position.x, position.y)) { return true; }
     });
   }
 

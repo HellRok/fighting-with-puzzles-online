@@ -15,9 +15,11 @@ export default class Home {
   view() {
     return m(Layout, [
       m('h1', 'HI THERE!'),
-      m('button', {
-        onclick: this.startGame
-      }, 'Start'),
+      m('div', [
+        m('button', {
+          onclick: this.startGame
+        }, 'Start'),
+      ]),
       m(self.board)
     ]);
   }
