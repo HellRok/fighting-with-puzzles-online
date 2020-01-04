@@ -9,7 +9,7 @@ export default class Layout {
             {
               href: '/',
               class: 'logo'
-            }, 'Gazelle')
+            }, 'Fighting with Puzzles Online')
         ])
       ]),
       m('.content', vnode.children)
