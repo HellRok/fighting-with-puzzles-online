@@ -1,7 +1,7 @@
 import m from 'mithril';
-import { range } from 'lodash/util';
-import { filter, sample, some } from 'lodash/collection';
+import { filter, sample, some, uniq } from 'lodash/collection';
 import { min, max } from 'lodash/math';
+import { range } from 'lodash/util';
 
 import Gem from '../lib/gem';
 import Cluster from '../lib/cluster';
@@ -15,6 +15,10 @@ export default class Board {
     this.data = [];
     this.clusters = [];
     this.theme = document.querySelector('#gems');
+    this.stats = {
+      blocksSmashed: 0,
+      clustersSmashed: 0,
+    }
   }
 
   context() {
@@ -34,9 +38,11 @@ export default class Board {
   render() {
     const _this = this;
     this.blank();
+
     this.activePiece.forEach((gem, _) => {
       gem.render(_this.context());
     });
+
     this.forEachSquare((x, y) => {
       const square = _this.getSquare(x, y);
       if (square) { square.render(_this.context()); }
@@ -125,13 +131,19 @@ export default class Board {
   }
 
   smashGems() {
+    let smashedGems = 0;
     const smashers = filter(this.data, gem => (gem && gem.smasher));
     smashers.forEach(gem => gem.attemptSmash());
+
     this.data.forEach(gem => {
       if (gem && gem.toSmash) {
+        smashedGems += 1;
         this.setSquare(undefined, gem.x, gem.y);
       }
     });
+
+    this.stats.blocksSmashed += smashedGems;
+    m.redraw();
 
     this.data.forEach(gem => { gem && gem.gravity() });
   }
@@ -143,7 +155,11 @@ export default class Board {
         id: `board-${this.id}`,
         width: (32 * this.width),
         height: (32 * this.height)
-      })
+      }),
+      m('.stats', [
+        m('.blocks-smashed', `Blocks smashed: ${this.stats.blocksSmashed}`),
+        m('.clusters-smashed', `Clusters smashed: ${this.stats.clustersSmashed}`),
+      ])
     ];
   }
 };
