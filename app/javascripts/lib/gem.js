@@ -124,10 +124,15 @@ export default class Gem {
 
     if (this.cluster) {
       const _this = this;
+      this.board.stats.lastClusterGemsSmashed += this.cluster.gems.length;
+      this.board.stats.clustersSmashed += 1;
+
       this.cluster.gems.forEach(gem => { gem.cluster = undefined; gem.smash(); });
       this.board.clusters = filter(this.board.clusters, cluster => cluster !== _this.cluster)
-      this.board.stats.clustersSmashed += 1;
     }
+
+    this.board.stats.gemsSmashed += 1;
+    this.board.stats.lastGemsSmashed += 1;
   }
 
   gravity() {

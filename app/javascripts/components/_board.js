@@ -16,8 +16,12 @@ export default class Board {
     this.clusters = [];
     this.theme = document.querySelector('#gems');
     this.stats = {
-      blocksSmashed: 0,
+      gemsSmashed: 0,
+      lastGemsSmashed: 0,
       clustersSmashed: 0,
+      lastClusterGemsSmashed: 0,
+      lastChain: 0,
+      highestChain: 0,
     }
   }
 
@@ -26,9 +30,21 @@ export default class Board {
   }
 
   update() {
+    // Clear the stats of the last update
+    this.stats.lastChain = 0;
+    this.stats.lastGemsSmashed = 0;
+    this.stats.lastClusterGemsSmashed = 0;
+
     this.growClusters();
     this.createClusters();
-    this.smashGems();
+
+    this.stats.lastChain = this.smashGems();
+    if (this.stats.lastChain > this.stats.highestChain) {
+      this.stats.highestChain = this.stats.lastChain;
+    }
+    this.stats.lastGemsSmashed -= this.stats.lastClusterGemsSmashed;
+
+    m.redraw();
   }
 
   blank() {
@@ -130,22 +146,28 @@ export default class Board {
     });
   }
 
-  smashGems() {
-    let smashedGems = 0;
+  smashGems(currentChain = 0) {
+    if (currentChain > 100) { throw "lol, nope"; }
+
+    let atLeastOneSmash = false;
+
     const smashers = filter(this.data, gem => (gem && gem.smasher));
     smashers.forEach(gem => gem.attemptSmash());
 
     this.data.forEach(gem => {
       if (gem && gem.toSmash) {
-        smashedGems += 1;
+        atLeastOneSmash = true;
         this.setSquare(undefined, gem.x, gem.y);
       }
     });
 
-    this.stats.blocksSmashed += smashedGems;
-    m.redraw();
-
     this.data.forEach(gem => { gem && gem.gravity() });
+
+    if (atLeastOneSmash) {
+      currentChain = this.smashGems(currentChain + 1)
+    }
+
+    return currentChain;
   }
 
   view() {
@@ -157,8 +179,12 @@ export default class Board {
         height: (32 * this.height)
       }),
       m('.stats', [
-        m('.blocks-smashed', `Blocks smashed: ${this.stats.blocksSmashed}`),
+        m('.gems-smashed', `Gems smashed: ${this.stats.gemsSmashed}`),
         m('.clusters-smashed', `Clusters smashed: ${this.stats.clustersSmashed}`),
+        m('.last-gems-smashed', `Last gems smashed: ${this.stats.lastGemsSmashed}`),
+        m('.last-cluster-gems-smashed', `Last cluster gems smashed: ${this.stats.lastClusterGemsSmashed}`),
+        m('.last-chain', `Last chain: ${this.stats.lastChain}`),
+        m('.highest-chain', `Highest chain: ${this.stats.highestChain}`),
       ])
     ];
   }

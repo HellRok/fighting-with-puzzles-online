@@ -46,11 +46,11 @@ export default class Player {
     return [
       new Gem(this.board, 2, this.board.height - 1,
         sample(['red', 'blue', 'orange', 'purple']),
-        (randomPercent() > 90)
+        (randomPercent() > 80)
       ),
       new Gem(this.board, 3, this.board.height - 1,
         sample(['red', 'blue', 'orange', 'purple']),
-        (randomPercent() > 90)
+        (randomPercent() > 80)
       ),
     ]
   }
@@ -275,6 +275,9 @@ export default class Player {
   }
 
   lock() {
+    // It's important to order this so we always drop the bottom piece first or
+    // we can get into some real funky situations of gems overriding each other
+    // or dropping in an unexpected order.
     if (this.board.activePiece[0].y !== this.board.activePiece[1].y) {
       this.board.activePiece = sortBy(this.board.activePiece, gem => gem.y)
     }
