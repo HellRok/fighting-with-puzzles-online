@@ -2,17 +2,8 @@ import { sample, sortBy } from 'lodash/collection';
 import { min, max } from 'lodash/math';
 
 import Gem from './gem';
+import Settings from './settings';
 import { timestamp, offsetPositions, randomPercent } from './helpers';
-
-window.keys = {
-  left:     65,
-  right:    69,
-  hardDrop: 188,
-  softDrop: 79,
-  ccw:      67,
-  cw:       48,
-  switch:   221,
-};
 
 export default class Player {
   constructor(board) {
@@ -23,20 +14,17 @@ export default class Player {
     this.keyDownEvent = document.addEventListener('keydown', (e) => { _this.keyDown(e) }, false);
     this.keyUpEvent   = document.addEventListener('keyup',   (e) => { _this.keyUp(e) },   false);
     this.keyState = {
-      left:     false, leftTimestamp:  0,
-      right:    false, rightTimestamp: 0,
-      hardDrop: false,
-      softDrop: false,
-      ccw:      false,
-      cw:       false,
-      switch:   false,
+      autoRepeat: false,
+      left:       false, leftTimestamp:  0,
+      right:      false, rightTimestamp: 0,
+      hardDrop:   false,
+      softDrop:   false,
+      ccw:        false,
+      cw:         false,
+      switch:     false,
     }
     this.state = {
       gravityTimestamp: 0,
-    }
-    this.settings = {
-      das: 500,
-      arr: 100,
     }
   }
 
@@ -77,6 +65,15 @@ export default class Player {
     if (this.board.isClear(offsetPositions(this.board.activePiece, [0, -1]))) {
       this.board.activePiece.forEach(piece => { piece.y = piece.y - 1 });
     }
+  }
+
+  switchActivePieceGems() {
+    [this.board.activePiece[0], this.board.activePiece[1]] =
+      [this.board.activePiece[1], this.board.activePiece[0]];
+    [this.board.activePiece[0].x, this.board.activePiece[1].x] =
+      [this.board.activePiece[1].x, this.board.activePiece[0].x];
+    [this.board.activePiece[0].y, this.board.activePiece[1].y] =
+      [this.board.activePiece[1].y, this.board.activePiece[0].y];
   }
 
   kick(pieces) {
@@ -182,54 +179,63 @@ export default class Player {
   }
 
   keyDown(event) {
-    if (event.keyCode === window.keys.right) {
+    if (event.keyCode === Settings.keys.right) {
       this.keyState.right = true;
     }
 
-    if (event.keyCode === window.keys.left) {
+    if (event.keyCode === Settings.keys.left) {
       this.keyState.left = true;
     }
 
-    if (event.keyCode === window.keys.cw) {
+    if (event.keyCode === Settings.keys.cw) {
       this.keyState.cw = true;
     }
 
-    if (event.keyCode === window.keys.ccw) {
+    if (event.keyCode === Settings.keys.ccw) {
       this.keyState.ccw = true;
     }
 
-    if (event.keyCode === window.keys.hardDrop) {
+    if (event.keyCode === Settings.keys.switch) {
+      this.keyState.switch = true;
+    }
+
+    if (event.keyCode === Settings.keys.hardDrop) {
       this.keyState.hardDrop = true;
     }
 
-    if (event.keyCode === window.keys.softDrop) {
+    if (event.keyCode === Settings.keys.softDrop) {
       this.keyState.softDrop = true;
     }
   }
 
   keyUp(event) {
-    if (event.keyCode === window.keys.right) {
+    if (event.keyCode === Settings.keys.right) {
       this.keyState.right = false;
       this.keyState.rightTimestamp = 0;
+      this.keyState.autoRepeat = false;
     }
 
-    if (event.keyCode === window.keys.left) {
+    if (event.keyCode === Settings.keys.left) {
       this.keyState.left = false;
       this.keyState.leftTimestamp = 0;
+      this.keyState.autoRepeat = false;
     }
   }
 
   input() {
-    // TODO: Real ARR
+    const movementDelay = this.keyState.autoRepeat ? Settings.game.arr : Settings.game.das;
+
     if (this.keyState.right) {
-      if (timestamp() - this.keyState.rightTimestamp > this.settings.das) {
+      if (timestamp() - this.keyState.rightTimestamp > movementDelay) {
+        if (!this.keyState.autoRepeat && this.keyState.rightTimestamp !== 0) { this.keyState.autoRepeat = true; }
         this.keyState.rightTimestamp = timestamp();
         this.moveActivePieceRight();
       }
     }
 
     if (this.keyState.left) {
-      if (timestamp() - this.keyState.leftTimestamp > this.settings.das) {
+      if (timestamp() - this.keyState.leftTimestamp > movementDelay) {
+        if (!this.keyState.autoRepeat && this.keyState.leftTimestamp !== 0) { this.keyState.autoRepeat = true; }
         this.keyState.leftTimestamp = timestamp();
         this.moveActivePieceLeft();
       }
@@ -243,6 +249,11 @@ export default class Player {
     if (this.keyState.ccw) {
       this.rotateActivePieceCCW();
       this.keyState.ccw = false;
+    }
+
+    if (this.keyState.switch) {
+      this.switchActivePieceGems();
+      this.keyState.switch = false;
     }
 
     if (this.keyState.hardDrop) {

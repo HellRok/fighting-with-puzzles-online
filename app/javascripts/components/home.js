@@ -1,6 +1,8 @@
 import m from 'mithril';
+
 import Layout from './layout';
 import Board from './_board';
+import SettingsForm from './_settings_form';
 import main from '../lib/main'
 
 export default class Home {
@@ -20,7 +22,8 @@ export default class Home {
           onclick: this.startGame
         }, 'Start'),
       ]),
-      m(self.board)
+      m(self.board),
+      m(SettingsForm),
     ]);
   }
 };
