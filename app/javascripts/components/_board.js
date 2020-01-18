@@ -3,8 +3,9 @@ import { filter, sample, some, uniq } from 'lodash/collection';
 import { min, max } from 'lodash/math';
 import { range } from 'lodash/util';
 
-import Gem from '../lib/gem';
 import Cluster from '../lib/cluster';
+import Gem from '../lib/gem';
+import Settings from '../lib/settings';
 
 export default class Board {
   constructor() {
@@ -15,6 +16,7 @@ export default class Board {
     this.data = [];
     this.clusters = [];
     this.theme = document.querySelector('#gems');
+    this.context2d;
     this.stats = {
       gemsSmashed: 0,
       lastGemsSmashed: 0,
@@ -23,10 +25,18 @@ export default class Board {
       lastChain: 0,
       highestChain: 0,
     }
+    this.debug = {
+      gameTick: 0,
+      renderTick: 0,
+    }
   }
 
   context() {
-    return document.querySelector(`#board-${this.id}`).getContext('2d');
+    if (!this.context2d) {
+       this.context2d = document.querySelector(`#board-${this.id}`).getContext('2d');
+    }
+
+    return this.context2d;
   }
 
   update() {
@@ -63,6 +73,11 @@ export default class Board {
       const square = _this.getSquare(x, y);
       if (square) { square.render(_this.context()); }
     });
+
+    if (Settings.debug) {
+      this.context().fillText(`Game:   ${this.debug.gameTick}ms`,   2, 10);
+      this.context().fillText(`Render: ${this.debug.renderTick}ms`, 2, 20);
+    }
   }
 
   /* This will get passed an array of objects that respond to .x and .y */

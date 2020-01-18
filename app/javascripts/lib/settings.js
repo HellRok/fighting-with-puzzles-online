@@ -5,6 +5,8 @@ function valueOrDefault(value, defaultValue) {
 };
 
 export default {
+  debug: valueOrDefault('debug', false),
+
   keys: {
     left:     valueOrDefault('keys.left', 37),
     right:    valueOrDefault('keys.right', 39),
