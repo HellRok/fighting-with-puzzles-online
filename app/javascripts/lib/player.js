@@ -25,9 +25,11 @@ export default class Player {
     }
     this.state = {
       gravityTimestamp: 0,
+      alive: true,
     }
-  }
 
+    this.setup();
+  }
   nextPiece() {
     this.gravityTimestamp = timestamp();
 
@@ -297,12 +299,30 @@ export default class Player {
       gem.gravity();
     });
 
+    if (
+      this.board.getSquare(2, this.board.height - 1) ||
+      this.board.getSquare(3, this.board.height - 1)
+    ) {
+      this.lose();
+    }
+
     this.board.activePiece = this.nextPiece();
     this.board.update();
   }
 
   tick(delta) {
-    this.input();
-    this.gravity();
+    throw 'Must be overloaded in child class';
+  }
+
+  setup() {
+    throw 'Must be overloaded in child class';
+  }
+
+  lose() {
+    throw 'Must be overloaded in child class';
+  }
+
+  win() {
+    throw 'Must be overloaded in child class';
   }
 }

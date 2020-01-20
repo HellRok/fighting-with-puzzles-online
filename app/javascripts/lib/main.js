@@ -1,4 +1,4 @@
-import Player from './player';
+import Sprint from './game_modes/sprint';
 import { timestamp } from './helpers';
 
 let player = undefined;
@@ -30,7 +30,7 @@ function renderLoop() {
 
 export default function main(loadBoards) {
   boards = loadBoards;
-  player = new Player(boards[0]);
+  player = new Sprint(boards[0]);
 
   lastGameLoop = timestamp();
 
