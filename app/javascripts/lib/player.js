@@ -30,6 +30,7 @@ export default class Player {
 
     this.setup();
   }
+
   nextPiece() {
     this.gravityTimestamp = timestamp();
 

@@ -40,7 +40,7 @@ export default class Board {
 
   context() {
     if (!this.context2d) {
-       this.context2d = document.querySelector(`#board-${this.id}`).getContext('2d');
+      this.context2d = document.querySelector(`#board-${this.id}`).getContext('2d');
     }
 
     return this.context2d;
@@ -52,10 +52,7 @@ export default class Board {
     this.stats.lastGemsSmashed = 0;
     this.stats.lastClusterGemsSmashed = 0;
 
-    this.growClusters();
-    this.createClusters();
-
-    this.stats.lastChain = this.smashGems();
+    this.stats.lastChain = this.growAndCreateClustersAndSmashGems();
     if (this.stats.lastChain > this.stats.highestChain) {
       this.stats.highestChain = this.stats.lastChain;
     }
@@ -168,8 +165,11 @@ export default class Board {
     });
   }
 
-  smashGems(currentChain = 0) {
+  growAndCreateClustersAndSmashGems(currentChain = 0) {
     if (currentChain > 100) { throw "lol, nope"; }
+
+    this.growClusters();
+    this.createClusters();
 
     let atLeastOneSmash = false;
 
@@ -186,7 +186,7 @@ export default class Board {
     this.data.forEach(gem => { gem && gem.gravity() });
 
     if (atLeastOneSmash) {
-      currentChain = this.smashGems(currentChain + 1)
+      currentChain = this.growAndCreateClustersAndSmashGems(currentChain + 1)
     }
 
     return currentChain;

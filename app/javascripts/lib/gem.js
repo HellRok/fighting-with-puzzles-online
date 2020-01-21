@@ -127,8 +127,8 @@ export default class Gem {
       this.board.stats.lastClusterGemsSmashed += this.cluster.gems.length;
       this.board.stats.clustersSmashed += 1;
 
-      this.cluster.gems.forEach(gem => { gem.cluster = undefined; gem.smash(); });
       this.board.clusters = filter(this.board.clusters, cluster => cluster !== _this.cluster)
+      this.cluster.gems.forEach(gem => { gem.cluster = undefined; gem.smash(); });
     }
 
     this.board.stats.gemsSmashed += 1;
