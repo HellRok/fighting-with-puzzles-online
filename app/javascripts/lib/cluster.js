@@ -85,7 +85,7 @@ export default class Cluster {
     this.gems.forEach(gem => this.board.setSquare(undefined, gem.x, gem.y));
 
     while (this.board.isClear(offsetPositions(this.gems, [0, -1]))) {
-      this.y = this.y - 1;
+      this.gems.forEach(gem => gem.y = gem.y - 1);
     }
 
     this.gems.forEach(gem => this.board.setSquare(gem));

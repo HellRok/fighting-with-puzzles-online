@@ -13,12 +13,16 @@ export default class Board {
     this.id = 1;
     this.width = 6;
     this.height = 12;
+    this.theme = document.querySelector('#gems');
+    this.context2d;
+    this.clear();
+  }
+
+  clear() {
     this.activePiece = [];
     this.data = [];
     this.clusters = [];
-    this.overlay;
-    this.theme = document.querySelector('#gems');
-    this.context2d;
+    this.overlay = undefined;
     this.stats = {
       gemsSmashed: 0,
       lastGemsSmashed: 0,
