@@ -5,7 +5,7 @@ import Board from './_board';
 import SettingsForm from './_settings_form';
 import main from '../lib/main'
 
-export default class Home {
+export default class Ultra {
   constructor() {
     self.board = new Board();
   }
@@ -16,15 +16,11 @@ export default class Home {
 
   view() {
     return m(Layout, [
-      m('h2', 'Home'),
-      m('div', [
-        m('button', {
-          onclick: this.startGame
-        }, 'Start'),
-      ]),
-      m(self.board),
-      m(SettingsForm),
+      m('h2', 'Ultra'),
+      m('p', 'Not yet implemented!'),
     ]);
   }
 };
+
+
 

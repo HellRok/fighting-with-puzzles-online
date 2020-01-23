@@ -1,8 +1,43 @@
 nav {
+  position: fixed;
+  width: 100%;
   background: $color-tertiary;
   border-bottom: 0.1rem solid $color-quaternary;
+  z-index: 2;
 
   .logo {
     font-size: 2rem;
+  }
+
+  .toggle-sidebar {
+    float: right;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  padding-top: 42px;
+  background: $color-tertiary;
+  border-left: 0.1rem solid $color-quaternary;
+  z-index: 1;
+  overflow-y: auto;
+  transition: right 0.1s;
+
+  &.shown  { right: 0; }
+  &.hidden { right: -300px; }
+
+  .sidebar-link {
+    display: inline-block;
+    width: 100%;
+    font-size: 2rem;
+    padding: 1rem;
+    border-bottom: 0.1rem solid $color-quaternary;
+
+    &:hover { background: $color-quinary; }
   }
 }

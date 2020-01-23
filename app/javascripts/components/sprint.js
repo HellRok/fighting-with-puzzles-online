@@ -5,7 +5,7 @@ import Board from './_board';
 import SettingsForm from './_settings_form';
 import main from '../lib/main'
 
-export default class Home {
+export default class Sprint {
   constructor() {
     self.board = new Board();
   }
@@ -16,7 +16,7 @@ export default class Home {
 
   view() {
     return m(Layout, [
-      m('h2', 'Home'),
+      m('h2', 'Sprint'),
       m('div', [
         m('button', {
           onclick: this.startGame
@@ -27,4 +27,5 @@ export default class Home {
     ]);
   }
 };
+
 
