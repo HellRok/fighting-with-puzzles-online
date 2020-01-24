@@ -15,7 +15,7 @@ export default class SidebarLink {
             {
               class: 'sidebar-link',
               href: this.href,
-              onclick: function(e) { _this.sidebar.toggle(); }
+              onclick: function(e) { if (window.innerWidth <= 1024) { _this.sidebar.toggle(); } }
             }, vnode.children);
   }
 };
