@@ -20,6 +20,7 @@ export default class Player {
       lastRenderLoopTimestamp: 0,
       gravityTimestamp:        0,
       alive:                   false,
+      toBeDestroyed:           false,
     }
 
     this.setup();
@@ -46,6 +47,10 @@ export default class Player {
     this.state.alive = true;
   }
 
+  destroy() {
+    this.state.toBeDestroyed = true;
+  }
+
   gameLoop() {
     const _this = this;
     const newTimestamp = timestamp();
@@ -55,7 +60,9 @@ export default class Player {
     this.playerBoard.debug.gameTick = delta;
 
     this.tick(delta);
-    setTimeout(() => _this.gameLoop(), 1);
+    if (!this.state.toBeDestroyed) {
+      setTimeout(() => _this.gameLoop(), 1);
+    }
   }
 
   renderLoop() {
@@ -68,7 +75,9 @@ export default class Player {
 
     this.playerBoard.render();
     this.boards.forEach(board => board.render());
-    window.requestAnimationFrame(() => _this.renderLoop())
+    if (!this.state.toBeDestroyed) {
+      window.requestAnimationFrame(() => _this.renderLoop())
+    }
   }
 
   nextPiece() {

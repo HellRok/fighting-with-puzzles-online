@@ -20,6 +20,10 @@ export default class SprintPresenter {
     this.playerBoard.overlay = `Press ${keyboardMap[Settings.keys.restart]} to start.`;
   }
 
+  onremove() {
+    this.player.destroy();
+  }
+
   view() {
     return m(Layout, [
       m('h2', 'Sprint'),
