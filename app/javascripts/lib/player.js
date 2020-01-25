@@ -6,9 +6,11 @@ import Settings from './settings';
 import { timestamp, offsetPositions, randomPercent } from './helpers';
 
 export default class Player {
-  constructor(board) {
-    this.board = board;
-    this.board.activePiece = this.nextPiece();
+  constructor(playerBoard, boards=[]) {
+    this.playerBoard = playerBoard;
+    this.playerBoard.activePiece = this.nextPiece();
+    this.playerBoard.debug.show = true;
+    this.boards = boards;
 
     const _this = this;
     this.keyDownEvent = document.addEventListener('keydown', (e) => { _this.keyDown(e) }, false);
@@ -24,6 +26,8 @@ export default class Player {
       switch:     false,
     }
     this.state = {
+      lastGameLoopTimestamp: 0,
+      lastRenderLoopTimestamp: 0,
       gravityTimestamp: 0,
       alive: true,
     }
@@ -31,15 +35,40 @@ export default class Player {
     this.setup();
   }
 
+  gameLoop() {
+    const _this = this;
+    const newTimestamp = timestamp();
+    const delta = newTimestamp - this.state.lastGameLoopTimestamp;
+    this.state.lastGameLoopTimestamp = newTimestamp;
+
+    this.playerBoard.debug.gameTick = delta;
+
+    this.tick(delta);
+    setTimeout(() => _this.gameLoop(), 1);
+  }
+
+  renderLoop() {
+    const _this = this;
+    const newTimestamp = timestamp();
+    const delta = newTimestamp - this.state.lastRenderLoopTimestamp;
+    this.state.lastRenderLoopTimestamp = newTimestamp;
+
+    this.playerBoard.debug.renderTick = delta;
+
+    this.playerBoard.render();
+    this.boards.forEach(board => board.render());
+    window.requestAnimationFrame(() => _this.renderLoop())
+  }
+
   nextPiece() {
     this.gravityTimestamp = timestamp();
 
     return [
-      new Gem(this.board, 2, this.board.height - 1,
+      new Gem(this.playerBoard, 2, this.playerBoard.height - 1,
         sample(['red', 'blue', 'orange', 'purple']),
         (randomPercent() > 80)
       ),
-      new Gem(this.board, 3, this.board.height - 1,
+      new Gem(this.playerBoard, 3, this.playerBoard.height - 1,
         sample(['red', 'blue', 'orange', 'purple']),
         (randomPercent() > 80)
       ),
@@ -47,61 +76,61 @@ export default class Player {
   }
 
   moveActivePieceRight() {
-    if (this.board.isClear(offsetPositions(this.board.activePiece, [1, 0]))) {
-      this.board.activePiece.forEach(piece => { piece.x = piece.x + 1 });
+    if (this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [1, 0]))) {
+      this.playerBoard.activePiece.forEach(piece => { piece.x = piece.x + 1 });
     }
   }
 
   moveActivePieceLeft() {
-    if (this.board.isClear(offsetPositions(this.board.activePiece, [-1, 0]))) {
-      this.board.activePiece.forEach(piece => { piece.x = piece.x - 1 });
+    if (this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [-1, 0]))) {
+      this.playerBoard.activePiece.forEach(piece => { piece.x = piece.x - 1 });
     }
   }
 
   moveActivePieceUp() {
-    if (this.board.isClear(offsetPositions(this.board.activePiece, [0, 1]))) {
-      this.board.activePiece.forEach(piece => { piece.y = piece.y + 1 });
+    if (this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [0, 1]))) {
+      this.playerBoard.activePiece.forEach(piece => { piece.y = piece.y + 1 });
     }
   }
 
   moveActivePieceDown() {
-    if (this.board.isClear(offsetPositions(this.board.activePiece, [0, -1]))) {
-      this.board.activePiece.forEach(piece => { piece.y = piece.y - 1 });
+    if (this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [0, -1]))) {
+      this.playerBoard.activePiece.forEach(piece => { piece.y = piece.y - 1 });
     }
   }
 
   switchActivePieceGems() {
-    [this.board.activePiece[0], this.board.activePiece[1]] =
-      [this.board.activePiece[1], this.board.activePiece[0]];
-    [this.board.activePiece[0].x, this.board.activePiece[1].x] =
-      [this.board.activePiece[1].x, this.board.activePiece[0].x];
-    [this.board.activePiece[0].y, this.board.activePiece[1].y] =
-      [this.board.activePiece[1].y, this.board.activePiece[0].y];
+    [this.playerBoard.activePiece[0], this.playerBoard.activePiece[1]] =
+      [this.playerBoard.activePiece[1], this.playerBoard.activePiece[0]];
+    [this.playerBoard.activePiece[0].x, this.playerBoard.activePiece[1].x] =
+      [this.playerBoard.activePiece[1].x, this.playerBoard.activePiece[0].x];
+    [this.playerBoard.activePiece[0].y, this.playerBoard.activePiece[1].y] =
+      [this.playerBoard.activePiece[1].y, this.playerBoard.activePiece[0].y];
   }
 
   kick(pieces) {
-    if (this.board.isClear(pieces)) {
+    if (this.playerBoard.isClear(pieces)) {
       return pieces;
     }
 
     // Next to each other, so only kick left/right
     if (pieces[0].y === pieces[1].y) {
-      if (this.board.isClear(offsetPositions(pieces, [1, 0]))) {
+      if (this.playerBoard.isClear(offsetPositions(pieces, [1, 0]))) {
         return offsetPositions(pieces, [1, 0]);
       }
 
-      if (this.board.isClear(offsetPositions(pieces, [-1, 0]))) {
+      if (this.playerBoard.isClear(offsetPositions(pieces, [-1, 0]))) {
         return offsetPositions(pieces, [-1, 0]);
       }
     }
 
     // One above the other, so only kick up/down
     if (pieces[0].x === pieces[1].x) {
-      if (this.board.isClear(offsetPositions(pieces, [0, 1]))) {
+      if (this.playerBoard.isClear(offsetPositions(pieces, [0, 1]))) {
         return offsetPositions(pieces, [0, 1]);
       }
 
-      if (this.board.isClear(offsetPositions(pieces, [0, -1]))) {
+      if (this.playerBoard.isClear(offsetPositions(pieces, [0, -1]))) {
         return offsetPositions(pieces, [0, -1]);
       }
     }
@@ -110,8 +139,8 @@ export default class Player {
   }
 
   rotateActivePieceCW() {
-    const centrePiece = this.board.activePiece[0];
-    const offsidePiece = this.board.activePiece[1];
+    const centrePiece = this.playerBoard.activePiece[0];
+    const offsidePiece = this.playerBoard.activePiece[1];
     const translation = { x: 0, y: 0 }
 
     if (centrePiece.x === offsidePiece.x) {
@@ -146,8 +175,8 @@ export default class Player {
   }
 
   rotateActivePieceCCW() {
-    const centrePiece = this.board.activePiece[0];
-    const offsidePiece = this.board.activePiece[1];
+    const centrePiece = this.playerBoard.activePiece[0];
+    const offsidePiece = this.playerBoard.activePiece[1];
     const translation = { x: 0, y: 0 }
 
     if (centrePiece.x === offsidePiece.x) {
@@ -276,7 +305,7 @@ export default class Player {
       this.gravityTimestamp = timestamp();
       let collision = false;
 
-      if (!this.board.isClear(offsetPositions(this.board.activePiece, [0, -1]))) {
+      if (!this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [0, -1]))) {
         collision = true;
       }
 
@@ -292,23 +321,23 @@ export default class Player {
     // It's important to order this so we always drop the bottom piece first or
     // we can get into some real funky situations of gems overriding each other
     // or dropping in an unexpected order.
-    if (this.board.activePiece[0].y !== this.board.activePiece[1].y) {
-      this.board.activePiece = sortBy(this.board.activePiece, gem => gem.y)
+    if (this.playerBoard.activePiece[0].y !== this.playerBoard.activePiece[1].y) {
+      this.playerBoard.activePiece = sortBy(this.playerBoard.activePiece, gem => gem.y)
     }
 
-    this.board.activePiece.forEach(gem => {
+    this.playerBoard.activePiece.forEach(gem => {
       gem.gravity();
     });
 
     if (
-      this.board.getSquare(2, this.board.height - 1) ||
-      this.board.getSquare(3, this.board.height - 1)
+      this.playerBoard.getSquare(2, this.playerBoard.height - 1) ||
+      this.playerBoard.getSquare(3, this.playerBoard.height - 1)
     ) {
       this.lose();
     }
 
-    this.board.activePiece = this.nextPiece();
-    this.board.update();
+    this.playerBoard.activePiece = this.nextPiece();
+    this.playerBoard.update();
   }
 
   tick(delta) {

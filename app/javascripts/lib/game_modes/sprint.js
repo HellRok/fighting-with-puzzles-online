@@ -5,7 +5,7 @@ import { timestamp } from '../helpers';
 
 export default class Sprint extends Player {
   setup() {
-    this.board.stats.start = timestamp();
+    this.playerBoard.stats.start = timestamp();
   }
 
   tick(delta) {
@@ -14,21 +14,21 @@ export default class Sprint extends Player {
     this.input();
     this.gravity();
 
-    if (this.board.stats.gemsSmashed >= 140) { this.win(); }
+    if (this.playerBoard.stats.gemsSmashed >= 140) { this.win(); }
   }
 
   lose() {
     this.state.alive = false;
-    this.board.overlay = 'You topped out!';
+    this.playerBoard.overlay = 'You topped out!';
     m.redraw();
   };
 
   win() {
     const end = timestamp();
     this.state.alive = false;
-    this.board.overlay = m.trust(`
+    this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
-      You took ${(end - this.board.stats.start) / 1000} seconds!
+      You took ${(end - this.playerBoard.stats.start) / 1000} seconds!
     `);
     m.redraw();
   }

@@ -16,6 +16,12 @@ export default class Board {
     this.theme = document.querySelector('#gems');
     this.context2d;
     this.clear();
+
+    this.debug = {
+      show: false,
+      gameTick: 0,
+      renderTick: 0,
+    }
   }
 
   clear() {
@@ -31,10 +37,6 @@ export default class Board {
       lastChain: 0,
       highestChain: 0,
       start: 0,
-    }
-    this.debug = {
-      gameTick: 0,
-      renderTick: 0,
     }
   }
 
