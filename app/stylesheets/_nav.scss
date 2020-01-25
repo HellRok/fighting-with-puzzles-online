@@ -3,16 +3,20 @@ nav {
   width: 100%;
   background: $color-tertiary;
   border-bottom: 0.1rem solid $color-quaternary;
-  z-index: 2;
+  z-index: 3;
 
   .logo {
     font-size: 2rem;
   }
 
-  .toggle-sidebar {
+  .icons {
     float: right;
     font-size: 2rem;
-    cursor: pointer;
+
+    div {
+      display: inline-block;
+      cursor: pointer;
+    }
   }
 }
 
@@ -24,7 +28,7 @@ nav {
   padding-top: 42px;
   background: $color-tertiary;
   border-left: 0.1rem solid $color-quaternary;
-  z-index: 1;
+  z-index: 2;
   overflow-y: auto;
   transition: right 0.1s;
 
@@ -39,5 +43,45 @@ nav {
     border-bottom: 0.1rem solid $color-quaternary;
 
     &:hover { background: $color-quinary; }
+  }
+}
+
+.settings-form {
+  position: fixed;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  padding: 42px 0 0 0;
+  background: white;
+  border-left: 0.1rem solid $color-quaternary;
+  z-index: 1;
+  overflow-y: auto;
+  transition: right 0.1s;
+
+  .header {
+    position: fixed;
+    width: 300px;
+    padding: 10px 10px 0 0;
+    margin: 0;
+    background: $color-tertiary;
+    border-bottom: 0.1rem solid $color-quaternary;
+    text-align: right;
+  }
+
+  .fieldset {
+    padding: 60px 0.5rem;
+  }
+
+  &.shown  {
+    right: 0;
+    &.double {
+      right: 300px;
+    }
+  }
+  &.hidden {
+    right: -300px;
+    &.double {
+      right: 0;
+    }
   }
 }

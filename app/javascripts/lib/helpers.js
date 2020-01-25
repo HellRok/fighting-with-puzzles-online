@@ -26,6 +26,10 @@ export function displayMilliseconds(time) {
   return `${minutes}:${padStart(seconds, 2, 0)}.${padStart(milliseconds, 3, 0)}`;
 }
 
+export function isBigScreen() {
+  return window.innerWidth > 1024;
+}
+
 // Borrowed from https://stackoverflow.com/a/23377822
 export let keyboardMap = [
   "", // [0]

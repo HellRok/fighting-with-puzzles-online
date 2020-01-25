@@ -2,7 +2,6 @@ import m from 'mithril';
 
 import Layout from './layout';
 import Board from './_board';
-import SettingsForm from './_settings_form';
 import Settings from '../lib/settings'
 import Sprint from '../lib/game_modes/sprint'
 import { keyboardMap } from '../lib/helpers';
@@ -28,7 +27,6 @@ export default class SprintPresenter {
     return m(Layout, [
       m('h2', 'Sprint'),
       m(this.playerBoard),
-      m(SettingsForm),
     ]);
   }
 };

@@ -1,14 +1,21 @@
 import m from 'mithril';
 
 import SidebarLink from './_sidebar_link';
+import SettingsForm from './_settings_form';
+import { isBigScreen } from '../lib/helpers';
 
 export default class Nav {
   constructor() {
-    this.showSidebar = window.innerWidth > 1024;
+    this.showSidebar = isBigScreen();
+    this.showSettings = false;
   }
 
   toggle() {
     this.showSidebar = !this.showSidebar;
+  }
+
+  toggleSettings() {
+    this.showSettings = !this.showSettings;
   }
 
   view() {
@@ -21,12 +28,19 @@ export default class Nav {
               href: '/',
               class: 'logo'
             }, 'Fighting with Puzzles Online'),
-          m('.toggle-sidebar',
-            {
-              class: this.showSidebar ? 'icon-cancel' : 'icon-menu',
-              onclick: () => _this.toggle(),
-            }
-          )
+          m('.icons', [
+            m('.toggle-settings.icon-cog-alt',
+              {
+                title: this.showSettings ? 'Close the settings' : 'Open the settings',
+                onclick: () => _this.toggleSettings(),
+              }),
+            m('.toggle-sidebar',
+              {
+                class: this.showSidebar ? 'icon-cancel' : 'icon-menu',
+                title: this.showSidebar ? 'Close the sidebar' : 'Open the sidebar',
+                onclick: () => _this.toggle(),
+              }),
+          ]),
         ])
       ]),
       m('.sidebar', {
@@ -42,6 +56,15 @@ export default class Nav {
             href: '/ultra', sidebar: this,
           }, 'Ultra'),
       ]),
+      m(SettingsForm,
+        {
+          extraClass: `
+            ${this.showSidebar ? 'double' : ''}
+            ${this.showSettings ? 'shown' : 'hidden'}
+          `,
+          nav: this,
+        }
+      ),
     ];
   }
 };
