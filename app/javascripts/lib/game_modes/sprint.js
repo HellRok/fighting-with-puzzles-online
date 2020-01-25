@@ -2,7 +2,7 @@ import m from 'mithril';
 
 import Player from '../player';
 import Settings from '../settings';
-import { timestamp, keyboardMap } from '../helpers';
+import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 
 export default class Sprint extends Player {
   setup() {
@@ -15,6 +15,7 @@ export default class Sprint extends Player {
     if (!this.state.alive) { return; }
 
     this.gravity();
+    this.playerBoard.stats.runningTime += delta;
 
     if (this.playerBoard.stats.gemsSmashed >= 140) { this.win(); }
   }
@@ -39,11 +40,10 @@ export default class Sprint extends Player {
   };
 
   win() {
-    const end = timestamp();
     this.state.alive = false;
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
-      You took ${(end - this.playerBoard.stats.start) / 1000} seconds!
+      You took ${displayMilliseconds(this.playerBoard.stats.runningTime)}!
     `);
     m.redraw();
   }

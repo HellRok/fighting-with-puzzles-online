@@ -1,3 +1,4 @@
+import { padStart } from 'lodash/string';
 import { random } from 'lodash/number';
 
 export function timestamp() {
@@ -15,6 +16,14 @@ export function offsetPositions(objs, offset) {
 
 export function randomPercent() {
   return random(1, 100);
+}
+
+export function displayMilliseconds(time) {
+  const minutes = Math.floor(time / 1000 / 60);
+  const seconds = Math.floor(time / 1000 - minutes * 60);
+  const milliseconds = time % 1000;
+
+  return `${minutes}:${padStart(seconds, 2, 0)}.${padStart(milliseconds, 3, 0)}`;
 }
 
 // Borrowed from https://stackoverflow.com/a/23377822

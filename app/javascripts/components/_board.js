@@ -6,7 +6,7 @@ import { range } from 'lodash/util';
 import Cluster from '../lib/cluster';
 import Gem from '../lib/gem';
 import Settings from '../lib/settings';
-import { timestamp } from '../lib/helpers';
+import { displayMilliseconds } from '../lib/helpers';
 
 export default class Board {
   constructor() {
@@ -24,6 +24,10 @@ export default class Board {
     }
   }
 
+  oncreate() {
+    this.timeValue = document.querySelector('.stats.time.value');
+  }
+
   clear() {
     this.activePiece = [];
     this.data = [];
@@ -36,7 +40,7 @@ export default class Board {
       lastClusterGemsSmashed: 0,
       lastChain: 0,
       highestChain: 0,
-      start: timestamp(),
+      runningTime: 0,
     }
     m.redraw();
   }
@@ -80,6 +84,8 @@ export default class Board {
       const square = _this.getSquare(x, y);
       if (square) { square.render(_this.context()); }
     });
+
+    this.timeValue = displayMilliseconds(this.stats.runningTime);
 
     if (Settings.debug) {
       this.context().fillText(`Game:   ${this.debug.gameTick}ms`,   2, 10);
@@ -212,7 +218,7 @@ export default class Board {
           height: (32 * this.height)
         }),
         m('.stats', [
-          m('.time', `Time: ${(timestamp() - this.stats.start) / 1000}`),
+          m('.time', 'Time: ', m('span.value', displayMilliseconds(this.stats.runningTime))),
           m('.gems-smashed', `Gems smashed: ${this.stats.gemsSmashed}`),
           m('.clusters-smashed', `Clusters smashed: ${this.stats.clustersSmashed}`),
           m('.last-gems-smashed', `Last gems smashed: ${this.stats.lastGemsSmashed}`),
