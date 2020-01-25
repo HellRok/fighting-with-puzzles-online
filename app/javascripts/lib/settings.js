@@ -8,13 +8,14 @@ export default {
   debug: valueOrDefault('debug', false),
 
   keys: {
-    left:     valueOrDefault('keys.left', 37),
-    right:    valueOrDefault('keys.right', 39),
-    hardDrop: valueOrDefault('keys.hardDrop', 38),
-    softDrop: valueOrDefault('keys.softDrop', 40),
-    ccw:      valueOrDefault('keys.ccw', 88),
-    cw:       valueOrDefault('keys.cw', 67),
-    switch:   valueOrDefault('keys.switch', 90),
+    restart:  valueOrDefault('keys.restart',  113),
+    left:     valueOrDefault('keys.left',      37),
+    right:    valueOrDefault('keys.right',     39),
+    hardDrop: valueOrDefault('keys.hardDrop',  38),
+    softDrop: valueOrDefault('keys.softDrop',  40),
+    ccw:      valueOrDefault('keys.ccw',       88),
+    cw:       valueOrDefault('keys.cw',        67),
+    switch:   valueOrDefault('keys.switch',    90),
   },
 
   game: {
@@ -26,6 +27,7 @@ export default {
     this.keys = { ...toSave.keys };
     this.game = { ...toSave.game };
 
+    localStorage.setItem('keys.restart',  this.keys.restart);
     localStorage.setItem('keys.left',     this.keys.left);
     localStorage.setItem('keys.right',    this.keys.right);
     localStorage.setItem('keys.hardDrop', this.keys.hardDrop);

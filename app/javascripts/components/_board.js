@@ -36,8 +36,9 @@ export default class Board {
       lastClusterGemsSmashed: 0,
       lastChain: 0,
       highestChain: 0,
-      start: 0,
+      start: timestamp(),
     }
+    m.redraw();
   }
 
   context() {

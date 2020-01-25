@@ -49,6 +49,13 @@ export default class SettingsForm {
           value: this.unsaved.game.arr,
         }),
         m('h2', 'Controls'),
+        m('label', { for: 'restart' }, 'Start/Restart'),
+        m('input#restart.key', {
+          type: 'text',
+          'data-group': 'keys',
+          'data-setting': 'restart',
+          value: keyboardMap[this.unsaved.keys.restart],
+        }),
         m('label', { for: 'left' }, 'Move Left'),
         m('input#left.key', {
           type: 'text',

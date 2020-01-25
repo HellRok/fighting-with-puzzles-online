@@ -1,7 +1,8 @@
 import m from 'mithril';
 
 import Player from '../player';
-import { timestamp } from '../helpers';
+import Settings from '../settings';
+import { timestamp, keyboardMap } from '../helpers';
 
 export default class Sprint extends Player {
   setup() {
@@ -9,17 +10,31 @@ export default class Sprint extends Player {
   }
 
   tick(delta) {
+    this.input();
+
     if (!this.state.alive) { return; }
 
-    this.input();
     this.gravity();
 
     if (this.playerBoard.stats.gemsSmashed >= 140) { this.win(); }
   }
 
+  deadInput() {
+    if (this.keyState.restart) {
+      this.restart();
+    }
+  }
+
+  attemptRestart() {
+    this.restart();
+  }
+
   lose() {
     this.state.alive = false;
-    this.playerBoard.overlay = 'You topped out!';
+    this.playerBoard.overlay = m.trust(`
+      Oh no, you topped out!</br>
+      Press ${keyboardMap[Settings.keys.restart]} to restart.
+    `);
     m.redraw();
   };
 

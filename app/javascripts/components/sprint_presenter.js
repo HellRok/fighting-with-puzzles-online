@@ -3,7 +3,9 @@ import m from 'mithril';
 import Layout from './layout';
 import Board from './_board';
 import SettingsForm from './_settings_form';
+import Settings from '../lib/settings'
 import Sprint from '../lib/game_modes/sprint'
+import { keyboardMap } from '../lib/helpers';
 
 export default class SprintPresenter {
   constructor() {
@@ -15,6 +17,7 @@ export default class SprintPresenter {
   oncreate() {
     this.player.gameLoop();
     this.player.renderLoop();
+    this.playerBoard.overlay = `Press ${keyboardMap[Settings.keys.restart]} to start.`;
   }
 
   view() {

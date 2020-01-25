@@ -8,14 +8,26 @@ import { timestamp, offsetPositions, randomPercent } from './helpers';
 export default class Player {
   constructor(playerBoard, boards=[]) {
     this.playerBoard = playerBoard;
-    this.playerBoard.activePiece = this.nextPiece();
     this.playerBoard.debug.show = true;
     this.boards = boards;
 
     const _this = this;
     this.keyDownEvent = document.addEventListener('keydown', (e) => { _this.keyDown(e) }, false);
     this.keyUpEvent   = document.addEventListener('keyup',   (e) => { _this.keyUp(e) },   false);
+    this.resetKeystate();
+    this.state = {
+      lastGameLoopTimestamp:   0,
+      lastRenderLoopTimestamp: 0,
+      gravityTimestamp:        0,
+      alive:                   false,
+    }
+
+    this.setup();
+  }
+
+  resetKeystate() {
     this.keyState = {
+      restart:    false,
       autoRepeat: false,
       left:       false, leftTimestamp:  0,
       right:      false, rightTimestamp: 0,
@@ -25,14 +37,13 @@ export default class Player {
       cw:         false,
       switch:     false,
     }
-    this.state = {
-      lastGameLoopTimestamp: 0,
-      lastRenderLoopTimestamp: 0,
-      gravityTimestamp: 0,
-      alive: true,
-    }
+  }
 
-    this.setup();
+  restart() {
+    this.resetKeystate();
+    this.playerBoard.clear();
+    this.playerBoard.activePiece = this.nextPiece();
+    this.state.alive = true;
   }
 
   gameLoop() {
@@ -211,6 +222,10 @@ export default class Player {
   }
 
   keyDown(event) {
+    if (event.keyCode === Settings.keys.restart) {
+      this.keyState.restart = true;
+    }
+
     if (event.keyCode === Settings.keys.right) {
       this.keyState.right = true;
     }
@@ -255,7 +270,15 @@ export default class Player {
   }
 
   input() {
+    this.state.alive ? this.aliveInput() : this.deadInput();
+  }
+
+  aliveInput() {
     const movementDelay = this.keyState.autoRepeat ? Settings.game.arr : Settings.game.das;
+
+    if (this.keyState.restart) {
+      this.attemptRestart();
+    }
 
     if (this.keyState.right) {
       if (timestamp() - this.keyState.rightTimestamp > movementDelay) {
@@ -341,6 +364,16 @@ export default class Player {
   }
 
   tick(delta) {
+    throw 'Must be overloaded in child class';
+  }
+
+  deadInput() {
+    throw 'Must be overloaded in child class';
+  }
+
+  attemptRestart() {
+    // In live games this will do either nothing or drop them in a practice
+    // mode until the next game.
     throw 'Must be overloaded in child class';
   }
 
