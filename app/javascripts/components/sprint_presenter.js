@@ -9,11 +9,11 @@ import { keyboardMap } from '../lib/helpers';
 export default class SprintPresenter {
   constructor() {
     this.playerBoard = new Board();
-    this.player = new Sprint(this.playerBoard);
 
   }
 
   oncreate() {
+    this.player = new Sprint(this.playerBoard);
     this.player.gameLoop();
     this.player.renderLoop();
     this.playerBoard.overlay = `Press ${keyboardMap[Settings.keys.restart]} to start.`;

@@ -24,10 +24,6 @@ export default class Board {
     }
   }
 
-  oncreate() {
-    this.timeValue = document.querySelector('.stats.time.value');
-  }
-
   clear() {
     this.activePiece = [];
     this.data = [];
@@ -85,7 +81,7 @@ export default class Board {
       if (square) { square.render(_this.context()); }
     });
 
-    this.timeValue = displayMilliseconds(this.stats.runningTime);
+    this.timeValue.innerText = displayMilliseconds(this.stats.runningTime);
 
     if (Settings.debug) {
       this.context().fillText(`Game:   ${this.debug.gameTick}ms`,   2, 10);

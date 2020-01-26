@@ -9,6 +9,7 @@ export default class Player {
   constructor(playerBoard, boards=[]) {
     this.playerBoard = playerBoard;
     this.playerBoard.debug.show = true;
+    this.playerBoard.timeValue = document.querySelector('.stats .time .value');
     this.boards = boards;
 
     const _this = this;
