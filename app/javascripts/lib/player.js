@@ -1,16 +1,19 @@
-import { sample, sortBy } from 'lodash/collection';
+import { sortBy } from 'lodash/collection';
 import { min, max } from 'lodash/math';
 
 import Gem from './gem';
 import Settings from './settings';
-import { timestamp, offsetPositions, randomPercent } from './helpers';
+import PieceGeneratorRandom from './piece_generators/random';
+import { timestamp, offsetPositions } from './helpers';
 
 export default class Player {
   constructor(playerBoard, boards=[]) {
     this.playerBoard = playerBoard;
     this.playerBoard.debug.show = true;
     this.playerBoard.timeValue = document.querySelector('.stats .time .value');
+    this.playerBoard.game = this;
     this.boards = boards;
+    this.queueLength = 3;
 
     const _this = this;
     this.keyDownEvent = document.addEventListener('keydown', (e) => { _this.keyDown(e) }, false);
@@ -42,9 +45,11 @@ export default class Player {
   }
 
   restart() {
+    this.pieceGenerator = new PieceGeneratorRandom(this.queueLength);
     this.resetKeystate();
     this.playerBoard.clear();
     this.playerBoard.activePiece = this.nextPiece();
+    this.playerBoard.pieceQueue = this.pieceGenerator.queue;
     this.state.alive = true;
   }
 
@@ -83,17 +88,15 @@ export default class Player {
 
   nextPiece() {
     this.gravityTimestamp = timestamp();
+    const gems = this.pieceGenerator.nextPiece();
+    gems[0].board = this.playerBoard;
+    gems[0].x = 2;
+    gems[0].y = this.playerBoard.height - 1;
+    gems[1].board = this.playerBoard;
+    gems[1].x = 3;
+    gems[1].y = this.playerBoard.height - 1;
 
-    return [
-      new Gem(this.playerBoard, 2, this.playerBoard.height - 1,
-        sample(['red', 'blue', 'orange', 'purple']),
-        (randomPercent() > 80)
-      ),
-      new Gem(this.playerBoard, 3, this.playerBoard.height - 1,
-        sample(['red', 'blue', 'orange', 'purple']),
-        (randomPercent() > 80)
-      ),
-    ]
+    return gems;
   }
 
   moveActivePieceRight() {

@@ -26,6 +26,7 @@ export default class Board {
 
   clear() {
     this.activePiece = [];
+    this.pieceQueue = [];
     this.data = [];
     this.clusters = [];
     this.overlay = undefined;
@@ -213,6 +214,7 @@ export default class Board {
           width: (32 * this.width),
           height: (32 * this.height)
         }),
+        this.pieceQueue.map((i,_) => m('.piece', i.map((j,_) => j.colour))),
         m('.stats', [
           m('.time', 'Time: ', m('span.value', displayMilliseconds(this.stats.runningTime))),
           m('.gems-smashed', `Gems smashed: ${this.stats.gemsSmashed}`),
