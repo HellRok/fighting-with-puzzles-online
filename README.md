@@ -2,18 +2,12 @@
 
 ## TODO:
 
- * Show next piece(s)
- * Timing
  * Scoring
  * Game mode
    * Ultra
    * Endless
  * Replays
  * Live vs (one day...)
-
-## BUGS:
-
- * Sometimes gems change colour when creating a cluster
 
 ## DEV:
 
