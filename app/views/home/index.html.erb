@@ -16,5 +16,17 @@
     <div id="nav"></div>
     <div id="app"></div>
     <img id="gems" src="/assets/gems.png" class="display-none"/>
+
+    <% if Rails.env.production? %>
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157003509-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-157003509-1');
+      </script>
+    <% end %>
   </body>
 </html>
