@@ -41,9 +41,17 @@ export default class Sprint extends Player {
 
   win() {
     this.state.alive = false;
+    const oldBest = localStorage.getItem('bestSprint');
+    const newBest = oldBest ? (this.playerBoard.stats.runningTime < oldBest) : false;
+
+    if (newBest || !oldBest) {
+      localStorage.setItem('bestSprint', this.playerBoard.stats.runningTime);
+    }
+
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
       You took ${displayMilliseconds(this.playerBoard.stats.runningTime)}!
+      ${ newBest ? `You improved your best by ${displayMilliseconds(oldBest - this.playerBoard.stats.runningTime)}` : ''}
     `);
     m.redraw();
   }
