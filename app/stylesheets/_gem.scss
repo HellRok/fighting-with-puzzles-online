@@ -1,0 +1,70 @@
+.gem {
+  width: 32px;
+  height: 32px;
+  background-image: url('/assets/gems.png');
+  background-repeat: no-repeat;
+
+  &.red {
+    background-position: 0px 0px;
+    &.cluster {
+      &.top-left     { background-position: -32px  0px; }
+      &.top          { background-position: -64px  0px; }
+      &.top-right    { background-position: -96px  0px; }
+      &.right        { background-position: -128px 0px; }
+      &.left         { background-position: -160px 0px; }
+      &.bottom-left  { background-position: -192px 0px; }
+      &.bottom       { background-position: -224px 0px; }
+      &.bottom-right { background-position: -256px 0px; }
+      &.centre       { background-position: -288px 0px; }
+    }
+    &.smasher        { background-position: -320px 0px; }
+  }
+
+  &.blue {
+    background-position: 0px -32px;
+    &.cluster {
+      &.top-left     { background-position: -32px  -32px; }
+      &.top          { background-position: -64px  -32px; }
+      &.top-right    { background-position: -96px  -32px; }
+      &.right        { background-position: -128px -32px; }
+      &.left         { background-position: -160px -32px; }
+      &.bottom-left  { background-position: -192px -32px; }
+      &.bottom       { background-position: -224px -32px; }
+      &.bottom-right { background-position: -256px -32px; }
+      &.centre       { background-position: -288px -32px; }
+    }
+    &.smasher        { background-position: -320px -32px; }
+  }
+
+  &.orange {
+    background-position: 0px -64px;
+    &.cluster {
+      &.top-left     { background-position: -32px  -64px; }
+      &.top          { background-position: -64px  -64px; }
+      &.top-right    { background-position: -96px  -64px; }
+      &.right        { background-position: -128px -64px; }
+      &.left         { background-position: -160px -64px; }
+      &.bottom-left  { background-position: -192px -64px; }
+      &.bottom       { background-position: -224px -64px; }
+      &.bottom-right { background-position: -256px -64px; }
+      &.centre       { background-position: -288px -64px; }
+    }
+    &.smasher        { background-position: -320px -64px; }
+  }
+
+  &.purple {
+    background-position: 0px -96px;
+    &.cluster {
+      &.top-left     { background-position: -32px  -96px; }
+      &.top          { background-position: -64px  -96px; }
+      &.top-right    { background-position: -96px  -96px; }
+      &.right        { background-position: -128px -96px; }
+      &.left         { background-position: -160px -96px; }
+      &.bottom-left  { background-position: -192px -96px; }
+      &.bottom       { background-position: -224px -96px; }
+      &.bottom-right { background-position: -256px -96px; }
+      &.centre       { background-position: -288px -96px; }
+    }
+    &.smasher        { background-position: -320px -96px; }
+  }
+}

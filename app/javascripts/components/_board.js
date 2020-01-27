@@ -214,7 +214,11 @@ export default class Board {
           width: (32 * this.width),
           height: (32 * this.height)
         }),
-        this.pieceQueue.map((i,_) => m('.piece', i.map((j,_) => j.colour))),
+        m('.piece-queue',
+          this.pieceQueue.map((i,_) => m('.piece', i.map((j,_) => m('.gem', {
+            class: `${j.colour} ${ j.smasher ? 'smasher' : ''}`
+          }))))
+        ),
         m('.stats', [
           m('.time', 'Time: ', m('span.value', displayMilliseconds(this.stats.runningTime))),
           m('.gems-smashed', `Gems smashed: ${this.stats.gemsSmashed}`),

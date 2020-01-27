@@ -1,8 +1,10 @@
 .board-container {
   position: relative;
+  text-align: top;
 }
 
 .board {
+  display: inline-block;
   border: 0.1rem solid #d1d1d1;
 }
 
@@ -12,4 +14,22 @@
   text-align: center;
   background: $color-tertiary;
   opacity: 0.8;
+}
+
+.piece-queue {
+  display: inline-block;
+  vertical-align: top;
+  border: 0.1rem solid #d1d1d1;
+  border-left-width: 0;
+
+  .piece {
+    padding: 12px 12px 0 12px;
+    &:last-child {
+      padding: 12px;
+    }
+
+    .gem {
+      display: inline-block;
+    }
+  }
 }
