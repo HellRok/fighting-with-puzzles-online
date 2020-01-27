@@ -17,6 +17,7 @@ RUN bundle config set without 'development test' && \
   bundle install
 COPY . /app
 COPY --from=node_build /app/public/assets /app/public/assets
+RUN make digest-assets
 ENV HOST 0.0.0.0
 ENV RAILS_ENV production
 ENV MALLOC_ARENA_MAX 2

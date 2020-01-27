@@ -1,10 +1,18 @@
 fighting_with_puzzles_online:
 	docker build . --pull --tag fighting_with_puzzles_online
 
+digest-assets:
+	JSSUM="$$(md5sum ./public/assets/application.js | cut -f 1 -d" ")"; \
+		mv ./public/assets/application.js ./public/assets/application.$$JSSUM.js; \
+		sed -i "s/application.js/application.$$JSSUM.js/g" ./app/views/home/index.html.erb;
+	CSSSUM="$$(md5sum ./public/assets/application.css | cut -f 1 -d" ")"; \
+		mv ./public/assets/application.css ./public/assets/application.$$CSSSUM.css; \
+		sed -i "s/application.css/application.$$CSSSUM.css/g" ./app/views/home/index.html.erb;
+
 FONT_DIR      ?= ./fontello
 FONTELLO_HOST ?= http://fontello.com
 
-fontopen:
+font-edit:
 	@if test ! `which curl` ; then \
 		echo 'Install curl first.' >&2 ; \
 		exit 128 ; \
@@ -15,7 +23,7 @@ fontopen:
 	echo "${FONTELLO_HOST}/`cat .fontello`"
 
 
-fontsave:
+font-save:
 	@if test ! `which unzip` ; then \
 		echo 'Install unzip first.' >&2 ; \
 		exit 128 ; \
