@@ -202,13 +202,6 @@ export default class Board {
     const _this = this;
     return [
       m('.board-container', [
-        m('.overlay',
-          {
-            class: (this.overlay ? '' : 'hide'),
-            style: {
-              width: `${32 * this.width}px`,
-            }
-          }, this.overlay),
         m('canvas.board', {
           id: `board-${this.id}`,
           width: (32 * this.width),
@@ -219,15 +212,17 @@ export default class Board {
             class: `${j.colour} ${ j.smasher ? 'smasher' : ''}`
           }))))
         ),
-        m('.stats', [
-          m('.time', 'Time: ', m('span.value', displayMilliseconds(this.stats.runningTime))),
-          m('.gems-smashed', `Gems smashed: ${this.stats.gemsSmashed}`),
-          m('.clusters-smashed', `Clusters smashed: ${this.stats.clustersSmashed}`),
-          m('.last-gems-smashed', `Last gems smashed: ${this.stats.lastGemsSmashed}`),
-          m('.last-cluster-gems-smashed', `Last cluster gems smashed: ${this.stats.lastClusterGemsSmashed}`),
-          m('.last-chain', `Last chain: ${this.stats.lastChain}`),
-          m('.highest-chain', `Highest chain: ${this.stats.highestChain}`),
-        ])
+        m('.overlay',
+          {
+            class: (this.overlay ? '' : 'hide'),
+            style: {
+              width: `${32 * this.width}px`,
+            }
+          }, this.overlay),
+      ]),
+      m('.stats', [
+        m('.time', 'Time: ', m('span.value', displayMilliseconds(this.stats.runningTime))),
+        m('.gems-left', `Gems: ${140 - this.stats.gemsSmashed}`),
       ]),
     ];
   }

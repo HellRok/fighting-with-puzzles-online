@@ -1,6 +1,6 @@
 .board-container {
+  display: inline-block;
   position: relative;
-  text-align: top;
 }
 
 .board {
@@ -21,15 +21,27 @@
   vertical-align: top;
   border: 0.1rem solid #d1d1d1;
   border-left-width: 0;
+  /* These are 1px and 2px bigger than expected to account for the border */
+  min-width: 97px;
+  min-height: 162px;
+  font-size: 0.0001px;
 
   .piece {
-    padding: 12px 12px 0 12px;
+    padding: 16px 16px 0 16px;
     &:last-child {
-      padding: 12px;
+      padding: 16px;
     }
 
     .gem {
       display: inline-block;
     }
   }
+}
+
+.stats {
+  /* This is set to the width of the whole board + piece queue then just padded
+   * out the piece queue so the stats sit neatly under the board */
+  width: 291px;
+  padding-right: 97px;
+  margin: auto;
 }

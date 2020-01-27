@@ -24,9 +24,10 @@ export default class SprintPresenter {
   }
 
   view() {
-    return m(Layout, [
+    return m(Layout, m('.sprint', [
       m('h2', 'Sprint'),
+      m('p', 'Clear 140 gems as quickly as possible.'),
       m(this.playerBoard),
-    ]);
+    ]));
   }
 };
