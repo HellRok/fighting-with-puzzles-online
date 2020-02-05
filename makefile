@@ -9,6 +9,9 @@ digest-assets:
 		mv ./public/assets/application.css ./public/assets/application.$$CSSSUM.css; \
 		sed -i "s/application.css/application.$$CSSSUM.css/g" ./app/views/home/index.html.erb;
 
+update-normalize:
+	wget https://cdn.rawgit.com/necolas/normalize.css/master/normalize.css --output-document app/stylesheets/normalize.css
+
 FONT_DIR      ?= ./fontello
 FONTELLO_HOST ?= http://fontello.com
 
