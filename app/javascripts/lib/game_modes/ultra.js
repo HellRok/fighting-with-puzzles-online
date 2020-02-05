@@ -4,9 +4,10 @@ import Player from '../player';
 import Settings from '../settings';
 import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 
-export default class Sprint extends Player {
+export default class Ultra extends Player {
   setup() {
     this.playerBoard.stats.start = timestamp();
+    this.ultraTime = 180000; // 3 minutes
   }
 
   tick(delta) {
@@ -14,12 +15,12 @@ export default class Sprint extends Player {
 
     if (!this.state.alive) { return; }
 
-    this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
+    this.timeValue.innerText = displayMilliseconds(this.ultraTime - this.playerBoard.stats.runningTime);
 
     this.gravity();
     this.playerBoard.stats.runningTime += delta;
 
-    if (this.playerBoard.stats.gemsSmashed >= 140) { this.win(); }
+    if (this.playerBoard.stats.runningTime >= this.ultraTime) { this.win(); }
   }
 
   deadInput() {
@@ -43,17 +44,21 @@ export default class Sprint extends Player {
 
   win() {
     this.state.alive = false;
-    const oldBest = localStorage.getItem('bestSprint');
-    const newBest = oldBest ? (this.playerBoard.stats.runningTime < oldBest) : false;
+    const oldBest = localStorage.getItem('bestUltraScore');
+    const newBest = oldBest ? (this.playerBoard.stats.score > oldBest) : false;
 
     if (newBest || !oldBest) {
-      localStorage.setItem('bestSprint', this.playerBoard.stats.runningTime);
+      localStorage.setItem('bestUltraScore', this.playerBoard.stats.score);
     }
+
+    // Because we're very rarely going to end on the exact millisecond we
+    // expect, we just fudge the numbers slightly to make it look exact.
+    this.stats.runningTime = this.stats.ultraTime;
 
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
-      You took ${displayMilliseconds(this.playerBoard.stats.runningTime)}!
-      ${ newBest ? `You improved your best by ${displayMilliseconds(oldBest - this.playerBoard.stats.runningTime)}` : ''}
+      Your score was ${this.playerBoard.stats.score}!
+      ${ newBest ? `You improved your best by ${this.playerBoard.stats.score - oldBest}` : ''}
     `);
     m.redraw();
   }

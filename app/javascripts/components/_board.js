@@ -31,6 +31,7 @@ export default class Board {
     this.clusters = [];
     this.overlay = undefined;
     this.stats = {
+      score: 0,
       gemsSmashed: 0,
       lastGemsSmashed: 0,
       clustersSmashed: 0,
@@ -82,11 +83,12 @@ export default class Board {
       if (square) { square.render(_this.context()); }
     });
 
-    this.timeValue.innerText = displayMilliseconds(this.stats.runningTime);
-
     if (Settings.debug) {
-      this.context().fillText(`Game:   ${this.debug.gameTick}ms`,   2, 10);
-      this.context().fillText(`Render: ${this.debug.renderTick}ms`, 2, 20);
+      this.context().fillText(`Game:     ${this.debug.gameTick}ms`,                    2, 10);
+      this.context().fillText(`Render:   ${this.debug.renderTick}ms`,                  2, 20);
+      this.context().fillText(`Gems:     ${filter(this.data, gem => gem).length}`,     2, 30);
+      this.context().fillText(`Clusters: ${this.clusters.length}`,                     2, 40);
+      this.context().fillText(`State:    ${this.game.state.alive ? 'Alive' : 'Dead'}`, 2, 50);
     }
   }
 
@@ -219,10 +221,6 @@ export default class Board {
               width: `${32 * this.width}px`,
             }
           }, this.overlay),
-      ]),
-      m('.stats', [
-        m('.time', 'Time: ', m('span.value', displayMilliseconds(this.stats.runningTime))),
-        m('.gems-left', `Gems: ${140 - this.stats.gemsSmashed}`),
       ]),
     ];
   }

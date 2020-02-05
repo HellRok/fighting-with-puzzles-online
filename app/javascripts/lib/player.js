@@ -10,10 +10,10 @@ export default class Player {
   constructor(playerBoard, boards=[]) {
     this.playerBoard = playerBoard;
     this.playerBoard.debug.show = true;
-    this.playerBoard.timeValue = document.querySelector('.stats .time .value');
     this.playerBoard.game = this;
     this.boards = boards;
     this.queueLength = 3;
+    this.timeValue = document.querySelector('.stats .time .value');
 
     const _this = this;
     this.keyDownEvent = document.addEventListener('keydown', (e) => { _this.keyDown(e) }, false);
