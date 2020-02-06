@@ -40,12 +40,14 @@ export default class Board {
       highestChain: 0,
       runningTime: 0,
     }
+
     m.redraw();
   }
 
   context() {
     if (!this.context2d) {
       this.context2d = document.querySelector(`#board-${this.id}`).getContext('2d');
+      this.context2d.font = 'normal normal 10px monospace';
     }
 
     return this.context2d;
@@ -89,6 +91,9 @@ export default class Board {
       this.context().fillText(`Gems:     ${filter(this.data, gem => gem).length}`,     2, 30);
       this.context().fillText(`Clusters: ${this.clusters.length}`,                     2, 40);
       this.context().fillText(`State:    ${this.game.state.alive ? 'Alive' : 'Dead'}`, 2, 50);
+      this.context().fillText(`LGems:    ${this.stats.lastGemsSmashed}`,               2, 60);
+      this.context().fillText(`LCGems:   ${this.stats.lastClusterGemsSmashed}`,        2, 70);
+      this.context().fillText(`LChain:   ${this.stats.lastChain}`,                     2, 80);
     }
   }
 
