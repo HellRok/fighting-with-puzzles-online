@@ -110,6 +110,15 @@ export default class Gem {
     this.toSmash = true;
     this.board.stats.lastScore += this.score();
 
+    if (this.cluster) {
+      const _this = this;
+      this.board.stats.lastClusterGemsSmashed += this.cluster.gems.length;
+      this.board.stats.clustersSmashed += 1;
+
+      this.board.clusters = filter(this.board.clusters, cluster => cluster !== _this.cluster)
+      this.cluster.gems.forEach(gem => gem.cluster = undefined);
+    }
+
     if (this.leftGem() && !this.leftGem().toSmash && this.leftGem().colour === this.colour) {
       this.leftGem().smash();
     }
