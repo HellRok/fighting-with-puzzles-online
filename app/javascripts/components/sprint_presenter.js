@@ -28,7 +28,7 @@ export default class SprintPresenter {
   }
 
   view() {
-    return m(Layout, m('.sprint', [
+    return m(Layout, m('.sprint.single-player', [
       m('h2', 'Sprint'),
       m('p', 'Clear 140 gems as quickly as possible.'),
       m('p', this.bestTime() ? `Personal Best: ${displayMilliseconds(this.bestTime())}` : "You haven't played this mode yet! Play a game to get a best time."),

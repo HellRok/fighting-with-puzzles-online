@@ -27,7 +27,7 @@ export default class UltraPresenter {
     return parseInt(localStorage.getItem('bestUltraScore'));
   }
   view() {
-    return m(Layout, [
+    return m(Layout, m('.ultra.single-player', [
       m('h2', 'Ultra'),
       m('p', 'Score as high as you can in 3 minutes.'),
       m('p', this.bestUltraScore() ? `Personal Best: ${displayScore(this.bestUltraScore())}` : "You haven't played this mode yet! Play a game to get a best score."),
@@ -36,6 +36,6 @@ export default class UltraPresenter {
         m('.time', 'Time: ', m('span.value', displayMilliseconds(0))),
         m('.score', `Score: ${displayScore(this.playerBoard.stats.score)}`),
       ]),
-    ]);
+    ]));
   }
 };
