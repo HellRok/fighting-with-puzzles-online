@@ -2,7 +2,7 @@ import m from 'mithril';
 
 import Player from '../player';
 import Settings from '../settings';
-import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
+import { timestamp, displayMilliseconds, displayScore, keyboardMap } from '../helpers';
 
 export default class Ultra extends Player {
   setup() {
@@ -53,12 +53,12 @@ export default class Ultra extends Player {
 
     // Because we're very rarely going to end on the exact millisecond we
     // expect, we just fudge the numbers slightly to make it look exact.
-    this.stats.runningTime = this.stats.ultraTime;
+    this.playerBoard.stats.runningTime = this.ultraTime;
 
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
-      Your score was ${this.playerBoard.stats.score}!
-      ${ newBest ? `You improved your best by ${this.playerBoard.stats.score - oldBest}` : ''}
+      Your score was ${displayScore(this.playerBoard.stats.score)}!
+      ${ newBest ? `You improved your best by ${displayScore(this.playerBoard.stats.score - oldBest)}` : ''}
     `);
     m.redraw();
   }

@@ -26,6 +26,14 @@ export default class Cluster {
     return max(this.gems.map(gem => gem.y));
   }
 
+  width() {
+    return this.right() - this.left();
+  }
+
+  height() {
+    return this.top() - this.bottom();
+  }
+
   leftGems() {
     if (this.left() === 0) { return [] };
 
@@ -89,5 +97,18 @@ export default class Cluster {
     }
 
     this.gems.forEach(gem => this.board.setSquare(gem));
+  }
+
+  score() {
+    // So basically we add an extra 10 for each gem and if we have a perfectly
+    // square gem (2x2, 3x3, etc) we add an extra 25% of the gems true value
+    // (20, 10 here and 10 when the gem smashes)
+    let value = this.gems.length * 100;
+
+    if (this.width() === this.height()) {
+      value += this.gems.length * 200 * 0.25;
+    }
+
+    return value;
   }
 };

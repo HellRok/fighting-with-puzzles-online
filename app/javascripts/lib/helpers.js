@@ -26,6 +26,10 @@ export function displayMilliseconds(time) {
   return `${minutes}:${padStart(seconds, 2, 0)}.${padStart(milliseconds, 3, 0)}`;
 }
 
+export function displayScore(score) {
+  return score.toLocaleString();
+}
+
 export function isBigScreen() {
   return window.innerWidth > 1024;
 }

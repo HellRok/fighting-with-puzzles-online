@@ -31,7 +31,7 @@ export default class SprintPresenter {
     return m(Layout, m('.sprint', [
       m('h2', 'Sprint'),
       m('p', 'Clear 140 gems as quickly as possible.'),
-      m('p', this.bestTime() ? `Personal Best: ${displayMilliseconds(this.bestTime())}` : "You haven't played this mode yet! Play a game to get a best time"),
+      m('p', this.bestTime() ? `Personal Best: ${displayMilliseconds(this.bestTime())}` : "You haven't played this mode yet! Play a game to get a best time."),
       m(this.playerBoard),
       m('.stats', [
         m('.time', 'Time: ', m('span.value', displayMilliseconds(this.playerBoard.stats.runningTime))),

@@ -108,6 +108,7 @@ export default class Gem {
   smash() {
     if (this.toSmash) { return undefined; }
     this.toSmash = true;
+    this.board.stats.lastScore += this.score();
 
     if (this.leftGem() && !this.leftGem().toSmash && this.leftGem().colour === this.colour) {
       this.leftGem().smash();
@@ -122,17 +123,21 @@ export default class Gem {
       this.aboveGem().smash();
     }
 
-    if (this.cluster) {
-      const _this = this;
-      this.board.stats.lastClusterGemsSmashed += this.cluster.gems.length;
-      this.board.stats.clustersSmashed += 1;
-
-      this.board.clusters = filter(this.board.clusters, cluster => cluster !== _this.cluster)
-      this.cluster.gems.forEach(gem => { gem.cluster = undefined; gem.smash(); });
-    }
-
     this.board.stats.gemsSmashed += 1;
     this.board.stats.lastGemsSmashed += 1;
+  }
+
+  score() {
+    // A gem alone is worth 10, the cluster scoring logic is documented in the
+    // Cluster#score method, and the multiplier is simple 1 + currentChain * 0.5
+    let value = 100;
+    if (this.cluster) {
+      value += this.cluster.score();
+    }
+
+    return (
+      value * (1 * this.board.stats.lastChain + 0.5)
+    );
   }
 
   gravity() {

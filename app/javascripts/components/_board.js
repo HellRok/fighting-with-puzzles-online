@@ -37,6 +37,7 @@ export default class Board {
       clustersSmashed: 0,
       lastClusterGemsSmashed: 0,
       lastChain: 0,
+      lastScore: 0,
       highestChain: 0,
       runningTime: 0,
     }
@@ -58,12 +59,16 @@ export default class Board {
     this.stats.lastChain = 0;
     this.stats.lastGemsSmashed = 0;
     this.stats.lastClusterGemsSmashed = 0;
+    this.stats.lastScore = 0;
 
-    this.stats.lastChain = this.growAndCreateClustersAndSmashGems();
+    this.growAndCreateClustersAndSmashGems();
+
     if (this.stats.lastChain > this.stats.highestChain) {
       this.stats.highestChain = this.stats.lastChain;
     }
+
     this.stats.lastGemsSmashed -= this.stats.lastClusterGemsSmashed;
+    this.stats.score += this.stats.lastScore;
 
     m.redraw();
   }
@@ -94,6 +99,7 @@ export default class Board {
       this.context().fillText(`LGems:    ${this.stats.lastGemsSmashed}`,               2, 60);
       this.context().fillText(`LCGems:   ${this.stats.lastClusterGemsSmashed}`,        2, 70);
       this.context().fillText(`LChain:   ${this.stats.lastChain}`,                     2, 80);
+      this.context().fillText(`LScore:   ${this.stats.lastScore}`,                     2, 90);
     }
   }
 
@@ -178,9 +184,7 @@ export default class Board {
     });
   }
 
-  growAndCreateClustersAndSmashGems(currentChain = 0) {
-    if (currentChain > 100) { throw "lol, nope"; }
-
+  growAndCreateClustersAndSmashGems() {
     this.growClusters();
     this.createClusters();
 
@@ -199,10 +203,9 @@ export default class Board {
     this.data.forEach(gem => { gem && gem.gravity() });
 
     if (atLeastOneSmash) {
-      currentChain = this.growAndCreateClustersAndSmashGems(currentChain + 1)
+      this.stats.lastChain += 1;
+      this.growAndCreateClustersAndSmashGems();
     }
-
-    return currentChain;
   }
 
   view() {
