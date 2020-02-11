@@ -34,6 +34,13 @@ export function isBigScreen() {
   return window.innerWidth > 1024;
 }
 
+export function bests() {
+    return {
+      ultraScore: parseInt(localStorage.getItem('bestUltraScore')),
+      sprintTime: localStorage.getItem('bestSprint'),
+    }
+}
+
 // Borrowed from https://stackoverflow.com/a/23377822
 export let keyboardMap = [
   "", // [0]

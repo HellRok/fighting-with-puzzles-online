@@ -4,7 +4,7 @@ import Layout from './layout';
 import Board from './_board';
 import Settings from '../lib/settings'
 import Ultra from '../lib/game_modes/ultra'
-import { displayMilliseconds, displayScore, keyboardMap } from '../lib/helpers';
+import { displayMilliseconds, displayScore, keyboardMap, bests } from '../lib/helpers';
 
 export default class UltraPresenter {
   constructor() {
@@ -24,8 +24,9 @@ export default class UltraPresenter {
   }
 
   bestUltraScore() {
-    return parseInt(localStorage.getItem('bestUltraScore'));
+    return bests().ultraScore;
   }
+
   view() {
     return m(Layout, m('.ultra.single-player', [
       m('h2', 'Ultra'),

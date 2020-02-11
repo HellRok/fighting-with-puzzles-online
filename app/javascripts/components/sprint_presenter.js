@@ -4,7 +4,7 @@ import Layout from './layout';
 import Board from './_board';
 import Settings from '../lib/settings'
 import Sprint from '../lib/game_modes/sprint'
-import { displayMilliseconds, keyboardMap } from '../lib/helpers';
+import { displayMilliseconds, keyboardMap, bests } from '../lib/helpers';
 
 export default class SprintPresenter {
   constructor() {
@@ -24,7 +24,7 @@ export default class SprintPresenter {
   }
 
   bestTime() {
-    return localStorage.getItem('bestSprint');
+    return bests().sprintTime;
   }
 
   view() {
