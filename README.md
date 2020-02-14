@@ -2,9 +2,9 @@
 
 ## TODO:
 
- * Scoring
+ * Lock delay
+ * Real 0 ARR
  * Game mode
-   * Ultra
    * Endless
  * Replays
  * Live vs (one day...)
@@ -17,3 +17,9 @@ Run these three things in different terminals:
 $ bundle exec rails server
 $ yarn stylesheets
 $ yarn javascripts
+
+### How do I build this thing?
+
+The Dockerfile should take care of that for you, just make sure you have docker
+installed and run
+$ make

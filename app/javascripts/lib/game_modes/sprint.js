@@ -16,7 +16,7 @@ export default class Sprint extends Player {
 
     this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
 
-    this.gravity();
+    this.gravity(delta);
     this.playerBoard.stats.runningTime += delta;
 
     if (this.playerBoard.stats.gemsSmashed >= 140) { this.win(); }

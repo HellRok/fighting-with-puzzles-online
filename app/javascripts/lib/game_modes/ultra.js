@@ -17,7 +17,7 @@ export default class Ultra extends Player {
 
     this.timeValue.innerText = displayMilliseconds(this.ultraTime - this.playerBoard.stats.runningTime);
 
-    this.gravity();
+    this.gravity(delta);
     this.playerBoard.stats.runningTime += delta;
 
     if (this.playerBoard.stats.runningTime >= this.ultraTime) { this.win(); }

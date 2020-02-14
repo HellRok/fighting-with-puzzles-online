@@ -3,9 +3,19 @@
   position: relative;
 }
 
+.board-wrapper {
+  display: inline-block;
+  border: 0.1rem solid $color-quaternary;
+  font-size: 0;
+}
+
 .board {
   display: inline-block;
-  border: 0.1rem solid #d1d1d1;
+}
+
+.lockdelay-progress {
+  background: $color-primary;
+  height: 3px;
 }
 
 .overlay {

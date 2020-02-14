@@ -13,7 +13,11 @@ export default class Player {
     this.playerBoard.game = this;
     this.boards = boards;
     this.queueLength = 3;
+    this.gravityTimeout = 500;
+    this.lockdelayTimeout = 350;
+    this.lockdelayMax = 5000;
     this.timeValue = document.querySelector('.stats .time .value');
+    this.lockdelayElement = document.querySelector('.lockdelay-progress');
 
     const _this = this;
     this.keyDownEvent = document.addEventListener('keydown', (e) => { _this.keyDown(e) }, false);
@@ -23,6 +27,7 @@ export default class Player {
       lastGameLoopTimestamp:   0,
       lastRenderLoopTimestamp: 0,
       gravityTimestamp:        0,
+      lockdelayTotal:          0,
       alive:                   false,
       toBeDestroyed:           false,
     }
@@ -51,6 +56,7 @@ export default class Player {
     this.playerBoard.activePiece = this.nextPiece();
     this.playerBoard.pieceQueue = this.pieceGenerator.queue;
     this.state.alive = true;
+    this.state.lockdelayTotal = 0;
   }
 
   destroy() {
@@ -336,19 +342,26 @@ export default class Player {
     }
   }
 
-  gravity() {
-    if ((timestamp() - this.gravityTimestamp) > 500) {
-      this.gravityTimestamp = timestamp();
-      let collision = false;
-
-      if (!this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [0, -1]))) {
-        collision = true;
-      }
-
-      if (collision) {
-        this.lock();
-      } else {
+  gravity(delta) {
+    if (this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [0, -1]))) {
+      this.lockdelayElement.style.width = '100%';
+      if ((timestamp() - this.gravityTimestamp) > this.gravityTimeout) {
+        this.gravityTimestamp = timestamp();
         this.moveActivePieceDown();
+      }
+    } else {
+      // If there is a piece below us it's time to implement lockdelay instead
+      // of regular gravity, but first, we make sure the player isn't stalling
+      // forever, which doesn't really matter in single player games but come
+      // multiplayer would be a big issue
+      this.state.lockdelayTotal += delta;
+
+      if (this.state.lockdelayTotal >= this.lockdelayMax) { this.lock(); }
+
+      this.lockdelayElement.style.width = `${100 - (timestamp() - this.gravityTimestamp) / this.lockdelayTimeout * 100}%`;
+      if ((timestamp() - this.gravityTimestamp) > this.lockdelayTimeout) {
+        this.gravityTimestamp = timestamp();
+        this.lock();
       }
     }
   }

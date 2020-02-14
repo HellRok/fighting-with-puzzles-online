@@ -212,11 +212,15 @@ export default class Board {
     const _this = this;
     return [
       m('.board-container', [
-        m('canvas.board', {
-          id: `board-${this.id}`,
-          width: (32 * this.width),
-          height: (32 * this.height)
-        }),
+        m('.board-wrapper', {
+        }, [
+          m('canvas.board', {
+            id: `board-${this.id}`,
+            width: (32 * this.width),
+            height: (32 * this.height)
+          }),
+          m('.lockdelay-progress'),
+        ]),
         m('.piece-queue',
           this.pieceQueue.map((i,_) => m('.piece', i.map((j,_) => m('.gem', {
             class: `${j.colour} ${ j.smasher ? 'smasher' : ''}`
