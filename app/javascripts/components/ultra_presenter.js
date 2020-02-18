@@ -28,7 +28,6 @@ export default class UltraPresenter {
   }
 
   bestReplay() {
-    console.log(bests());
     return bests().ultraReplay;
   }
 
