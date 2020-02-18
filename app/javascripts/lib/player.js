@@ -3,7 +3,7 @@ import { min, max } from 'lodash/math';
 
 import Gem from './gem';
 import Settings from './settings';
-import PieceGeneratorRandom from './piece_generators/random';
+import RandomPieceGenerator from './piece_generators/random_piece_generator';
 import { timestamp, offsetPositions } from './helpers';
 
 export default class Player {
@@ -24,8 +24,8 @@ export default class Player {
     this.keyUpEvent   = document.addEventListener('keyup',   (e) => { _this.keyUp(e) },   false);
     this.resetKeystate();
     this.state = {
-      lastGameLoopTimestamp:   0,
-      lastRenderLoopTimestamp: 0,
+      lastGameLoopTimestamp:   timestamp(),
+      lastRenderLoopTimestamp: timestamp(),
       gravityTimestamp:        0,
       lockdelayTotal:          0,
       alive:                   false,
@@ -50,7 +50,8 @@ export default class Player {
   }
 
   restart() {
-    this.pieceGenerator = new PieceGeneratorRandom(this.queueLength);
+    this.setup();
+    this.pieceGenerator = new RandomPieceGenerator(this.queueLength);
     this.resetKeystate();
     this.playerBoard.clear();
     this.playerBoard.activePiece = this.nextPiece();
@@ -102,17 +103,21 @@ export default class Player {
     gems[1].x = 3;
     gems[1].y = this.playerBoard.height - 1;
 
+    this.recorder.addPiece(gems);
+
     return gems;
   }
 
   moveActivePieceRight() {
     if (this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [1, 0]))) {
+      this.recorder.addMove('moveActivePieceRight');
       this.playerBoard.activePiece.forEach(piece => { piece.x = piece.x + 1 });
     }
   }
 
   moveActivePieceLeft() {
     if (this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [-1, 0]))) {
+      this.recorder.addMove('moveActivePieceLeft');
       this.playerBoard.activePiece.forEach(piece => { piece.x = piece.x - 1 });
     }
   }
@@ -130,6 +135,7 @@ export default class Player {
   }
 
   switchActivePieceGems() {
+    this.recorder.addMove('switchActivePieceGems');
     [this.playerBoard.activePiece[0], this.playerBoard.activePiece[1]] =
       [this.playerBoard.activePiece[1], this.playerBoard.activePiece[0]];
     [this.playerBoard.activePiece[0].x, this.playerBoard.activePiece[1].x] =
@@ -169,6 +175,7 @@ export default class Player {
   }
 
   rotateActivePieceCW() {
+    this.recorder.addMove('rotateActivePieceCW');
     const centrePiece = this.playerBoard.activePiece[0];
     const offsidePiece = this.playerBoard.activePiece[1];
     const translation = { x: 0, y: 0 }
@@ -205,6 +212,7 @@ export default class Player {
   }
 
   rotateActivePieceCCW() {
+    this.recorder.addMove('rotateActivePieceCCW');
     const centrePiece = this.playerBoard.activePiece[0];
     const offsidePiece = this.playerBoard.activePiece[1];
     const translation = { x: 0, y: 0 }
@@ -238,6 +246,17 @@ export default class Player {
       offsidePiece.x = newPositions[1].x;
       offsidePiece.y = newPositions[1].y;
     }
+  }
+
+  hardDrop() {
+    this.recorder.addMove('hardDrop')
+    this.lock();
+  }
+
+  softDrop() {
+    this.recorder.addMove('softDrop')
+    this.gravityTimestamp = 0;
+    this.gravity();
   }
 
   keyDown(event) {
@@ -331,13 +350,12 @@ export default class Player {
     }
 
     if (this.keyState.hardDrop) {
-      this.lock();
+      this.hardDrop();
       this.keyState.hardDrop = false;
     }
 
     if (this.keyState.softDrop) {
-      this.gravityTimestamp = 0;
-      this.gravity();
+      this.softDrop();
       this.keyState.softDrop = false;
     }
   }
@@ -346,6 +364,7 @@ export default class Player {
     if (this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [0, -1]))) {
       this.lockdelayElement.style.width = '100%';
       if ((timestamp() - this.gravityTimestamp) > this.gravityTimeout) {
+        this.recorder.addMove('gravity');
         this.gravityTimestamp = timestamp();
         this.moveActivePieceDown();
       }
@@ -390,28 +409,28 @@ export default class Player {
   }
 
   tick(delta) {
-    throw 'Must be overloaded in child class';
+    throw 'Tick must be overloaded in child class';
   }
 
   deadInput() {
-    throw 'Must be overloaded in child class';
+    throw 'DeadInput must be overloaded in child class';
   }
 
   attemptRestart() {
     // In live games this will do either nothing or drop them in a practice
     // mode until the next game.
-    throw 'Must be overloaded in child class';
+    throw 'AttemptRestart must be overloaded in child class';
   }
 
   setup() {
-    throw 'Must be overloaded in child class';
+    throw 'Setup must be overloaded in child class';
   }
 
   lose() {
-    throw 'Must be overloaded in child class';
+    throw 'Lose must be overloaded in child class';
   }
 
   win() {
-    throw 'Must be overloaded in child class';
+    throw 'Win must be overloaded in child class';
   }
 }

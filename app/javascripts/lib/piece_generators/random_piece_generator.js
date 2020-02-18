@@ -4,9 +4,10 @@ import { range } from 'lodash/util';
 import Gem from '../gem';
 import { timestamp, offsetPositions, randomPercent } from '../helpers';
 
-export default class PieceGeneratorRandom {
+export default class RandomPieceGenerator {
   constructor(queueLength) {
     this.queueLength = queueLength;
+    this.queue = [];
     this.fillQueue();
   }
 
@@ -29,8 +30,6 @@ export default class PieceGeneratorRandom {
   }
 
   fillQueue() {
-    this.queue = [];
-
     range(0, this.queueLength).forEach(() => {
       this.queue.push(this.generatePiece());
     });

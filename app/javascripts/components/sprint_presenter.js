@@ -9,7 +9,6 @@ import { displayMilliseconds, keyboardMap, bests } from '../lib/helpers';
 export default class SprintPresenter {
   constructor() {
     this.playerBoard = new Board();
-
   }
 
   oncreate() {
@@ -37,6 +36,9 @@ export default class SprintPresenter {
         m('.time', 'Time: ', m('span.value', displayMilliseconds(this.playerBoard.stats.runningTime))),
         m('.gems-left', `Gems: ${140 - this.playerBoard.stats.gemsSmashed}`),
       ]),
+      ((this.player && this.player.lastReplay) ? m(m.route.Link, {
+        href: `/sprint/replay?replayData=${this.player.lastReplay}`,
+      }, 'Last Replay') : ''),
     ]));
   }
 };

@@ -1,15 +1,19 @@
 import m from 'mithril';
 
 import Player from '../player';
+import ReplayRecorder from '../replay_recorder';
 import Settings from '../settings';
 import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 
 export default class Sprint extends Player {
   setup() {
+    this.recorder = new ReplayRecorder('sprint');
     this.playerBoard.stats.start = timestamp();
   }
 
   tick(delta) {
+    this.playerBoard.stats.runningTime += delta;
+    this.recorder.currentTime = this.playerBoard.stats.runningTime;
     this.input();
 
     if (!this.state.alive) { return; }
@@ -17,7 +21,6 @@ export default class Sprint extends Player {
     this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
 
     this.gravity(delta);
-    this.playerBoard.stats.runningTime += delta;
 
     if (this.playerBoard.stats.gemsSmashed >= 140) { this.win(); }
   }
@@ -33,6 +36,7 @@ export default class Sprint extends Player {
   }
 
   lose() {
+    this.recorder.addMove('lose');
     this.state.alive = false;
     this.playerBoard.overlay = m.trust(`
       Oh no, you topped out!</br>
@@ -42,6 +46,7 @@ export default class Sprint extends Player {
   };
 
   win() {
+    this.recorder.addMove('win');
     this.state.alive = false;
     const oldBest = localStorage.getItem('bestSprint');
     const newBest = oldBest ? (this.playerBoard.stats.runningTime < oldBest) : false;
@@ -49,6 +54,8 @@ export default class Sprint extends Player {
     if (newBest || !oldBest) {
       localStorage.setItem('bestSprint', this.playerBoard.stats.runningTime);
     }
+
+    this.lastReplay = this.recorder.toString();
 
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
