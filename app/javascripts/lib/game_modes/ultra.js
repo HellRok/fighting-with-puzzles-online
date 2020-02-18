@@ -54,6 +54,7 @@ export default class Ultra extends Player {
 
     if (newBest || !oldBest) {
       localStorage.setItem('bestUltraScore', this.playerBoard.stats.score);
+      localStorage.setItem('bestUltraReplay', this.recorder.toString());
     }
 
     this.lastReplay = this.recorder.toString();

@@ -37,7 +37,9 @@ export function isBigScreen() {
 export function bests() {
     return {
       ultraScore: parseInt(localStorage.getItem('bestUltraScore')),
+      ultraReplay: localStorage.getItem('bestUltraReplay'),
       sprintTime: localStorage.getItem('bestSprint'),
+      sprintReplay: localStorage.getItem('bestSprintReplay'),
     }
 }
 

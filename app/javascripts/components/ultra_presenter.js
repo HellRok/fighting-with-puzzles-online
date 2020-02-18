@@ -23,15 +23,28 @@ export default class UltraPresenter {
     this.player.destroy();
   }
 
-  bestUltraScore() {
+  bestScore() {
     return bests().ultraScore;
+  }
+
+  bestReplay() {
+    console.log(bests());
+    return bests().ultraReplay;
   }
 
   view() {
     return m(Layout, m('.ultra.single-player', [
       m('h2', 'Ultra'),
       m('p', 'Score as high as you can in 3 minutes.'),
-      m('p', this.bestUltraScore() ? `Personal Best: ${displayScore(this.bestUltraScore())}` : "You haven't played this mode yet! Play a game to get a best score."),
+      m('p', [
+        m('.personal-best',
+          this.bestScore() ?
+          `Personal Best: ${displayScore(this.bestScore())}` :
+          "You haven't played this mode yet! Play a game to get a best score."),
+        (this.bestReplay() ? m(m.route.Link, {
+          href: `/ultra/replay?replayData=${this.bestReplay()}`,
+        }, m('.best-replay', 'Replay')) : ''),
+      ]),
       m(this.playerBoard),
       m('.stats', [
         m('.time', 'Time: ', m('span.value', displayMilliseconds(0))),

@@ -53,6 +53,7 @@ export default class Sprint extends Player {
 
     if (newBest || !oldBest) {
       localStorage.setItem('bestSprint', this.playerBoard.stats.runningTime);
+      localStorage.setItem('bestSprintReplay', this.recorder.toString());
     }
 
     this.lastReplay = this.recorder.toString();
