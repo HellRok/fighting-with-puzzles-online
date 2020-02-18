@@ -2,11 +2,9 @@
 
 ## TODO:
 
- * Lock delay
  * Real 0 ARR
  * Game mode
    * Endless
- * Replays
  * Live vs (one day...)
 
 ## DEV:
