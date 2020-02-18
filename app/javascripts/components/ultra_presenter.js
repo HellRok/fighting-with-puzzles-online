@@ -37,6 +37,9 @@ export default class UltraPresenter {
         m('.time', 'Time: ', m('span.value', displayMilliseconds(0))),
         m('.score', `Score: ${displayScore(this.playerBoard.stats.score)}`),
       ]),
+      ((this.player && this.player.lastReplay) ? m(m.route.Link, {
+        href: `/ultra/replay?replayData=${this.player.lastReplay}`,
+      }, 'Last Replay') : ''),
     ]));
   }
 };
