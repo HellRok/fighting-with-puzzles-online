@@ -4,7 +4,10 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem 'rails', '~> 6.0.0'
 gem 'sqlite3', groups: [:development, :test]
 gem 'pg', '>= 0.18', '< 2.0', groups: [:production]
-gem 'puma', '~> 3.11'
+gem 'puma'
+gem 'bcrypt'
+gem 'cancancan'
+gem 'jbuilder'
 
 group :production do
   gem 'tzinfo-data' # Needed to run on Heroku apparently
