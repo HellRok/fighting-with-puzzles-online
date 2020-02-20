@@ -4,6 +4,10 @@ import SidebarLink from './_sidebar_link';
 import SettingsForm from './_settings_form';
 import { isBigScreen } from '../lib/helpers';
 
+import CurrentUser from '../lib/current_user';
+import Api from '../lib/api';
+import UserModel from '../lib/models/user_model';
+
 export default class Nav {
   constructor() {
     this.showSidebar = isBigScreen();
@@ -44,18 +48,40 @@ export default class Nav {
         ])
       ]),
       m('.sidebar', {
-          class: (this.showSidebar ? 'shown' : 'hidden'),
-        }, [
-          m(SidebarLink, {
-            href: '/', sidebar: this,
-          }, 'Home'),
+        class: (this.showSidebar ? 'shown' : 'hidden'),
+      }, [
+        m(SidebarLink, {
+          href: '/', sidebar: this,
+        }, 'Home'),
+
+          CurrentUser.data.id ? [
+            m(SidebarLink, {
+              href: `/users/${CurrentUser.data.id}`, sidebar: this,
+            }, CurrentUser.data.username),
+            m(m.route.Link, {
+              class: 'sidebar-link',
+              href: '/',
+              onclick: function(e) {
+                CurrentUser.logout();
+                if (!isBigScreen()) { _this.toggle(); }
+              }
+            }, 'Logout')
+          ] : [
+            m(SidebarLink, {
+              href: `/login`, sidebar: this,
+            }, 'Login'),
+            m(SidebarLink, {
+              href: `/register`, sidebar: this,
+            }, 'Register'),
+          ],
+
           m(SidebarLink, {
             href: '/sprint', sidebar: this,
           }, 'Sprint'),
           m(SidebarLink, {
             href: '/ultra', sidebar: this,
           }, 'Ultra'),
-      ]),
+        ]),
       m(SettingsForm,
         {
           extraClass: `

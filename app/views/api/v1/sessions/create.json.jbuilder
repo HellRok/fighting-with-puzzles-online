@@ -5,5 +5,7 @@ if @user.blank?
     error.session 'Could not find a matching login'
   end
 else
-  json.partial! '/api/v1/sessions/session', user: @user
+  json.data do
+    json.partial! '/api/v1/sessions/session', user: @user
+  end
 end

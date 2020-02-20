@@ -5,7 +5,7 @@ class Api::V1::SessionsController < ApplicationController
   def create
     user = User.find_by(username: params[:session][:username])
 
-    if user.authenticate(params[:session][:password])
+    if user&.authenticate(params[:session][:password])
       @user = user
     end
   end
