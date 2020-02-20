@@ -1,5 +1,7 @@
 import m from 'mithril';
 
+import Layout from './layout';
+
 import Api from '../lib/api';
 import CurrentUser from '../lib/current_user';
 
@@ -30,7 +32,7 @@ export default class Login {
   }
 
   view() {
-    return [
+    return m(Layout, [
       m('h2.text-centre', 'Login'),
       m('form.login', {
         onsubmit: e => { this.onsubmit(e) }
@@ -47,7 +49,7 @@ export default class Login {
           m('input.width-100', { type: 'submit', disabled: this.submitting })
         ])
       ])
-    ];
+    ]);
   }
 }
 

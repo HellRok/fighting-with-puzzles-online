@@ -14,6 +14,7 @@ import UltraReplayPresenter from './components/ultra_replay_presenter';
 document.addEventListener("DOMContentLoaded", () => {
   m.mount(document.querySelector('#nav'), Nav);
   m.route.prefix = '';
+
   m.route(document.querySelector('#app'), "/", {
     "/": Home,
     "/login": Login,
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "/ultra": UltraPresenter,
     "/ultra/replay": UltraReplayPresenter,
     "/ultra/replay/:key": UltraReplayPresenter,
-  })
+  });
 
   CurrentUser.initFromToken();
 })
