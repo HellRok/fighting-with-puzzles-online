@@ -1,5 +1,9 @@
 import kissc from '../vendor/kissc';
 
+import Settings from './settings';
+import Api from './api';
+import CurrentUser from './current_user';
+
 export default class ReplayRecorder {
   constructor(gameMode) {
     this.gameMode = gameMode;
@@ -33,6 +37,10 @@ export default class ReplayRecorder {
       gameMode: this.gameMode,
       pieces: this.pieces,
       moves: this.moves,
+      settings: {
+        das: Settings.das,
+        arr: Settings.arr,
+      }
     }
   }
 
@@ -41,5 +49,14 @@ export default class ReplayRecorder {
       JSON.stringify(this.output()),
       6
     );
+  }
+
+  persist(mode, time, score) {
+    return Api.replaysCreate({
+      mode: mode,
+      time: time,
+      score: score,
+      data: this.toString(),
+    }).then(() => { CurrentUser.refresh() });
   }
 }

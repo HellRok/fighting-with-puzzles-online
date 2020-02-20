@@ -5,6 +5,8 @@ import ReplayRecorder from '../replay_recorder';
 import Settings from '../settings';
 import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 
+import CurrentUser from '../current_user';
+
 export default class Sprint extends Player {
   setup() {
     this.recorder = new ReplayRecorder('sprint');
@@ -48,20 +50,16 @@ export default class Sprint extends Player {
   win() {
     this.recorder.addMove('win');
     this.state.alive = false;
-    const oldBest = localStorage.getItem('bestSprint');
-    const newBest = oldBest ? (this.playerBoard.stats.runningTime < oldBest) : false;
-
-    if (newBest || !oldBest) {
-      localStorage.setItem('bestSprint', this.playerBoard.stats.runningTime);
-      localStorage.setItem('bestSprintReplay', this.recorder.toString());
-    }
+    const oldBest = CurrentUser.data.bests.sprint;
+    const newBest = oldBest ? (this.playerBoard.stats.runningTime < oldBest.time) : false;
 
     this.lastReplay = this.recorder.toString();
+    this.recorder.persist(0, this.playerBoard.stats.runningTime, this.playerBoard.stats.score);
 
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
       You took ${displayMilliseconds(this.playerBoard.stats.runningTime)}!
-      ${ newBest ? `You improved your best by ${displayMilliseconds(oldBest - this.playerBoard.stats.runningTime)}` : ''}
+      ${ newBest ? `You improved your best by ${displayMilliseconds(oldBest.time - this.playerBoard.stats.runningTime)}` : ''}
     `);
     m.redraw();
   }

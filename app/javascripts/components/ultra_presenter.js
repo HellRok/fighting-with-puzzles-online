@@ -4,7 +4,9 @@ import Layout from './layout';
 import Board from './_board';
 import Settings from '../lib/settings'
 import Ultra from '../lib/game_modes/ultra'
-import { displayMilliseconds, displayScore, keyboardMap, bests } from '../lib/helpers';
+import { displayMilliseconds, displayScore, keyboardMap } from '../lib/helpers';
+
+import CurrentUser from '../lib/current_user';
 
 export default class UltraPresenter {
   constructor() {
@@ -23,35 +25,29 @@ export default class UltraPresenter {
     this.player.destroy();
   }
 
-  bestScore() {
-    return bests().ultraScore;
-  }
-
-  bestReplay() {
-    return bests().ultraReplay;
-  }
-
   view() {
     return m(Layout, m('.ultra.single-player', [
       m('h2', 'Ultra'),
-      m('p', 'Score as high as you can in 3 minutes.'),
-      m('p', [
-        m('.personal-best',
-          this.bestScore() ?
-          `Personal Best: ${displayScore(this.bestScore())}` :
-          "You haven't played this mode yet! Play a game to get a best score."),
-        (this.bestReplay() ? m(m.route.Link, {
-          href: `/ultra/replay?replayData=${this.bestReplay()}`,
-        }, m('.best-replay', 'Replay')) : ''),
-      ]),
+
+      m('p.personal-best',
+        CurrentUser.isPresent() ?
+          CurrentUser.data.bests.ultra ?
+          [
+            m('div', `Personal Best: ${displayScore(CurrentUser.data.bests.ultra.score)}`),
+            m(m.route.Link, { href: `/ultra/replay?replayData=${CurrentUser.data.bests.ultra.data}`, class: 'best-replay' }, 'Replay'),
+          ] :
+          m('p', "You haven't played this mode yet! Play a game to get a best score.") :
+        m('p', "You must be logged in to have a best score.")
+      ),
+
       m(this.playerBoard),
       m('.stats', [
         m('.time', 'Time: ', m('span.value', displayMilliseconds(0))),
         m('.score', `Score: ${displayScore(this.playerBoard.stats.score)}`),
+        ((this.player && this.player.lastReplay) ? m(m.route.Link, {
+          href: `/ultra/replay?replayData=${this.player.lastReplay}`,
+        }, 'Last Replay') : ''),
       ]),
-      ((this.player && this.player.lastReplay) ? m(m.route.Link, {
-        href: `/ultra/replay?replayData=${this.player.lastReplay}`,
-      }, 'Last Replay') : ''),
     ]));
   }
 };

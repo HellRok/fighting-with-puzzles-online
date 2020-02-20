@@ -2,8 +2,14 @@ import m from 'mithril';
 
 import CurrentUser from './current_user';
 import UserModel from './models/user_model';
+import ReplayModel from './models/replay_model';
 
 export default {
+  // Replay
+  replaysCreate: function(data) {
+    return this.create('/api/v1/replays', { replay: data }, ReplayModel);
+  },
+
   // User
   usersAll: function() {
     return this.loadAll('/api/v1/users', UserModel);

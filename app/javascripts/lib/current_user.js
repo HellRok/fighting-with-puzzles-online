@@ -7,13 +7,11 @@ export default {
   token: localStorage.getItem('sessionToken'),
   data: {},
 
+  isPresent() { return this.token && !isEmpty(this.data); },
+
   initFromToken: function() {
     if (this.token && isEmpty(this.data)) {
-      Api.sessionCurrent().then(response => {
-        if (response.success) {
-          this.setUser(response.data);
-        }
-      });
+      this.refresh();
     }
   },
 
@@ -45,5 +43,13 @@ export default {
     this.data = user;
     this.token = user.token;
     localStorage.setItem('sessionToken', user.token);
-  }
+  },
+
+  refresh: function() {
+    Api.sessionCurrent().then(response => {
+      if (response.success) {
+        this.setUser(response.data);
+      }
+    });
+  },
 }
