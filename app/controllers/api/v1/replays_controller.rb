@@ -8,8 +8,8 @@ class Api::V1::ReplaysController < ApplicationController
   end
 
   def leader_board
-    @sprints = @replays.where(mode: Replay.modes[:sprint]).order(time: :asc).limit(25)
-    @ultras = @replays.where(mode: Replay.modes[:ultra]).order(score: :desc).limit(25)
+    @sprints = User.includes(best_sprint: :user).order('replays.time ASC').limit(25).map(&:best_sprint).compact
+    @ultras = User.includes(best_ultra: :user).order('replays.score DESC').limit(25).map(&:best_ultra).compact
   end
 
   def show; end
