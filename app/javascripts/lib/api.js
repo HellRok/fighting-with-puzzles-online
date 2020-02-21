@@ -6,6 +6,19 @@ import ReplayModel from './models/replay_model';
 
 export default {
   // Replay
+  replaysLeaderboard: function() {
+    return this.get('/api/v1/replays/leader_board').then((response) => {
+      if (response.success) {
+        return {
+          sprints: response.data.sprints.map(replay => (new ReplayModel(replay))),
+          ultras: response.data.ultras.map(replay => (new ReplayModel(replay))),
+        };
+      } else {
+        return response;
+      }
+    });
+  },
+
   replaysCreate: function(data) {
     return this.create('/api/v1/replays', { replay: data }, ReplayModel);
   },

@@ -7,6 +7,11 @@ class Api::V1::ReplaysController < ApplicationController
     @replays = @replays.includes(:user)
   end
 
+  def leader_board
+    @sprints = @replays.where(mode: Replay.modes[:sprint]).order(time: :asc).limit(25)
+    @ultras = @replays.where(mode: Replay.modes[:ultra]).order(score: :desc).limit(25)
+  end
+
   def show; end
 
   def create

@@ -81,6 +81,9 @@ export default class Nav {
           m(SidebarLink, {
             href: '/ultra', sidebar: this,
           }, 'Ultra'),
+          m(SidebarLink, {
+            href: '/leader_board', sidebar: this,
+          }, 'Leader Board'),
         ]),
       m(SettingsForm,
         {

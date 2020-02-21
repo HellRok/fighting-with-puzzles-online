@@ -8,7 +8,7 @@ import CurrentUser from '../lib/current_user';
 export default class Home {
   view() {
     return m(Layout, [
-      m('.home-links-container', [
+      m('.home-links-container.max-width-960', [
         m('h2', 'Game Modes'),
         m(m.route.Link, {
           class: 'home-link',
