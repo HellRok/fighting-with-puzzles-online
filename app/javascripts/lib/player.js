@@ -26,7 +26,7 @@ export default class Player {
     this.state = {
       lastGameLoopTimestamp:   timestamp(),
       lastRenderLoopTimestamp: timestamp(),
-      gravityTimestamp:        0,
+      gravityTotal:            0,
       lockdelayTotal:          0,
       alive:                   false,
       toBeDestroyed:           false,
@@ -37,15 +37,15 @@ export default class Player {
 
   resetKeystate() {
     this.keyState = {
-      restart:    false,
       autoRepeat: false,
-      left:       false, leftTimestamp:  0,
-      right:      false, rightTimestamp: 0,
-      hardDrop:   false,
-      softDrop:   false,
-      ccw:        false,
-      cw:         false,
-      switch:     false,
+      restart:    false, restartHandled:  true,
+      left:       false, leftHandled:     true, leftTotal:  0,
+      right:      false, rightHandled:    true, rightTotal: 0,
+      hardDrop:   false, hardDropHandled: true,
+      softDrop:   false, softDropHandled: true,
+      ccw:        false, ccwHandled:      true,
+      cw:         false, cwHandled:       true,
+      switch:     false, switchHandled:   true,
     }
   }
 
@@ -94,7 +94,7 @@ export default class Player {
   }
 
   nextPiece() {
-    this.gravityTimestamp = timestamp();
+    this.gravityTotal = 0;
     const gems = this.pieceGenerator.nextPiece();
     gems[0].board = this.playerBoard;
     gems[0].x = 2;
@@ -253,135 +253,189 @@ export default class Player {
     this.lock();
   }
 
-  softDrop() {
-    this.recorder.addMove('softDrop')
-    this.gravityTimestamp = 0;
-    this.gravity();
+  softDrop(delta) {
+    // We don't record softdrop because gravity is already recorded
+    this.gravityTimeout = 125;
+    this.gravityTotal = this.gravityTimeout;
+    this.gravity(delta);
   }
 
   keyDown(event) {
-    if (event.keyCode === Settings.keys.restart) {
+    if (event.keyCode === Settings.keys.restart && !this.keyState.restart) {
       this.keyState.restart = true;
+      this.keyState.restartHandled = false;
     }
 
-    if (event.keyCode === Settings.keys.right) {
+    if (event.keyCode === Settings.keys.right && !this.keyState.right) {
       this.keyState.right = true;
+      this.keyState.rightHandled = false;
     }
 
-    if (event.keyCode === Settings.keys.left) {
+    if (event.keyCode === Settings.keys.left && !this.keyState.left) {
       this.keyState.left = true;
+      this.keyState.leftHandled = false;
     }
 
-    if (event.keyCode === Settings.keys.cw) {
+    if (event.keyCode === Settings.keys.cw && !this.keyState.cw) {
       this.keyState.cw = true;
+      this.keyState.cwHandled = false;
     }
 
-    if (event.keyCode === Settings.keys.ccw) {
+    if (event.keyCode === Settings.keys.ccw && !this.keyState.ccw) {
       this.keyState.ccw = true;
+      this.keyState.ccwHandled = false;
     }
 
-    if (event.keyCode === Settings.keys.switch) {
+    if (event.keyCode === Settings.keys.switch && !this.keyState.switch) {
       this.keyState.switch = true;
+      this.keyState.switchHandled = false;
     }
 
-    if (event.keyCode === Settings.keys.hardDrop) {
+    if (event.keyCode === Settings.keys.hardDrop && !this.keyState.hardDrop) {
       this.keyState.hardDrop = true;
+      this.keyState.hardDropHandled = false;
     }
 
-    if (event.keyCode === Settings.keys.softDrop) {
+    if (event.keyCode === Settings.keys.softDrop && !this.keyState.softDrop) {
+      this.gravityTotal = 0;
       this.keyState.softDrop = true;
+      this.keyState.softDropHandled = false;
     }
   }
 
   keyUp(event) {
     if (event.keyCode === Settings.keys.right) {
       this.keyState.right = false;
-      this.keyState.rightTimestamp = 0;
+      this.keyState.rightHandled = true;
+      this.keyState.rightTotal = 0;
       this.keyState.autoRepeat = false;
     }
 
     if (event.keyCode === Settings.keys.left) {
       this.keyState.left = false;
-      this.keyState.leftTimestamp = 0;
+      this.keyState.leftHandled = true;
+      this.keyState.leftTotal = 0;
       this.keyState.autoRepeat = false;
+    }
+
+    if (event.keyCode === Settings.keys.cw) {
+      this.keyState.cw = false;
+    }
+
+    if (event.keyCode === Settings.keys.ccw) {
+      this.keyState.ccw = false;
+    }
+
+    if (event.keyCode === Settings.keys.switch) {
+      this.keyState.switch = false;
+    }
+
+    if (event.keyCode === Settings.keys.hardDrop) {
+      this.keyState.hardDrop = false;
+    }
+
+    if (event.keyCode === Settings.keys.softDrop) {
+      this.gravityTimeout = 500;
+      this.keyState.softDrop = false;
+      this.keyState.softDropHandled = true;
     }
   }
 
-  input() {
-    this.state.alive ? this.aliveInput() : this.deadInput();
+  input(delta) {
+    this.state.alive ? this.aliveInput(delta) : this.deadInput();
   }
 
-  aliveInput() {
+  aliveInput(delta) {
     const movementDelay = this.keyState.autoRepeat ? Settings.game.arr : Settings.game.das;
 
-    if (this.keyState.restart) {
+    if (this.keyState.restart && !this.keyState.restartHandled) {
+      this.keyState.restartHandled = true;
       this.attemptRestart();
     }
 
     if (this.keyState.right) {
-      if (timestamp() - this.keyState.rightTimestamp > movementDelay) {
-        if (!this.keyState.autoRepeat && this.keyState.rightTimestamp !== 0) { this.keyState.autoRepeat = true; }
-        this.keyState.rightTimestamp = timestamp();
+      this.keyState.rightTotal += delta;
+
+      if (!this.keyState.rightHandled) {
+        this.keyState.rightHandled = true;
+        this.moveActivePieceRight();
+      }
+
+      if (this.keyState.rightTotal > movementDelay) {
+        if (!this.keyState.autoRepeat) { this.keyState.autoRepeat = true; }
+        this.keyState.rightTotal = 0;
         this.moveActivePieceRight();
       }
     }
 
     if (this.keyState.left) {
-      if (timestamp() - this.keyState.leftTimestamp > movementDelay) {
-        if (!this.keyState.autoRepeat && this.keyState.leftTimestamp !== 0) { this.keyState.autoRepeat = true; }
-        this.keyState.leftTimestamp = timestamp();
+      this.keyState.leftTotal += delta;
+
+      if (!this.keyState.leftHandled) {
+        this.keyState.leftHandled = true;
+        this.moveActivePieceLeft();
+      }
+
+      if (this.keyState.leftTotal > movementDelay) {
+        if (!this.keyState.autoRepeat) { this.keyState.autoRepeat = true; }
+        this.keyState.leftTotal = 0;
         this.moveActivePieceLeft();
       }
     }
-
-    if (this.keyState.cw) {
+    if (this.keyState.cw && !this.keyState.cwHandled) {
+      this.keyState.cwHandled = true;
       this.rotateActivePieceCW();
-      this.keyState.cw = false;
     }
 
-    if (this.keyState.ccw) {
+    if (this.keyState.ccw && !this.keyState.ccwHandled) {
+      this.keyState.ccwHandled = true;
       this.rotateActivePieceCCW();
-      this.keyState.ccw = false;
     }
 
-    if (this.keyState.switch) {
+    if (this.keyState.switch && !this.keyState.switchHandled) {
+      this.keyState.switchHandled = true;
       this.switchActivePieceGems();
-      this.keyState.switch = false;
     }
 
-    if (this.keyState.hardDrop) {
+    if (this.keyState.hardDrop && !this.keyState.hardDropHandled) {
+      this.keyState.hardDropHandled = true;
       this.hardDrop();
-      this.keyState.hardDrop = false;
     }
 
-    if (this.keyState.softDrop) {
-      this.softDrop();
-      this.keyState.softDrop = false;
+    if (this.keyState.softDrop && !this.keyState.softDropHandled) {
+      this.keyState.softDropHandled = true;
+      this.softDrop(delta);
     }
   }
 
   gravity(delta) {
+    this.gravityTotal += delta;
     if (this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [0, -1]))) {
+      this.state.lockdelayTotal = 0;
       this.lockdelayElement.style.width = '100%';
-      if ((timestamp() - this.gravityTimestamp) > this.gravityTimeout) {
+      if ((this.gravityTotal) > this.gravityTimeout) {
         this.recorder.addMove('gravity');
-        this.gravityTimestamp = timestamp();
+        this.gravityTotal = 0;
         this.moveActivePieceDown();
       }
     } else {
-      // If there is a piece below us it's time to implement lockdelay instead
-      // of regular gravity, but first, we make sure the player isn't stalling
-      // forever, which doesn't really matter in single player games but come
-      // multiplayer would be a big issue
-      this.state.lockdelayTotal += delta;
+      this.lockDelay(delta);
+    }
+  }
 
-      if (this.state.lockdelayTotal >= this.lockdelayMax) { this.lock(); }
+  lockDelay(delta) {
+    // If there is a piece below us it's time to implement lockdelay instead
+    // of regular gravity, but first, we make sure the player isn't stalling
+    // forever, which doesn't really matter in single player games but come
+    // multiplayer would be a big issue
+    this.state.lockdelayTotal += delta;
 
-      this.lockdelayElement.style.width = `${100 - (timestamp() - this.gravityTimestamp) / this.lockdelayTimeout * 100}%`;
-      if ((timestamp() - this.gravityTimestamp) > this.lockdelayTimeout) {
-        this.gravityTimestamp = timestamp();
-        this.lock();
-      }
+    if (this.state.lockdelayTotal >= this.lockdelayMax) { this.lock(); }
+
+    this.lockdelayElement.style.width = `${100 - this.gravityTotal / this.lockdelayTimeout * 100}%`;
+    if (this.gravityTotal > this.lockdelayTimeout) {
+      this.gravityTotal = 0;
+      this.lock();
     }
   }
 

@@ -16,11 +16,11 @@ export default class SprintReplayer extends BaseReplayer {
     m.redraw();
   }
 
-  lose(time) {
-    this.playerBoard.stats.runningTime = time;
-    this.playerBoard.overlay = m.trust(`
-      Oh no, they topped out!
-    `);
-    m.redraw();
-  };
+  //lose(time) {
+  //  this.playerBoard.stats.runningTime = time;
+  //  this.playerBoard.overlay = m.trust(`
+  //    Oh no, they topped out!
+  //  `);
+  //  m.redraw();
+  //};
 }

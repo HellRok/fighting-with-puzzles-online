@@ -3,8 +3,9 @@ import { filter } from 'lodash/collection';
 import kissc from '../../vendor/kissc';
 
 import Player from '../player';
+import Settings from '../settings';
 import ReplayPieceGenerator from '../piece_generators/replay_piece_generator';
-import { displayMilliseconds } from '../helpers';
+import { displayMilliseconds , offsetPositions } from '../helpers';
 
 class NullRecorder {
   constructor(gameMode) { }
@@ -24,6 +25,7 @@ export default class BaseReplayer extends Player {
     this.playerBoard.pieceQueue = this.pieceGenerator.queue;
     this.state.alive = false;
     this.state.lockdelayTotal = 0;
+    this.state.lastMoveTimestamp = 0;
   }
 
   load(data) {
@@ -41,12 +43,24 @@ export default class BaseReplayer extends Player {
       this.playerBoard.stats.runningTime += delta;
       this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
       this.movesFor(delta).forEach(move => {
-        this.executeMove(move);
+        this.executeMove(move, delta);
       });
+
+      this.fakeGravity(delta);
     }
   }
 
-  executeMove(move) {
+  fakeGravity(delta) {
+    // We need to check this every tick to keep locks correct, in hindsight I
+    // probably should have stored that info in the replay but sadly, here we
+    // are for the time being with a potential desync issue
+    this.gravityTotal += delta;
+    if (!this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [0, -1]))) {
+      this.lockDelay(delta);
+    }
+  }
+
+  executeMove(move, delta) {
     switch (move.move) {
       case 'moveActivePieceRight': this.moveActivePieceRight(); break;
       case 'moveActivePieceLeft': this.moveActivePieceLeft(); break;
@@ -55,19 +69,26 @@ export default class BaseReplayer extends Player {
       case 'rotateActivePieceCCW': this.rotateActivePieceCCW(); break;
       case 'hardDrop': this.hardDrop(); break;
       case 'softDrop': this.softDrop(); break;
-      case 'gravity': this.gravity(); break;
+      case 'gravity': this.gravity(delta); break;
       case 'win': this.win(move.timestamp); break;
       case 'lose': this.lose(move.timestamp); break;
       default:
-        console.log(`${move.move} not recognised`);
+        if (Settings.debug) {
+          console.log(`${move.move} not recognised`);
+        }
     }
   }
 
+  softDrop() {
+    this.gravityTimestamp = 0;
+  }
+
   movesFor(delta) {
-    const _this = this;
+    const oldLastMoveTimestamp = this.state.lastMoveTimestamp;
+    this.state.lastMoveTimestamp = this.playerBoard.stats.runningTime;
     return filter(this.moves, move => (
-      move.timestamp >= _this.playerBoard.stats.runningTime - delta &&
-      move.timestamp < (_this.playerBoard.stats.runningTime)
+      move.timestamp >= oldLastMoveTimestamp &&
+      move.timestamp < (this.playerBoard.stats.runningTime)
     ));
   }
 }

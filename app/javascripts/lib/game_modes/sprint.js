@@ -16,7 +16,7 @@ export default class Sprint extends Player {
   tick(delta) {
     this.playerBoard.stats.runningTime += delta;
     this.recorder.currentTime = this.playerBoard.stats.runningTime;
-    this.input();
+    this.input(delta);
 
     if (!this.state.alive) { return; }
 
