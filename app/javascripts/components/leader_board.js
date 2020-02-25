@@ -35,7 +35,7 @@ export default class LeaderBoard {
         m('tbody',
           this.sprints.map((replay, place) => m('tr', [
             m('td', place + 1),
-            m('td', replay.user),
+            m('td', replay.user.username),
             m('td', replay.version),
             (replay.version === replayVersion() ?
               m('td', m(m.route.Link, { href: `/sprint/replay/${replay.id}` }, displayMilliseconds(replay.time))) :
@@ -55,7 +55,7 @@ export default class LeaderBoard {
         m('tbody',
           this.ultras.map((replay, place) => m('tr', [
             m('td', place + 1),
-            m('td', replay.user),
+            m('td', replay.user.username),
             m('td', replay.version),
             (replay.version === replayVersion() ?
               m('td', m(m.route.Link, { href: `/ultra/replay/${replay.id}` }, displayScore(replay.score))) :

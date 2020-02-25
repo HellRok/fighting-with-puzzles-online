@@ -50,8 +50,8 @@ export default class Ultra extends Player {
 
   win() {
     this.recorder.addMove('win');
-    this.recorder.persist(1, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(replay => {
-      this.lastReplay = replay;
+    this.recorder.persist(1, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
+      this.lastReplay = response.data;
     });
 
     this.state.alive = false;
