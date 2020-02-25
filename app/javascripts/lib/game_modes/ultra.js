@@ -51,8 +51,11 @@ export default class Ultra extends Player {
   win() {
     this.recorder.addMove('win');
     this.state.alive = false;
-    const oldBest = CurrentUser.data.bests.ultra;
-    const newBest = oldBest ? (this.playerBoard.stats.score > oldBest.score) : false;
+    let newBest = false;
+    if (CurrentUser.isPresent()) {
+      const oldBest = CurrentUser.data.bests.ultra;
+      newBest = oldBest ? (this.playerBoard.stats.score > oldBest.score) : false;
+    }
 
     // Because we're very rarely going to end on the exact millisecond we
     // expect, we just fudge the numbers slightly to make it look exact.

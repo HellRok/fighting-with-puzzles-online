@@ -50,8 +50,11 @@ export default class Sprint extends Player {
   win() {
     this.recorder.addMove('win');
     this.state.alive = false;
-    const oldBest = CurrentUser.data.bests.sprint;
-    const newBest = oldBest ? (this.playerBoard.stats.runningTime < oldBest.time) : false;
+    let newBest = false;
+    if (CurrentUser.isPresent()) {
+      const oldBest = CurrentUser.data.bests.sprint;
+      newBest = oldBest ? (this.playerBoard.stats.runningTime < oldBest.time) : false;
+    }
 
     this.lastReplay = this.recorder.toString();
     this.recorder.persist(0, this.playerBoard.stats.runningTime, this.playerBoard.stats.score);
