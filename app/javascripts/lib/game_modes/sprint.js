@@ -49,15 +49,17 @@ export default class Sprint extends Player {
 
   win() {
     this.recorder.addMove('win');
+    this.recorder.persist(0, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(replay => {
+      this.lastReplay = replay;
+    });
+
     this.state.alive = false;
     let newBest = false;
     if (CurrentUser.isPresent()) {
       const oldBest = CurrentUser.data.bests.sprint;
       newBest = oldBest ? (this.playerBoard.stats.runningTime < oldBest.time) : false;
+      if (newBest) { CurrentUser.refresh(); }
     }
-
-    this.lastReplay = this.recorder.toString();
-    this.recorder.persist(0, this.playerBoard.stats.runningTime, this.playerBoard.stats.score);
 
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>

@@ -34,7 +34,7 @@ export default class UltraPresenter {
           CurrentUser.data.bests.ultra ?
           [
             m('div', `Personal Best: ${displayScore(CurrentUser.data.bests.ultra.score)}`),
-            m(m.route.Link, { href: `/ultra/replay?replayData=${CurrentUser.data.bests.ultra.data}`, class: 'best-replay' }, 'Replay'),
+            m(m.route.Link, { href: `/ultra/replay/${CurrentUser.data.bests.ultra.id}`, class: 'best-replay' }, 'Replay'),
           ] :
           m('p', "You haven't played this mode yet! Play a game to get a best score.") :
         m('p', "You must be logged in to have a best score.")
@@ -45,7 +45,7 @@ export default class UltraPresenter {
         m('.time', 'Time: ', m('span.value', displayMilliseconds(0))),
         m('.score', `Score: ${displayScore(this.playerBoard.stats.score)}`),
         ((this.player && this.player.lastReplay) ? m(m.route.Link, {
-          href: `/ultra/replay?replayData=${this.player.lastReplay}`,
+          href: `/ultra/replay/${this.player.lastReplay.id}`,
         }, 'Last Replay') : ''),
       ]),
     ]));

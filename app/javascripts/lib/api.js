@@ -19,6 +19,10 @@ export default {
     });
   },
 
+  replaysFind: function(id) {
+    return this.load('/api/v1/replays/:id', id, ReplayModel);
+  },
+
   replaysCreate: function(data) {
     return this.create('/api/v1/replays', { replay: data }, ReplayModel);
   },

@@ -1,5 +1,4 @@
 import m from 'mithril';
-import kissc from '../vendor/kissc';
 
 import Layout from './layout';
 import Board from './_board';
@@ -16,7 +15,7 @@ export default class SprintReplayPresenter {
     this.replay = new SprintReplayer(this.replayBoard);
     this.replay.gameLoop();
     this.replay.renderLoop();
-    this.replay.load(JSON.parse(kissc.decompress(vnode.attrs.replayData)));
+    this.replay.load(vnode.attrs.key);
   }
 
   onremove() {

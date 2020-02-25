@@ -434,6 +434,7 @@ export default class Player {
 
     this.lockdelayElement.style.width = `${100 - this.gravityTotal / this.lockdelayTimeout * 100}%`;
     if (this.gravityTotal > this.lockdelayTimeout) {
+      this.recorder.addMove('gravityLock');
       this.gravityTotal = 0;
       this.lock();
     }

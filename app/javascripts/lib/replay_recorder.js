@@ -3,6 +3,7 @@ import kissc from '../vendor/kissc';
 import Settings from './settings';
 import Api from './api';
 import CurrentUser from './current_user';
+import { replayVersion } from './helpers';
 
 export default class ReplayRecorder {
   constructor(gameMode) {
@@ -56,7 +57,8 @@ export default class ReplayRecorder {
       mode: mode,
       time: time,
       score: score,
+      version: replayVersion(),
       data: this.toString(),
-    }).then(() => { CurrentUser.refresh() });
+    });
   }
 }

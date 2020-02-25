@@ -34,6 +34,10 @@ export function isBigScreen() {
   return window.innerWidth > 1024;
 }
 
+export function replayVersion() {
+  return '0.2';
+}
+
 // Borrowed from https://stackoverflow.com/a/23377822
 export let keyboardMap = [
   "", // [0]

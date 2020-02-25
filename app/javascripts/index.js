@@ -21,10 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
     "/login": Login,
     "/register": Register,
     "/sprint": SprintPresenter,
-    "/sprint/replay": SprintReplayPresenter,
     "/sprint/replay/:key": SprintReplayPresenter,
     "/ultra": UltraPresenter,
-    "/ultra/replay": UltraReplayPresenter,
     "/ultra/replay/:key": UltraReplayPresenter,
     "/leader_board": LeaderBoard,
   });

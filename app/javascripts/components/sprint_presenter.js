@@ -33,7 +33,7 @@ export default class SprintPresenter {
           CurrentUser.data.bests.sprint ?
           [
             m('div', `Personal Best: ${displayMilliseconds(CurrentUser.data.bests.sprint.time)}`),
-            m(m.route.Link, { href: `/sprint/replay?replayData=${CurrentUser.data.bests.sprint.data}`, class: 'best-replay' }, 'Replay'),
+            m(m.route.Link, { href: `/sprint/replay/${CurrentUser.data.bests.sprint.id}`, class: 'best-replay' }, 'Replay'),
           ] :
           m('p', "You haven't played this mode yet! Play a game to get a best time.") :
         m('p', "You must be logged in to have a best time.")
@@ -44,7 +44,7 @@ export default class SprintPresenter {
         m('.time', 'Time: ', m('span.value', displayMilliseconds(this.playerBoard.stats.runningTime))),
         m('.gems-left', `Gems: ${140 - this.playerBoard.stats.gemsSmashed}`),
         ((this.player && this.player.lastReplay) ? m(m.route.Link, {
-          href: `/sprint/replay?replayData=${this.player.lastReplay}`,
+          href: `/sprint/replay/${this.player.lastReplay.id}`,
         }, m('.last-replay', 'Last Replay')) : ''),
       ]),
     ]));

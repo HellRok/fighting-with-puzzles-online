@@ -50,6 +50,10 @@ export default class Ultra extends Player {
 
   win() {
     this.recorder.addMove('win');
+    this.recorder.persist(1, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(replay => {
+      this.lastReplay = replay;
+    });
+
     this.state.alive = false;
     let newBest = false;
     if (CurrentUser.isPresent()) {
@@ -60,9 +64,6 @@ export default class Ultra extends Player {
     // Because we're very rarely going to end on the exact millisecond we
     // expect, we just fudge the numbers slightly to make it look exact.
     this.playerBoard.stats.runningTime = this.ultraTime;
-
-    this.lastReplay = this.recorder.toString();
-    this.recorder.persist(1, this.playerBoard.stats.runningTime, this.playerBoard.stats.score);
 
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>

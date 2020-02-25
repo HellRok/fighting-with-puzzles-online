@@ -1,9 +1,9 @@
 import m from 'mithril';
 import { filter } from 'lodash/collection';
-import kissc from '../../vendor/kissc';
 
 import Player from '../player';
 import Settings from '../settings';
+import Api from '../api';
 import ReplayPieceGenerator from '../piece_generators/replay_piece_generator';
 import { displayMilliseconds , offsetPositions } from '../helpers';
 
@@ -28,14 +28,16 @@ export default class BaseReplayer extends Player {
     this.state.lastMoveTimestamp = 0;
   }
 
-  load(data) {
-    this.gameMode = data.gameMode;
-    this.pieces = data.pieces;
-    this.moves = data.moves;
-    this.pieceGenerator.load(this.pieces);
-    this.playerBoard.activePiece = this.nextPiece();
-    this.loading = false;
-    this.state.alive = true;
+  load(id) {
+    Api.replaysFind(id).then(replay => {
+      this.gameMode = replay.parsedData().gameMode;
+      this.pieces = replay.parsedData().pieces;
+      this.moves = replay.parsedData().moves;
+      this.pieceGenerator.load(this.pieces);
+      this.playerBoard.activePiece = this.nextPiece();
+      this.loading = false;
+      this.state.alive = true;
+    });
   }
 
   tick(delta) {
@@ -45,18 +47,6 @@ export default class BaseReplayer extends Player {
       this.movesFor(delta).forEach(move => {
         this.executeMove(move, delta);
       });
-
-      this.fakeGravity(delta);
-    }
-  }
-
-  fakeGravity(delta) {
-    // We need to check this every tick to keep locks correct, in hindsight I
-    // probably should have stored that info in the replay but sadly, here we
-    // are for the time being with a potential desync issue
-    this.gravityTotal += delta;
-    if (!this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [0, -1]))) {
-      this.lockDelay(delta);
     }
   }
 
@@ -70,6 +60,7 @@ export default class BaseReplayer extends Player {
       case 'hardDrop': this.hardDrop(); break;
       case 'softDrop': this.softDrop(); break;
       case 'gravity': this.gravity(delta); break;
+      case 'gravityLock': this.lock(); break;
       case 'win': this.win(move.timestamp); break;
       case 'lose': this.lose(move.timestamp); break;
       default:
@@ -81,6 +72,10 @@ export default class BaseReplayer extends Player {
 
   softDrop() {
     this.gravityTimestamp = 0;
+  }
+
+  gravity(delta) {
+    this.moveActivePieceDown();
   }
 
   movesFor(delta) {

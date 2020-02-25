@@ -22,6 +22,6 @@ class Api::V1::ReplaysController < ApplicationController
   private
 
   def replay_params
-    params.require(:replay).permit(:data, :score, :time, :mode)
+    params.require(:replay).permit(:data, :score, :time, :mode, :version)
   end
 end
