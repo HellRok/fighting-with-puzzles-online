@@ -4,6 +4,7 @@ import Layout from './layout';
 
 import Api from '../lib/api';
 import CurrentUser from '../lib/current_user';
+import Flash from '../lib/flash';
 
 export default class Register {
   constructor() {
@@ -29,6 +30,11 @@ export default class Register {
       if (response.success) {
         CurrentUser.setUser(response.data);
         m.route.set('/');
+        Flash.addFlash({
+          text: `Welcome ${CurrentUser.data.username}!`,
+          level: 'success',
+          timeout: 5000,
+        });
       } else {
         this.errors = response.errors
       }

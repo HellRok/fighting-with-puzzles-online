@@ -1,13 +1,3 @@
-.general-error {
-  text-align: center;
-  color: white;
-  background: $color-warning;
-  border: 1px solid darken($color-warning, 10%);
-  font-size: 2rem;
-  padding: 0.5rem;
-  margin: 0.5rem;
-}
-
 fieldset.error {
   label { color: $color-warning; }
 

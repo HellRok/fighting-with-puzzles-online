@@ -4,11 +4,11 @@ import Layout from './layout';
 
 import Api from '../lib/api';
 import CurrentUser from '../lib/current_user';
+import Flash from '../lib/flash';
 
 export default class Login {
   constructor() {
     this.submitting = false;
-    this.errors = {};
   }
 
   onsubmit(e) {
@@ -25,8 +25,17 @@ export default class Login {
       if (response.success) {
         CurrentUser.setUser(response.data);
         m.route.set('/');
+        Flash.addFlash({
+          text: `Logged in as ${CurrentUser.data.username}`,
+          level: 'success',
+          timeout: 5000,
+        });
       } else {
-        this.errors = response.errors
+        Flash.addFlash({
+          text: response.errors.session,
+          level: 'warning',
+          timeout: 5000,
+        });
       }
     });
   }
@@ -43,8 +52,6 @@ export default class Login {
 
           m('label', { for: 'password' }, 'Password'),
           m('input', { id: 'password', for: 'password', type: 'password' }, 'Password'),
-
-          this.errors.session ? m('.general-error', this.errors.session) : '',
 
           m('input.width-100', { type: 'submit', disabled: this.submitting })
         ])

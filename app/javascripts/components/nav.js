@@ -1,5 +1,6 @@
 import m from 'mithril';
 
+import FlashManager from './_flash_manager';
 import SidebarLink from './_sidebar_link';
 import SettingsForm from './_settings_form';
 import { isBigScreen } from '../lib/helpers';
@@ -58,14 +59,6 @@ export default class Nav {
             m(SidebarLink, {
               href: `/users/${CurrentUser.data.id}`, sidebar: this,
             }, CurrentUser.data.username),
-            m(m.route.Link, {
-              class: 'sidebar-link',
-              href: '/',
-              onclick: function(e) {
-                CurrentUser.logout();
-                if (!isBigScreen()) { _this.toggle(); }
-              }
-            }, 'Logout')
           ] : [
             m(SidebarLink, {
               href: `/login`, sidebar: this,
@@ -84,6 +77,16 @@ export default class Nav {
           m(SidebarLink, {
             href: '/leader_board', sidebar: this,
           }, 'Leader Board'),
+          CurrentUser.data.id ? [
+            m(m.route.Link, {
+              class: 'sidebar-link',
+              href: '/',
+              onclick: function(e) {
+                CurrentUser.logout();
+                if (!isBigScreen()) { _this.toggle(); }
+              }
+            }, 'Logout')
+          ] : ''
         ]),
       m(SettingsForm,
         {
@@ -94,6 +97,7 @@ export default class Nav {
           nav: this,
         }
       ),
+      m(FlashManager),
     ];
   }
 };

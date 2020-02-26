@@ -1,0 +1,35 @@
+.flashes {
+  position: absolute;
+  top: 50px;
+  width: 100%;
+}
+
+.flash {
+  width: 95%;
+  max-width: 940px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  transition: top 0.25s;
+  display: block;
+  position: absolute;
+  padding: 0.5rem;
+  font-size: 2.0rem;
+  background: $color-tertiary;
+  border: 0.1rem solid $color-quaternary;
+
+  &.success {
+    background: lighten($color-success, 30%);
+    border: 1px solid $color-success;
+  }
+
+  &.warning {
+    background: lighten($color-warning, 30%);
+    border: 1px solid $color-warning;
+  }
+}
+
+.flash-text {
+  display: inline-block;
+  cursor: pointer;
+}
