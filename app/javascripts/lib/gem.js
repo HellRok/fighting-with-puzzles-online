@@ -137,7 +137,7 @@ export default class Gem {
   }
 
   score() {
-    // A gem alone is worth 10, the cluster scoring logic is documented in the
+    // A gem alone is worth 100, the cluster scoring logic is documented in the
     // Cluster#score method, and the multiplier is simple 1 + currentChain * 0.5
     let value = 100;
     if (this.cluster) {
@@ -145,7 +145,7 @@ export default class Gem {
     }
 
     return (
-      value * (1 * this.board.stats.lastChain + 0.5)
+      value * (1 + this.board.stats.lastChain * 0.5)
     );
   }
 

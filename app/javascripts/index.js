@@ -11,6 +11,7 @@ import SprintReplayPresenter from './components/sprint_replay_presenter';
 import UltraPresenter from './components/ultra_presenter';
 import UltraReplayPresenter from './components/ultra_replay_presenter';
 import LeaderBoard from './components/leader_board';
+import HowToPlay from './components/how_to_play';
 
 document.addEventListener("DOMContentLoaded", () => {
   m.mount(document.querySelector('#nav'), Nav);
@@ -25,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "/ultra": UltraPresenter,
     "/ultra/replay/:key": UltraReplayPresenter,
     "/leader_board": LeaderBoard,
+    "/how_to_play": HowToPlay,
   });
 
   CurrentUser.initFromToken();

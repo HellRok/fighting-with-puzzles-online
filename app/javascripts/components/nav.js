@@ -86,7 +86,10 @@ export default class Nav {
                 if (!isBigScreen()) { _this.toggle(); }
               }
             }, 'Logout')
-          ] : ''
+          ] : '',
+          m(SidebarLink, {
+            href: '/how_to_play', sidebar: this,
+          }, 'How to Play'),
         ]),
       m(SettingsForm,
         {

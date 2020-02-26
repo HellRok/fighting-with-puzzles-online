@@ -100,13 +100,13 @@ export default class Cluster {
   }
 
   score() {
-    // So basically we add an extra 10 for each gem and if we have a perfectly
-    // square gem (2x2, 3x3, etc) we add an extra 25% of the gems true value
-    // (20, 10 here and 10 when the gem smashes)
+    // So basically we add an extra 100 for each gem and if we have a perfectly
+    // square gem (2x2, 3x3, etc) we add an extra 50 for each gem
+    // (200, 100 here and 100 when the gem smashes)
     let value = this.gems.length * 100;
 
     if (this.width() === this.height()) {
-      value += this.gems.length * 200 * 0.25;
+      value += this.gems.length * 50;
     }
 
     return value;
