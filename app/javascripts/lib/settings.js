@@ -5,10 +5,10 @@ function valueOrDefault(value, defaultValue) {
 };
 
 export default {
-  debug: valueOrDefault('debug', false),
+  debug: valueOrDefault('debug', 0),
 
   site: {
-    beenHereBefore: valueOrDefault('site.beenHereBefore', false),
+    beenHereBefore: valueOrDefault('site.beenHereBefore', 0),
   },
 
   keys: {
@@ -44,7 +44,7 @@ export default {
   },
 
   beenHereNow: function() {
-    this.site.beenHereBefore = true;
-    localStorage.setItem('site.beenHereBefore', true);
+    this.site.beenHereBefore = 1;
+    localStorage.setItem('site.beenHereBefore', 1);
   },
 }
