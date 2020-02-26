@@ -6,6 +6,8 @@ import Settings from '../lib/settings';
 import { keyboardMap } from '../lib/helpers';
 
 export default {
+  oninit: () => { Settings.beenHereNow(); },
+
   view: () => {
     return m(Layout, [
       m('.how-to-play.max-width-960', [
@@ -17,6 +19,7 @@ export default {
             m('ol', [
               m('li', m('a', { href: '#controls-movement' }, 'Movement')),
               m('li', m('a', { href: '#controls-rotation' }, 'Rotation')),
+              m('li', m('a', { href: '#controls-configuration' }, 'Configuration')),
             ]),
           ),
           m('li', m('a', { href: '#gameplay' }, 'Gameplay'),
@@ -45,6 +48,16 @@ export default {
           m('.key', keyboardMap[Settings.keys.cw]), 'to rotate the piece clockwise (right)', m('br'),
           m('.key', keyboardMap[Settings.keys.ccw]), 'to rotate the piece counter-clockwise (left)', m('br'),
           m('.key', keyboardMap[Settings.keys.switch]), 'to switch the gems in the active piece', m('br'),
+        ]),
+
+        m('h4#controls-configuration', 'Configuration'),
+        m('p', `To configure the key bindings and game settings, you can press the cogs in the top right of the screen.`),
+        m('p', [
+          m('strong', 'Delayed Auto-Shift (DAS):'), ` This is how many
+            milliseconds after pressing and holding the left/right key until the
+            active piece starts moving further across.`, m('br'),
+          m('strong', 'Auto-Repeat Rate (ARR):'), ` Once in DAS this is how many
+            milliseconds between movements of the active piece.`, m('br'),
         ]),
 
         m('h3#gameplay', 'Gameplay'),

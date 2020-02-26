@@ -16,3 +16,17 @@
     margin-bottom: 0.5rem;
   }
 }
+
+.show-how-to-play {
+  max-width: 940px;
+  margin: auto;
+  display: block;
+  padding: 0.5rem;
+  font-size: 2.0rem;
+  background: $color-tertiary;
+  border: 0.1rem solid $color-quaternary;
+
+  .close {
+    float: right;
+  }
+}

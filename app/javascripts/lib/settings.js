@@ -7,6 +7,10 @@ function valueOrDefault(value, defaultValue) {
 export default {
   debug: valueOrDefault('debug', false),
 
+  site: {
+    beenHereBefore: valueOrDefault('site.beenHereBefore', false),
+  },
+
   keys: {
     restart:  valueOrDefault('keys.restart',  113),
     left:     valueOrDefault('keys.left',      37),
@@ -37,5 +41,10 @@ export default {
     localStorage.setItem('keys.switch',   this.keys.switch);
     localStorage.setItem('game.das',      this.game.das);
     localStorage.setItem('game.arr',      this.game.arr);
-  }
+  },
+
+  beenHereNow: function() {
+    this.site.beenHereBefore = true;
+    localStorage.setItem('site.beenHereBefore', true);
+  },
 }

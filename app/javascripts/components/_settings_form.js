@@ -57,7 +57,7 @@ export default class SettingsForm {
               'data-setting': 'das',
               value: this.unsaved.game.das,
             }),
-            m('label', { for: 'arr' }, 'Auto Repeat Rate (ARR)'),
+            m('label', { for: 'arr' }, 'Auto-Repeat Rate (ARR)'),
             m('input#arr.game', {
               type: 'text',
               'data-group': 'game',
