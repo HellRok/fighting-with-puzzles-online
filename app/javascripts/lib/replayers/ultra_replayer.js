@@ -5,6 +5,7 @@ import { displayMilliseconds, displayScore } from '../helpers';
 
 export default class UltraReplayer extends BaseReplayer {
   win(time) {
+    super.win(time);
     this.state.alive = false;
     // Because we're very rarely going to end on the exact millisecond we
     // expect, we just fudge the numbers slightly to make it look exact.
@@ -18,6 +19,7 @@ export default class UltraReplayer extends BaseReplayer {
   }
 
   lose(time) {
+    super.lose(time);
     this.playerBoard.overlay = m.trust(`
       Oh no, they topped out!
     `);

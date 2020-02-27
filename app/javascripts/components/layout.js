@@ -1,12 +1,14 @@
 import m from 'mithril';
 
 import Settings from '../lib/settings';
+import Audio from '../lib/audio';
 
 export default class Layout {
   oninit() {
     if (typeof gtag !== 'undefined') {
       gtag('config', 'UA-157003509-1', { 'page_path': m.route.get() });
     };
+    Audio.setVolume(Settings.game.volume);
   }
 
   view(vnode) {

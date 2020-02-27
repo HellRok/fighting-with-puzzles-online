@@ -13,6 +13,7 @@ export default class Ultra extends Player {
     this.recorder = new ReplayRecorder('ultra');
     this.playerBoard.stats.start = timestamp();
     this.ultraTime = 180000; // 3 minutes
+    this.ultraTime = 1800; // 3 minutes
   }
 
   tick(delta) {
@@ -39,7 +40,8 @@ export default class Ultra extends Player {
     this.restart();
   }
 
-  lose() {
+  lose(time) {
+    super.lose(time);
     this.recorder.addMove('lose');
     this.state.alive = false;
     this.playerBoard.overlay = m.trust(`
@@ -49,7 +51,8 @@ export default class Ultra extends Player {
     m.redraw();
   };
 
-  win() {
+  win(time) {
+    super.win(time);
     this.recorder.addMove('win');
     this.recorder.persist(1, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
       this.lastReplay = response.data;

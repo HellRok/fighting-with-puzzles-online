@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.17.15",
-    "mithril": "^2.0.4"
+    "howler": "^2.1",
+    "lodash": "^4.17",
+    "mithril": "^2.0"
   },
   "scripts": {
     "javascripts": "webpack --mode development --watch --output ./public/assets/application.js --entry ./app/javascripts/index.js",
@@ -14,8 +15,8 @@
     "production:build": "yarn javascripts:build && yarn stylesheets:build"
   },
   "devDependencies": {
-    "node-sass": "^4.12.0",
-    "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.6"
+    "node-sass": "^4.12",
+    "webpack": "^4.35",
+    "webpack-cli": "^3.3"
   }
 }

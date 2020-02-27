@@ -2,12 +2,12 @@ fighting_with_puzzles_online:
 	docker build . --pull --tag fighting_with_puzzles_online
 
 digest-assets:
-	JSSUM="$$(md5sum ./public/assets/application.js | cut -f 1 -d" ")"; \
-		mv ./public/assets/application.js ./public/assets/application.$$JSSUM.js; \
-		sed -i "s/application.js/application.$$JSSUM.js/g" ./app/views/home/index.html.erb;
-	CSSSUM="$$(md5sum ./public/assets/application.css | cut -f 1 -d" ")"; \
-		mv ./public/assets/application.css ./public/assets/application.$$CSSSUM.css; \
-		sed -i "s/application.css/application.$$CSSSUM.css/g" ./app/views/home/index.html.erb;
+	./bin/digest_asset public/assets/audio/lock.mp3 public/assets/application.js
+	./bin/digest_asset public/assets/audio/lose.mp3 public/assets/application.js
+	./bin/digest_asset public/assets/audio/win.mp3 public/assets/application.js
+	./bin/digest_asset public/assets/gems.png app/views/home/index.html.erb public/assets/application.css
+	./bin/digest_asset public/assets/application.js app/views/home/index.html.erb
+	./bin/digest_asset public/assets/application.css app/views/home/index.html.erb
 
 update-normalize:
 	wget https://cdn.rawgit.com/necolas/normalize.css/master/normalize.css --output-document app/stylesheets/normalize.css

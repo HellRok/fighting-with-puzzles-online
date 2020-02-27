@@ -38,7 +38,8 @@ export default class Sprint extends Player {
     this.restart();
   }
 
-  lose() {
+  lose(time) {
+    super.lose(time);
     this.recorder.addMove('lose');
     this.state.alive = false;
     this.playerBoard.overlay = m.trust(`
@@ -48,7 +49,8 @@ export default class Sprint extends Player {
     m.redraw();
   };
 
-  win() {
+  win(time) {
+    super.win(time);
     this.recorder.addMove('win');
     this.recorder.persist(0, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
       this.lastReplay = response.data;

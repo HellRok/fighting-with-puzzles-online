@@ -3,6 +3,7 @@ import { min, max } from 'lodash/math';
 
 import Gem from './gem';
 import Settings from './settings';
+import Audio from './audio';
 import RandomPieceGenerator from './piece_generators/random_piece_generator';
 import { timestamp, offsetPositions } from './helpers';
 
@@ -459,6 +460,8 @@ export default class Player {
       this.lose();
     }
 
+    Audio.lock.play();
+
     this.playerBoard.activePiece = this.nextPiece();
     this.playerBoard.update();
   }
@@ -482,10 +485,10 @@ export default class Player {
   }
 
   lose() {
-    throw 'Lose must be overloaded in child class';
+    Audio.lose.play();
   }
 
   win() {
-    throw 'Win must be overloaded in child class';
+    Audio.win.play();
   }
 }

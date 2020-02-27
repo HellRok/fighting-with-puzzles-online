@@ -1,6 +1,7 @@
 import m from 'mithril';
 
 import Settings from '../lib/settings';
+import Audio from '../lib/audio';
 import { keyboardMap } from '../lib/helpers';
 
 export default class SettingsForm {
@@ -11,9 +12,11 @@ export default class SettingsForm {
   }
 
   save() {
+    this.unsaved.game.volume = document.querySelector('.settings-form #volume').value;
     this.unsaved.game.das = document.querySelector('.settings-form #das').value;
     this.unsaved.game.arr = document.querySelector('.settings-form #arr').value;
     Settings.save(this.unsaved);
+    Audio.setVolume(Settings.game.volume);
   }
 
   oncreate() {
@@ -50,6 +53,16 @@ export default class SettingsForm {
           ]),
           m('.fieldset', [
             m('h2', 'Game'),
+            m('label', { for: 'volume' }, 'Volume %'),
+            m('input#volume.game', {
+              type: 'number',
+              min: 0,
+              max: 100,
+              step: 1,
+              'data-group': 'game',
+              'data-setting': 'volume',
+              value: this.unsaved.game.volume,
+            }),
             m('label', { for: 'das' }, 'Delayed Auto-Shift (DAS)'),
             m('input#das.game', {
               type: 'text',

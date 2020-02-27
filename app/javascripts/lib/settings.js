@@ -23,8 +23,9 @@ export default {
   },
 
   game: {
-    das: valueOrDefault('game.das', 117),
-    arr: valueOrDefault('game.arr', 17),
+    volume: valueOrDefault('game.volume', 70),
+    das:    valueOrDefault('game.das', 117),
+    arr:    valueOrDefault('game.arr', 17),
   },
 
   save: function(toSave) {
@@ -39,6 +40,7 @@ export default {
     localStorage.setItem('keys.ccw',      this.keys.ccw);
     localStorage.setItem('keys.cw',       this.keys.cw);
     localStorage.setItem('keys.switch',   this.keys.switch);
+    localStorage.setItem('game.volume',   this.game.volume);
     localStorage.setItem('game.das',      this.game.das);
     localStorage.setItem('game.arr',      this.game.arr);
   },
