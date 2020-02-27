@@ -39,7 +39,7 @@ export default {
         m('p', [
           m('.key', keyboardMap[Settings.keys.left]), 'to move the active piece left', m('br'),
           m('.key', keyboardMap[Settings.keys.right]), 'to move the active piece right', m('br'),
-          m('.key', keyboardMap[Settings.keys.softDrop]), 'to speed up the gravity', m('br'),
+          m('.key', keyboardMap[Settings.keys.softDrop]), 'to drop faster', m('br'),
           m('.key', keyboardMap[Settings.keys.hardDrop]), 'to drop the piece and lock it immediately', m('br'),
         ]),
 
@@ -82,7 +82,7 @@ export default {
 
         m('h4#gameplay-clusters', 'Clusters'),
         m('p', `A cluster occurs when you make a rectangle of a solid colour,
-          this can only be as small as 2x2.`),
+          this can be as small as 2x2.`),
         m('.board-example', [
           m('div', [
             m('.gem.blue.cluster.top-left'),
@@ -93,7 +93,8 @@ export default {
             m('.gem.blue.cluster.bottom-right')
           ]),
         ]),
-        m('p', `These are generated before the smashing takes place, so you can user a smasher gem to create a cluster like this.`),
+        m('p', `Clusters are generated before the smashing takes place, so you
+          can use a smasher gem to create a cluster like this.`),
         m('.board-example', [
           m('div', [
             m('.gem.orange.cluster.top-left'),
