@@ -1,3 +1,10 @@
+FROM crystallang/crystal:latest-alpine AS server_build
+WORKDIR /app
+COPY game_server/shard.yml game_server/shard.lock /app/
+RUN shards install
+COPY game_server/src/ /app/src/
+RUN crystal build --release --no-debug --static src/game_server.cr
+
 FROM node:alpine AS node_build
 WORKDIR /app
 COPY package.json yarn.lock /app/
@@ -18,6 +25,7 @@ RUN bundle config set without 'development test' && \
 COPY . /app
 COPY --from=node_build /app/public/assets /app/public/assets
 RUN make digest-assets
+COPY --from=server_build /app/game_server /app/bin/
 ENV HOST 0.0.0.0
 ENV RAILS_ENV production
 ENV MALLOC_ARENA_MAX 2

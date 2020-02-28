@@ -41,4 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   CurrentUser.initFromToken();
-})
+  const socket = new WebSocket('ws://localhost:9001/game/1');
+  socket.addEventListener('message', (e) => {
+    console.log(e);
+    socket.send(`RESPONDING AS ${CurrentUser.data.username}`)
+  });
+  socket.addEventListener('open', (e) => { socket.send(`CONNECTING AS ${CurrentUser.data.username}`) });
+});

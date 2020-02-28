@@ -1,3 +1,4 @@
 #!/bin/sh
 
+bin/game_server --port 3001 &
 bundle exec puma config.ru
