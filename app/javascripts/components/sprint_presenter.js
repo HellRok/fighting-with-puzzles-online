@@ -43,6 +43,7 @@ export default class SprintPresenter {
       m('.stats', [
         m('.time', 'Time: ', m('span.value', displayMilliseconds(this.playerBoard.stats.runningTime))),
         m('.gems-left', `Gems: ${140 - this.playerBoard.stats.gemsSmashed}`),
+
         ((this.player && this.player.lastReplay) ? m(m.route.Link, {
           href: `/sprint/replay/${this.player.lastReplay.id}`,
         }, m('.last-replay', 'Last Replay')) : ''),

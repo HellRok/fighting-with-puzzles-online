@@ -52,7 +52,22 @@ export default class Sprint extends Player {
   win(time) {
     super.win(time);
     this.recorder.addMove('win');
+
+    this.state.alive = false;
+    let newBest = false;
+    let oldBest;
+
+    if (CurrentUser.isPresent()) {
+      oldBest = CurrentUser.data.bests.sprint;
+      if (oldBest) {
+        newBest = oldBest.time - this.playerBoard.stats.runningTime;
+      } else {
+        newBest = true;
+      }
+    }
+
     this.recorder.persist(0, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
+      if (newBest) { CurrentUser.refresh(); }
       this.lastReplay = response.data;
       Flash.addFlash({
         text: 'Replay saved',
@@ -61,18 +76,10 @@ export default class Sprint extends Player {
       });
     });
 
-    this.state.alive = false;
-    let newBest = false;
-    if (CurrentUser.isPresent()) {
-      const oldBest = CurrentUser.data.bests.sprint;
-      newBest = oldBest ? (this.playerBoard.stats.runningTime < oldBest.time) : false;
-      if (newBest) { CurrentUser.refresh(); }
-    }
-
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
       You took ${displayMilliseconds(this.playerBoard.stats.runningTime)}!
-      ${ newBest ? `You improved your best by ${displayMilliseconds(oldBest.time - this.playerBoard.stats.runningTime)}` : ''}
+      ${ newBest && oldBest ? `You improved your best by ${displayMilliseconds(newBest)}` : ''}
     `);
     m.redraw();
   }

@@ -13,7 +13,6 @@ export default class Ultra extends Player {
     this.recorder = new ReplayRecorder('ultra');
     this.playerBoard.stats.start = timestamp();
     this.ultraTime = 180000; // 3 minutes
-    this.ultraTime = 1800; // 3 minutes
   }
 
   tick(delta) {
@@ -54,7 +53,22 @@ export default class Ultra extends Player {
   win(time) {
     super.win(time);
     this.recorder.addMove('win');
+
+    this.state.alive = false;
+    let newBest = false;
+    let oldBest;
+
+    if (CurrentUser.isPresent()) {
+      oldBest = CurrentUser.data.bests.ultra;
+      if (oldBest) {
+        newBest = this.playerBoard.stats.score - oldBest.score
+      } else {
+        newBest = true;
+      }
+    }
+
     this.recorder.persist(1, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
+      if (newBest) { CurrentUser.refresh(); }
       this.lastReplay = response.data;
       Flash.addFlash({
         text: 'Replay saved',
@@ -63,13 +77,6 @@ export default class Ultra extends Player {
       });
     });
 
-    this.state.alive = false;
-    let newBest = false;
-    if (CurrentUser.isPresent()) {
-      const oldBest = CurrentUser.data.bests.ultra;
-      newBest = oldBest ? (this.playerBoard.stats.score > oldBest.score) : false;
-    }
-
     // Because we're very rarely going to end on the exact millisecond we
     // expect, we just fudge the numbers slightly to make it look exact.
     this.playerBoard.stats.runningTime = this.ultraTime;
@@ -77,7 +84,7 @@ export default class Ultra extends Player {
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
       Your score was ${displayScore(this.playerBoard.stats.score)}!
-      ${ newBest ? `You improved your best by ${displayScore(this.playerBoard.stats.score - oldBest.score)}` : ''}
+      ${ newBest && oldBest ? `You improved your best by ${displayScore(this.playerBoard.stats.score - oldBest.score)}` : ''}
     `);
     m.redraw();
   }

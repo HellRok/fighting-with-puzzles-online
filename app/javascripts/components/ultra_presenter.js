@@ -44,6 +44,7 @@ export default class UltraPresenter {
       m('.stats', [
         m('.time', 'Time: ', m('span.value', displayMilliseconds(0))),
         m('.score', `Score: ${displayScore(this.playerBoard.stats.score)}`),
+
         ((this.player && this.player.lastReplay) ? m(m.route.Link, {
           href: `/ultra/replay/${this.player.lastReplay.id}`,
         }, 'Last Replay') : ''),
