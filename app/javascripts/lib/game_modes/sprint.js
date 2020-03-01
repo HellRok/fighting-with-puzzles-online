@@ -79,7 +79,7 @@ export default class Sprint extends Player {
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
       You took ${displayMilliseconds(this.playerBoard.stats.runningTime)}!
-      ${ newBest && oldBest ? `You improved your best by ${displayMilliseconds(newBest)}` : ''}
+      ${ newBest > 0 && oldBest ? `You improved your best by ${displayMilliseconds(newBest)}` : ''}
     `);
     m.redraw();
   }

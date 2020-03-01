@@ -84,7 +84,7 @@ export default class Ultra extends Player {
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
       Your score was ${displayScore(this.playerBoard.stats.score)}!
-      ${ newBest && oldBest ? `You improved your best by ${displayScore(this.playerBoard.stats.score - oldBest.score)}` : ''}
+      ${ newBest > 0 && oldBest ? `You improved your best by ${displayScore(this.playerBoard.stats.score - oldBest.score)}` : ''}
     `);
     m.redraw();
   }
