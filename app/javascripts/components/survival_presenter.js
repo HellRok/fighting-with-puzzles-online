@@ -41,6 +41,7 @@ export default class SurvivalPresenter {
 
       m(this.playerBoard),
       m('.stats', [
+        m('.next-dump', '2 garbage in 00:05.000'),
         m('.time', 'Time: ', m('span.value', displayMilliseconds(this.playerBoard.stats.runningTime))),
         m('.score', `Score: ${displayScore(this.playerBoard.stats.score)}`),
 

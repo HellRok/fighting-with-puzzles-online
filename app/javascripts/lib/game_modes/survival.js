@@ -12,10 +12,12 @@ import CurrentUser from '../current_user';
 
 export default class Sprint extends Player {
   setup() {
+    this.dumpText = document.querySelector('.next-dump');
     this.recorder = new ReplayRecorder('survival');
     this.playerBoard.stats.start = timestamp();
     this.nextDumpAt = 5000;
-    this.dumpTotal = 0;
+    this.dumpTotal = 1;
+    this.dumpMultiplier = 2;
     this.dropPattern = [
       'red', 'orange', 'orange', 'red', 'red', 'orange',
       'red', 'orange', 'orange', 'red', 'red', 'orange',
@@ -32,6 +34,7 @@ export default class Sprint extends Player {
     if (!this.state.alive) { return; }
 
     this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
+    this.dumpText.innerText = `${this.dumpMultiplier} garbage in ${displayMilliseconds(this.nextDumpAt)}`;
 
     this.dump(delta);
     this.gravity(delta);
@@ -41,13 +44,13 @@ export default class Sprint extends Player {
     this.nextDumpAt -= delta;
 
     if (this.nextDumpAt <= 0) {
-      this.dumpTotal += 1;
-      const multiplier = min([this.dumpTotal * 2, 24]);
-      this.nextDumpAt = 5000 + (2000 * multiplier);
       this.queueGarbage(
-        multiplier,
+        this.dumpMultiplier,
         this.dropPattern
       );
+      this.nextDumpAt = 5000 + (1000 * this.dumpMultiplier);
+      this.dumpTotal += 1;
+      this.dumpMultiplier = min([this.dumpTotal * 2, 24]);
     }
   }
 
