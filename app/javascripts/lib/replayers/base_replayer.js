@@ -2,10 +2,11 @@ import m from 'mithril';
 import { filter } from 'lodash/collection';
 
 import Player from '../player';
+import Gem from '../gem';
 import Settings from '../settings';
 import Api from '../api';
 import ReplayPieceGenerator from '../piece_generators/replay_piece_generator';
-import { displayMilliseconds , offsetPositions } from '../helpers';
+import { displayMilliseconds, offsetPositions } from '../helpers';
 
 class NullRecorder {
   constructor(gameMode) { }
@@ -24,6 +25,7 @@ export default class BaseReplayer extends Player {
     this.playerBoard.clear();
     this.playerBoard.pieceQueue = this.pieceGenerator.queue;
     this.state.alive = false;
+    this.state.replay = true;
     this.state.lockdelayTotal = 0;
     this.state.lastMoveTimestamp = 0;
   }
@@ -61,6 +63,8 @@ export default class BaseReplayer extends Player {
       case 'softDrop': this.softDrop(); break;
       case 'gravity': this.gravity(delta); break;
       case 'gravityLock': this.lock(); break;
+      case 'queueGarbage': this.queueGarbage(move.options.column, move.options.colour); break;
+      case 'spawnGarbage': this.spawnGarbage(); break;
       case 'win': this.win(move.timestamp); break;
       case 'lose': this.lose(move.timestamp); break;
       default:
@@ -76,6 +80,13 @@ export default class BaseReplayer extends Player {
 
   gravity(delta) {
     this.moveActivePieceDown();
+  }
+
+  queueGarbage(column, colour) {
+    this.garbageQueue.push(new Gem(undefined,
+      column, this.playerBoard.height - 1,
+      colour, false, 5,
+    ));
   }
 
   movesFor(delta) {

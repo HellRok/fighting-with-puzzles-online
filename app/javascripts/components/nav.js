@@ -75,8 +75,12 @@ export default class Nav {
             href: '/ultra', sidebar: this,
           }, 'Ultra'),
           m(SidebarLink, {
+            href: '/survival', sidebar: this,
+          }, 'Survival'),
+          m(SidebarLink, {
             href: '/leader_board', sidebar: this,
           }, 'Leader Board'),
+
           CurrentUser.data.id ? [
             m(m.route.Link, {
               class: 'sidebar-link',

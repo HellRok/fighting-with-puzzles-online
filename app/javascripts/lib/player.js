@@ -17,6 +17,7 @@ export default class Player {
     this.gravityTimeout = 500;
     this.lockdelayTimeout = 350;
     this.lockdelayMax = 5000;
+    this.garbageQueue = [];
     this.timeValue = document.querySelector('.stats .time .value');
     this.lockdelayElement = document.querySelector('.lockdelay-progress');
 
@@ -457,13 +458,42 @@ export default class Player {
       this.playerBoard.getSquare(2, this.playerBoard.height - 1) ||
       this.playerBoard.getSquare(3, this.playerBoard.height - 1)
     ) {
-      this.lose();
+      this.lose(this.playerBoard.stats.runningTime);
     }
 
     Audio.lock.play();
 
     this.playerBoard.activePiece = this.nextPiece();
     this.playerBoard.update();
+    this.spawnGarbage();
+  }
+
+  queueGarbage(damage, dropPattern) {
+    // Mod 6 this bad boy to get the column
+    const colMapping = [2, 3, 1, 4, 0, 5];
+
+    for (let i = 0; i < damage; i++) {
+      const column = colMapping[i % 6];
+      const colour = dropPattern[i % 24];
+      this.garbageQueue.push(new Gem(undefined,
+        column, this.playerBoard.height - 1,
+        colour, false, 5,
+      ));
+      this.recorder.addMove('queueGarbage', { column: column, colour: colour });
+    }
+  }
+
+  spawnGarbage() {
+    this.recorder.addMove('spawnGarbage');
+
+    this.garbageQueue.forEach(gem => {
+      if (this.playerBoard.isClear([gem])) {
+        gem.board = this.playerBoard;
+        gem.gravity();
+      }
+    });
+
+    this.garbageQueue = [];
   }
 
   tick(delta) {
@@ -485,10 +515,12 @@ export default class Player {
   }
 
   lose() {
+    this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
     Audio.lose.play();
   }
 
   win() {
+    this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
     Audio.win.play();
   }
 }

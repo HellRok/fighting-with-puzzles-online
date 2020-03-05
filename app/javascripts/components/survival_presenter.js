@@ -3,18 +3,18 @@ import m from 'mithril';
 import Layout from './layout';
 import Board from './_board';
 import Settings from '../lib/settings';
-import Sprint from '../lib/game_modes/sprint';
-import { displayMilliseconds, keyboardMap } from '../lib/helpers';
+import Survival from '../lib/game_modes/survival';
+import { displayMilliseconds, displayScore, keyboardMap } from '../lib/helpers';
 
 import CurrentUser from '../lib/current_user';
 
-export default class SprintPresenter {
+export default class SurvivalPresenter {
   constructor() {
     this.playerBoard = new Board();
   }
 
   oncreate() {
-    this.player = new Sprint(this.playerBoard);
+    this.player = new Survival(this.playerBoard);
     this.player.gameLoop();
     this.player.renderLoop();
     this.playerBoard.overlay = `Press ${keyboardMap[Settings.keys.restart]} to start.`;
@@ -25,15 +25,15 @@ export default class SprintPresenter {
   }
 
   view() {
-    return m(Layout, m('.sprint.single-player', [
-      m('h2', 'Sprint'),
+    return m(Layout, m('.survival.single-player', [
+      m('h2', 'Survival'),
 
       m('p.personal-best',
         CurrentUser.isPresent() ?
-          CurrentUser.data.bests.sprint ?
+          CurrentUser.data.bests.survival ?
           [
-            m('div', `Personal Best: ${displayMilliseconds(CurrentUser.data.bests.sprint.time)}`),
-            m(m.route.Link, { href: `/sprint/replay/${CurrentUser.data.bests.sprint.id}`, class: 'best-replay' }, 'Replay'),
+            m('div', `Personal Best: ${displayMilliseconds(CurrentUser.data.bests.survival.time)}`),
+            m(m.route.Link, { href: `/survival/replay/${CurrentUser.data.bests.survival.id}`, class: 'best-replay' }, 'Replay'),
           ] :
           m('p', "You haven't played this mode yet! Play a game to get a best time.") :
         m('p', "You must be logged in to have a best time.")
@@ -42,10 +42,10 @@ export default class SprintPresenter {
       m(this.playerBoard),
       m('.stats', [
         m('.time', 'Time: ', m('span.value', displayMilliseconds(this.playerBoard.stats.runningTime))),
-        m('.gems-left', `Gems: ${140 - this.playerBoard.stats.gemsSmashed}`),
+        m('.score', `Score: ${displayScore(this.playerBoard.stats.score)}`),
 
         ((this.player && this.player.lastReplay) ? m(m.route.Link, {
-          href: `/sprint/replay/${this.player.lastReplay.id}`,
+          href: `/survival/replay/${this.player.lastReplay.id}`,
         }, m('.last-replay', 'Last Replay')) : ''),
       ]),
     ]));

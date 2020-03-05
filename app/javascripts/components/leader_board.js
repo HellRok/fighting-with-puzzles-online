@@ -10,6 +10,7 @@ export default class LeaderBoard {
   constructor() {
     this.sprints = [];
     this.ultras = [];
+    this.survivals = [];
     this.loadData();
   }
 
@@ -17,6 +18,7 @@ export default class LeaderBoard {
     Api.replaysLeaderboard().then(response => {
       this.sprints = response.sprints;
       this.ultras = response.ultras;
+      this.survivals = response.survivals;
     });
   }
 
@@ -63,6 +65,27 @@ export default class LeaderBoard {
           ]))
         ),
       ]),
+
+      m('h3.text-centre', 'Survivals'),
+      m('table.max-width-960', [
+        m('thead', m('tr', [
+          m('th', 'Place'),
+          m('th', 'User'),
+          m('th', 'Version'),
+          m('th', 'Time'),
+        ])),
+        m('tbody',
+          this.survivals.map((replay, place) => m('tr', [
+            m('td', place + 1),
+            m('td', replay.user.username),
+            m('td', replay.version),
+            (replay.version === replayVersion() ?
+              m('td', m(m.route.Link, { href: `/survival/replay/${replay.id}` }, displayMilliseconds(replay.time))) :
+              m('td', { title: "Can't play old replays" }, displayMilliseconds(replay.time))),
+          ]))
+        ),
+      ]),
+
     ]);
   }
 };

@@ -79,7 +79,7 @@ export default class Cluster {
     // Growth order is up > right > left > down
     [this.aboveGems(), this.rightGems(), this.leftGems(), this.belowGems()].forEach(gems => {
       if (gems.length > 0 && every(gems, gem => {
-        return (gem && !gem.cluster && gem.colour === this.colour);
+        return (gem && !gem.cluster && !gem.timer && gem.colour === this.colour);
       })) {
         this.addGems(gems);
         this.attemptGrowth()

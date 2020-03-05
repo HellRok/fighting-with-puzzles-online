@@ -70,13 +70,13 @@ export default {
           will give you 100 points, including the smasher.`),
         m('table', [
           m('thead',
-            m('tr', [m('td', 'Colour'), m('td', 'Normal'), m('td', 'Smasher')])
+            m('tr', [m('td', 'Colour'), m('td', 'Normal'), m('td', 'Smasher'), m('td', 'Timer')])
           ),
           m('tbody', [
-            m('tr', [m('td', 'Red'),    m('td', m('.gem.red')),    m('td', m('.gem.red.smasher'))]),
-            m('tr', [m('td', 'Blue'),   m('td', m('.gem.blue')),   m('td', m('.gem.blue.smasher'))]),
-            m('tr', [m('td', 'Orange'), m('td', m('.gem.orange')), m('td', m('.gem.orange.smasher'))]),
-            m('tr', [m('td', 'Purple'), m('td', m('.gem.purple')), m('td', m('.gem.purple.smasher'))]),
+            m('tr', [m('td', 'Red'),    m('td', m('.gem.red')),    m('td', m('.gem.red.smasher')),    m('td', m('.gem.red.timer-5'))]),
+            m('tr', [m('td', 'Blue'),   m('td', m('.gem.blue')),   m('td', m('.gem.blue.smasher')),   m('td', m('.gem.blue.timer-5'))]),
+            m('tr', [m('td', 'Orange'), m('td', m('.gem.orange')), m('td', m('.gem.orange.smasher')), m('td', m('.gem.orange.timer-5'))]),
+            m('tr', [m('td', 'Purple'), m('td', m('.gem.purple')), m('td', m('.gem.purple.smasher')), m('td', m('.gem.purple.timer-5'))]),
           ])
         ]),
 

@@ -6,4 +6,7 @@ json.data do
   json.ultras @ultras do |replay|
     json.partial! 'api/v1/replays/replay', replay: replay
   end
+  json.survivals @survivals do |replay|
+    json.partial! 'api/v1/replays/replay', replay: replay
+  end
 end

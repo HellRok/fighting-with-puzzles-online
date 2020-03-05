@@ -2,8 +2,8 @@ import m from 'mithril';
 
 import Layout from './layout';
 import Board from './_board';
-import Settings from '../lib/settings'
-import Ultra from '../lib/game_modes/ultra'
+import Settings from '../lib/settings';
+import Ultra from '../lib/game_modes/ultra';
 import { displayMilliseconds, displayScore, keyboardMap } from '../lib/helpers';
 
 import CurrentUser from '../lib/current_user';

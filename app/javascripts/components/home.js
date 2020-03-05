@@ -35,6 +35,19 @@ export default class Home {
               "You haven't beat this mode yet!"
             ) : '',
         ]),
+
+        m(m.route.Link, {
+          class: 'home-link',
+          href: '/survival',
+        }, [
+          m('h3', 'Survival'),
+          m('p', 'Survive as long as you can against an onslaugh of attacks.'),
+          CurrentUser.isPresent() ?
+            m('p', CurrentUser.data.bests.survival ?
+              `Personal Best: ${displayMilliseconds(CurrentUser.data.bests.survival.time)}` :
+              "You haven't played this mode yet!"
+            ) : '',
+        ]),
       ]),
     ]);
   }

@@ -10,6 +10,7 @@ class Api::V1::ReplaysController < ApplicationController
   def leader_board
     @sprints = User.best_sprints
     @ultras = User.best_ultras
+    @survivals = User.best_survivals
   end
 
   def show; end

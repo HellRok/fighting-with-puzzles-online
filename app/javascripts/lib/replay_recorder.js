@@ -26,9 +26,10 @@ export default class ReplayRecorder {
     ]);
   }
 
-  addMove(move) {
+  addMove(move, options={}) {
     this.moves.push({
       move: move,
+      options: options,
       timestamp: this.currentTime,
     });
   }

@@ -12,6 +12,7 @@ export default {
         return {
           sprints: response.data.sprints.map(replay => (new ReplayModel(replay))),
           ultras: response.data.ultras.map(replay => (new ReplayModel(replay))),
+          survivals: response.data.survivals.map(replay => (new ReplayModel(replay))),
         };
       } else {
         return response;

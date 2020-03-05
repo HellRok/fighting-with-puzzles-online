@@ -61,6 +61,8 @@ export default class Board {
     this.stats.lastClusterGemsSmashed = 0;
     this.stats.lastScore = 0;
 
+    this.countDownTimerGems();
+
     this.growAndCreateClustersAndSmashGems();
 
     if (this.stats.lastChain > this.stats.highestChain) {
@@ -158,12 +160,12 @@ export default class Board {
     this.forEachSquare((x, y) => {
       const gem = this.getSquare(x, y);
 
-      if (gem === undefined || gem.cluster !== undefined) { return undefined; }
+      if (gem === undefined || gem.cluster !== undefined || gem.timer) { return undefined; }
 
       if (
-        gem.rightGem()      && !gem.rightGem().cluster      && gem.rightGem().colour      === gem.colour &&
-        gem.belowGem()      && !gem.belowGem().cluster      && gem.belowGem().colour      === gem.colour &&
-        gem.belowRightGem() && !gem.belowRightGem().cluster && gem.belowRightGem().colour === gem.colour
+        gem.clusterableWith(gem.rightGem()) &&
+        gem.clusterableWith(gem.belowGem()) &&
+        gem.clusterableWith(gem.belowRightGem())
       ) {
         const cluster = new Cluster([
           gem,
@@ -208,6 +210,13 @@ export default class Board {
     }
   }
 
+  countDownTimerGems() {
+    this.data.forEach(gem => {
+      if (!gem) { return; }
+      if (gem.timer > 0) { gem.timer -= 1; }
+    });
+  }
+
   view() {
     const _this = this;
     return [
@@ -223,7 +232,7 @@ export default class Board {
         ]),
         m('.piece-queue',
           this.pieceQueue.map((i,_) => m('.piece', i.map((j,_) => m('.gem', {
-            class: `${j.colour} ${ j.smasher ? 'smasher' : ''}`
+            class: `${j.colour} ${ j.smasher ? 'smasher' : ''} ${ j.timer ? `timer-${j.timer}` : ''}`
           }))))
         ),
         m('.overlay',

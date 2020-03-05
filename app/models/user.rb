@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   has_one :best_sprint, -> { where(mode: Replay.modes[:sprint]).order(time: :asc) }, class_name: 'Replay'
   has_one :best_ultra, -> { where(mode: Replay.modes[:ultra]).order(score: :desc) }, class_name: 'Replay'
+  has_one :best_survival, -> { where(mode: Replay.modes[:survival]).order(time: :desc) }, class_name: 'Replay'
 
 
   def self.best_sprints
@@ -24,5 +25,13 @@ class User < ApplicationRecord
       order('replays.score DESC').
       limit(25).
       map(&:best_ultra).compact
+  end
+
+  def self.best_survivals
+    User.includes(best_survival: :user).
+      where.not(replays: { id: nil}).
+      order('replays.time DESC').
+      limit(25).
+      map(&:best_survival).compact
   end
 end

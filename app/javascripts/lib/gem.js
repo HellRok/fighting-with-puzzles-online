@@ -2,12 +2,13 @@ import { filter } from 'lodash/collection';
 import { offsetPositions } from './helpers';
 
 export default class Gem {
-  constructor(board, x, y, colour, smasher) {
+  constructor(board, x, y, colour, smasher, timer=0) {
     this.board = board;
     this.x = x;
     this.y = y;
     this.colour = colour;
     this.smasher = smasher;
+    this.timer = timer;
     this.toSmash = false;
     this.cluster;
   }
@@ -83,6 +84,9 @@ export default class Gem {
       variantOffset = 10
     }
 
+    if (this.timer) {
+      variantOffset = 11 + (5 - this.timer);
+    }
 
     return [
       variantOffset * 32, colourOffset * 32,
@@ -92,17 +96,35 @@ export default class Gem {
 
   attemptSmash() {
     // If we are a smasher, we must have at least one other gem of the same
-    // colour or we don't smash.
+    // colour that isn't a timer or we don't smash.
     if (
       this.smasher && (
-        (this.leftGem()  && this.leftGem().colour  === this.colour) ||
-        (this.rightGem() && this.rightGem().colour === this.colour) ||
-        (this.belowGem() && this.belowGem().colour === this.colour) ||
-        (this.aboveGem() && this.aboveGem().colour === this.colour)
+        (this.leftGem()  && !this.leftGem().timer  && this.leftGem().colour  === this.colour) ||
+        (this.rightGem() && !this.rightGem().timer && this.rightGem().colour === this.colour) ||
+        (this.belowGem() && !this.belowGem().timer && this.belowGem().colour === this.colour) ||
+        (this.aboveGem() && !this.aboveGem().timer && this.aboveGem().colour === this.colour)
       )
     ) {
       this.smash();
     }
+  }
+
+  canSmash(gem) {
+    // This needs a little explaining, basically there are 4 different concerns here:
+    // 1. Are we actually trying to smash a gem?
+    // 2. Am _I_ a timer gem? (Timer gems can be smashed but don't cascade the effect)
+    // 3. Is the other gem already flagged to be smashed?
+    // 4. Is the other gem the same colour as us?
+    // 5. Are they a timer gem? If so we can smash disregarding colour
+    return (
+      gem &&                         // #1
+      !this.timer &&                 // #2
+      !gem.toSmash &&                // #3
+      (
+        gem.colour === this.colour  || // #4
+        gem.timer                      // #5
+      )
+    );
   }
 
   smash() {
@@ -119,16 +141,16 @@ export default class Gem {
       this.cluster.gems.forEach(gem => gem.cluster = undefined);
     }
 
-    if (this.leftGem() && !this.leftGem().toSmash && this.leftGem().colour === this.colour) {
+    if (this.canSmash(this.leftGem())) {
       this.leftGem().smash();
     }
-    if (this.rightGem() && !this.rightGem().toSmash && this.rightGem().colour === this.colour) {
+    if (this.canSmash(this.rightGem())) {
       this.rightGem().smash();
     }
-    if (this.belowGem() && !this.belowGem().toSmash && this.belowGem().colour === this.colour) {
+    if (this.canSmash(this.belowGem())) {
       this.belowGem().smash();
     }
-    if (this.aboveGem() && !this.aboveGem().toSmash && this.aboveGem().colour === this.colour) {
+    if (this.canSmash(this.aboveGem())) {
       this.aboveGem().smash();
     }
 
@@ -168,6 +190,10 @@ export default class Gem {
       gem === undefined ||
       gem && gem.cluster !== this.cluster
     );
+  }
+
+  clusterableWith(gem) {
+    return (!!gem && !gem.cluster && !gem.timer && gem.colour === this.colour);
   }
 
   leftGem() {
