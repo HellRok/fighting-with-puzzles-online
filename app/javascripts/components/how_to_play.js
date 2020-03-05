@@ -79,6 +79,42 @@ export default {
             m('tr', [m('td', 'Purple'), m('td', m('.gem.purple')), m('td', m('.gem.purple.smasher')), m('td', m('.gem.purple.timer-5'))]),
           ])
         ]),
+        m('p', `There is also the timer blocks which are sent to you in
+          survival mode and when playing against another player. The will count
+          down each time you place a piece until they turn into normal gems. You
+          can clear them early by smashing blocks next to them though. You can
+          see in the example below that it will smash the timer gems next to
+          the smashed gems, but not cascade.`),
+        m('.board-example', [
+          m('div', [
+            m('.gem.red.timer-1'),
+            m('.gem.blue.timer-1'),
+          ]),
+          m('div', [
+            m('.gem.red.timer-5'),
+            m('.gem.blue.timer-5'),
+            m('.gem.red.smasher'),
+          ]),
+          m('div', [
+            m('.gem.red.timer-5'),
+            m('.gem.red.timer-5'),
+            m('.gem.red'),
+          ]),
+        ]),
+
+        m('p', 'becomes'),
+        m('.board-example', [
+          m('div', [
+            m('.gem.red'),
+          ]),
+          m('div', [
+            m('.gem.red.timer-4'),
+          ]),
+          m('div', [
+            m('.gem.red.timer-4'),
+            m('.gem.blue'),
+          ]),
+        ]),
 
         m('h4#gameplay-clusters', 'Clusters'),
         m('p', `A cluster occurs when you make a rectangle of a solid colour,
@@ -158,9 +194,10 @@ export default {
 
         m('h4#gameplay-modes', 'Modes'),
         m('p', [
-          'There are currently two modes:', m('br'),
+          'There are currently three modes:', m('br'),
           m('strong', 'Sprint:'), ' Clear 140 gems as quickly as you can, speed is the only thing that matters here.', m('br'),
-          m('strong', 'Ultra:'), ' You have 3 minutes to score as high as possible, use clusters and chains to maximise your scoring.',
+          m('strong', 'Ultra:'), ' You have 3 minutes to score as high as possible, use clusters and chains to maximise your scoring.', m('br'),
+          m('strong', 'Survival:'), ' You need to stay alive against an increasing torrent of garbage gems as long as you can.',
         ]),
       ]),
     ]);
