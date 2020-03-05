@@ -44,6 +44,7 @@ export default class Sprint extends Player {
     this.nextDumpAt -= delta;
 
     if (this.nextDumpAt <= 0) {
+      this.recorder.addMove('dump');
       this.queueGarbage(
         this.dumpMultiplier,
         this.dropPattern

@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { filter } from 'lodash/collection';
+import { min } from 'lodash/math';
 
 import Player from '../player';
 import Gem from '../gem';
@@ -63,6 +64,7 @@ export default class BaseReplayer extends Player {
       case 'softDrop': this.softDrop(); break;
       case 'gravity': this.gravity(delta); break;
       case 'gravityLock': this.lock(); break;
+      case 'dump': this.dump(); break;
       case 'queueGarbage': this.queueGarbage(move.options.column, move.options.colour); break;
       case 'spawnGarbage': this.spawnGarbage(); break;
       case 'win': this.win(move.timestamp); break;
@@ -80,6 +82,12 @@ export default class BaseReplayer extends Player {
 
   gravity(delta) {
     this.moveActivePieceDown();
+  }
+
+  dump() {
+    this.nextDumpAt = 5000 + (1000 * this.dumpMultiplier);
+    this.dumpTotal += 1;
+    this.dumpMultiplier = min([this.dumpTotal * 2, 24]);
   }
 
   queueGarbage(column, colour) {

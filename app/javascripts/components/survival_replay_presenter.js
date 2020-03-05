@@ -27,6 +27,7 @@ export default class SurvivalReplayPresenter {
       m('h2', 'Survival Replay'),
       m(this.replayBoard),
       m('.stats', [
+        m('.next-dump', '2 garbage in 00:05.000'),
         m('.time', 'Time: ', m('span.value', displayMilliseconds(this.replayBoard.stats.runningTime))),
         m('.score', `Score: ${displayScore(this.replayBoard.stats.score)}`),
       ]),
