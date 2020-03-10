@@ -11,11 +11,11 @@ class User < ApplicationRecord
   has_one :best_survival, -> { where(mode: Replay.modes[:survival]).order(time: :desc) }, class_name: 'Replay'
 
 
+  # TODO: Come back and fix this properly, it currently will load a _lot_ of stuff
   def self.best_sprints
     User.includes(best_sprint: :user).
       where.not(replays: { id: nil}).
       order('replays.time ASC').
-      limit(25).
       map(&:best_sprint).compact
   end
 
@@ -23,7 +23,6 @@ class User < ApplicationRecord
     User.includes(best_ultra: :user).
       where.not(replays: { id: nil}).
       order('replays.score DESC').
-      limit(25).
       map(&:best_ultra).compact
   end
 
@@ -31,7 +30,6 @@ class User < ApplicationRecord
     User.includes(best_survival: :user).
       where.not(replays: { id: nil}).
       order('replays.time DESC').
-      limit(25).
       map(&:best_survival).compact
   end
 end
