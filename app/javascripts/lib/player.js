@@ -30,6 +30,7 @@ export default class Player {
       lastRenderLoopTimestamp: timestamp(),
       gravityTotal:            0,
       lockdelayTotal:          0,
+      locking:                 false,
       alive:                   false,
       toBeDestroyed:           false,
     }
@@ -414,6 +415,7 @@ export default class Player {
     this.gravityTotal += delta;
     if (this.playerBoard.isClear(offsetPositions(this.playerBoard.activePiece, [0, -1]))) {
       this.state.lockdelayTotal = 0;
+      this.state.locking = false;
       this.lockdelayElement.style.width = '100%';
       if ((this.gravityTotal) > this.gravityTimeout) {
         this.recorder.addMove('gravity');
@@ -433,6 +435,11 @@ export default class Player {
     this.state.lockdelayTotal += delta;
 
     if (this.state.lockdelayTotal >= this.lockdelayMax) { this.lock(); }
+
+    if (!this.state.locking) {
+      this.gravityTotal = delta;
+      this.state.locking = true;
+    }
 
     this.lockdelayElement.style.width = `${100 - this.gravityTotal / this.lockdelayTimeout * 100}%`;
     if (this.gravityTotal > this.lockdelayTimeout) {
