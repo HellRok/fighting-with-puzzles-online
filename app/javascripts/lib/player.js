@@ -454,18 +454,19 @@ export default class Player {
       gem.gravity();
     });
 
+    this.playerBoard.update();
+    this.spawnGarbage();
+
+    Audio.lock.play();
+
     if (
       this.playerBoard.getSquare(2, this.playerBoard.height - 1) ||
       this.playerBoard.getSquare(3, this.playerBoard.height - 1)
     ) {
       this.lose(this.playerBoard.stats.runningTime);
+    } else {
+      this.playerBoard.activePiece = this.nextPiece();
     }
-
-    Audio.lock.play();
-
-    this.playerBoard.activePiece = this.nextPiece();
-    this.playerBoard.update();
-    this.spawnGarbage();
   }
 
   queueGarbage(damage, dropPattern) {

@@ -9,7 +9,6 @@
 ## Bugs:
 
  * Leaderboard doesn't show all replays (This needs a proper fix)
- * When clearing out the 3x12 and 4x12 the game thinks you lose when you shouldn't
  * Lockdelay when initialized late in the gravity turn locks immediately, it
    should start fresh
 
