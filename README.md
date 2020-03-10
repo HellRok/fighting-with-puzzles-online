@@ -9,8 +9,6 @@
 ## Bugs:
 
  * Leaderboard doesn't show all replays (This needs a proper fix)
- * Lockdelay when initialized late in the gravity turn locks immediately, it
-   should start fresh
 
 ## DEV:
 
