@@ -17,7 +17,11 @@ export default class SurvivalPresenter {
     this.player = new Survival(this.playerBoard);
     this.player.gameLoop();
     this.player.renderLoop();
-    this.playerBoard.overlay = `Press ${keyboardMap[Settings.keys.restart]} to start.`;
+    if (Settings.site.displayMobileControls) {
+      this.playerBoard.overlay = m.trust(`Press <span class="icon-restart"></span> to start.`);
+    } else {
+      this.playerBoard.overlay = `Press ${keyboardMap[Settings.keys.restart]} to start.`;
+    }
   }
 
   onremove() {

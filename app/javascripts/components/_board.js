@@ -3,6 +3,7 @@ import { filter, sample, some, uniq } from 'lodash/collection';
 import { min, max } from 'lodash/math';
 import { range } from 'lodash/util';
 
+import MobileControls from './_mobile_controls';
 import Cluster from '../lib/cluster';
 import Gem from '../lib/gem';
 import Settings from '../lib/settings';
@@ -220,6 +221,7 @@ export default class Board {
   view() {
     const _this = this;
     return [
+      m(MobileControls),
       m('.board-container', [
         m('.board-wrapper', {
         }, [

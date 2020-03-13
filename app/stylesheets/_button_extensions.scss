@@ -1,0 +1,13 @@
+.button {
+  &.success {
+    color: $color-success;
+    background: lighten($color-success, 30%);
+    border: 1px solid $color-success;
+  }
+
+  &.warning {
+    color: $color-warning;
+    background: lighten($color-warning, 30%);
+    border: 1px solid $color-warning;
+  }
+}

@@ -1,3 +1,4 @@
+import m from 'mithril';
 import { sortBy } from 'lodash/collection';
 import { min, max } from 'lodash/math';
 
@@ -5,7 +6,7 @@ import Gem from './gem';
 import Settings from './settings';
 import Audio from './audio';
 import RandomPieceGenerator from './piece_generators/random_piece_generator';
-import { timestamp, offsetPositions } from './helpers';
+import { timestamp, offsetPositions, keyboardMap } from './helpers';
 
 export default class Player {
   constructor(playerBoard, boards=[]) {
@@ -524,6 +525,16 @@ export default class Player {
 
   lose() {
     this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
+    this.recorder.addMove('lose');
+    this.state.alive = false;
+    this.playerBoard.overlay = m.trust(`
+      Oh no, you topped out!</br>
+      Press
+      ${Settings.site.displayMobileControls ?
+          '<span class="icon-restart"></span>' : keyboardMap[Settings.keys.restart]}
+      to restart.
+    `);
+    m.redraw();
     Audio.lose.play();
   }
 

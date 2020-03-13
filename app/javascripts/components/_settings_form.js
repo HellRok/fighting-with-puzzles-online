@@ -7,6 +7,7 @@ import { keyboardMap } from '../lib/helpers';
 export default class SettingsForm {
   constructor() {
     this.unsaved = {};
+    this.unsaved.site = { ...Settings.site };
     this.unsaved.keys = { ...Settings.keys };
     this.unsaved.game = { ...Settings.game };
   }
@@ -15,8 +16,17 @@ export default class SettingsForm {
     this.unsaved.game.volume = document.querySelector('.settings-form #volume').value;
     this.unsaved.game.das = document.querySelector('.settings-form #das').value;
     this.unsaved.game.arr = document.querySelector('.settings-form #arr').value;
+    this.unsaved.site.displayMobileControls = document.querySelector('.settings-form #displayMobileControls').checked ? 1 : 0;
     Settings.save(this.unsaved);
     Audio.setVolume(Settings.game.volume);
+    m.redraw();
+  }
+
+  resetDefaults() {
+    if (confirm("This  will wipe all your settings and refresh the page, are you sure?")) {
+      Settings.resetDefaults();
+      window.location = window.location;
+    }
   }
 
   oncreate() {
@@ -51,8 +61,10 @@ export default class SettingsForm {
               vnode.attrs.nav.showSettings = false;
             } }, 'Save'),
           ]),
+
           m('.fieldset', [
             m('h2', 'Game'),
+
             m('label', { for: 'volume' }, 'Volume %'),
             m('input#volume.game', {
               type: 'number',
@@ -63,6 +75,16 @@ export default class SettingsForm {
               'data-setting': 'volume',
               value: this.unsaved.game.volume,
             }),
+
+            m('label', { for: 'displayMobileControls' }, 'Use Mobile Controls'),
+            m('input#displayMobileControls.', {
+              type: 'checkbox',
+              checked: this.unsaved.site.displayMobileControls,
+              'data-group': 'site',
+              'data-setting': 'displayMobileControls',
+              value: 1,
+            }),
+
             m('label', { for: 'das' }, 'Delayed Auto-Shift (DAS)'),
             m('input#das.game', {
               type: 'text',
@@ -70,6 +92,7 @@ export default class SettingsForm {
               'data-setting': 'das',
               value: this.unsaved.game.das,
             }),
+
             m('label', { for: 'arr' }, 'Auto-Repeat Rate (ARR)'),
             m('input#arr.game', {
               type: 'text',
@@ -77,7 +100,9 @@ export default class SettingsForm {
               'data-setting': 'arr',
               value: this.unsaved.game.arr,
             }),
+
             m('h2', 'Controls'),
+
             m('label', { for: 'restart' }, 'Start/Restart'),
             m('input#restart.key', {
               type: 'text',
@@ -85,6 +110,7 @@ export default class SettingsForm {
               'data-setting': 'restart',
               value: keyboardMap[this.unsaved.keys.restart],
             }),
+
             m('label', { for: 'left' }, 'Move Left'),
             m('input#left.key', {
               type: 'text',
@@ -92,6 +118,7 @@ export default class SettingsForm {
               'data-setting': 'left',
               value: keyboardMap[this.unsaved.keys.left],
             }),
+
             m('label', { for: 'right' }, 'Move Right'),
             m('input#right.key', {
               type: 'text',
@@ -99,6 +126,7 @@ export default class SettingsForm {
               'data-setting': 'right',
               value: keyboardMap[this.unsaved.keys.right],
             }),
+
             m('label', { for: 'hardDrop' }, 'Hard Drop'),
             m('input#hardDrop.key', {
               type: 'text',
@@ -106,6 +134,7 @@ export default class SettingsForm {
               'data-setting': 'hardDrop',
               value: keyboardMap[this.unsaved.keys.hardDrop],
             }),
+
             m('label', { for: 'softDrop' }, 'Soft Drop'),
             m('input#softDrop.key', {
               type: 'text',
@@ -113,6 +142,7 @@ export default class SettingsForm {
               'data-setting': 'softDrop',
               value: keyboardMap[this.unsaved.keys.softDrop],
             }),
+
             m('label', { for: 'cw' }, 'Rotate Clockwise'),
             m('input#cw.key', {
               type: 'text',
@@ -120,6 +150,7 @@ export default class SettingsForm {
               'data-setting': 'cw',
               value: keyboardMap[this.unsaved.keys.cw],
             }),
+
             m('label', { for: 'ccw' }, 'Rotate Counter-Clockwise'),
             m('input#ccw.key', {
               type: 'text',
@@ -127,6 +158,7 @@ export default class SettingsForm {
               'data-setting': 'ccw',
               value: keyboardMap[this.unsaved.keys.ccw],
             }),
+
             m('label', { for: 'switch' }, 'Switch Pieces'),
             m('input#switch.key', {
               type: 'text',
@@ -134,8 +166,10 @@ export default class SettingsForm {
               'data-setting': 'switch',
               value: keyboardMap[this.unsaved.keys.switch],
             }),
+
+            m('.button.warning.width-100', { onclick: this.resetDefaults }, 'Reset Defaults'),
           ]),
-      ]),
+        ]),
     ];
   }
 }

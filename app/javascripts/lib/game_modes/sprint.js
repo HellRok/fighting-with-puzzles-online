@@ -38,17 +38,6 @@ export default class Sprint extends Player {
     this.restart();
   }
 
-  lose(time) {
-    super.lose(time);
-    this.recorder.addMove('lose');
-    this.state.alive = false;
-    this.playerBoard.overlay = m.trust(`
-      Oh no, you topped out!</br>
-      Press ${keyboardMap[Settings.keys.restart]} to restart.
-    `);
-    m.redraw();
-  };
-
   win(time) {
     super.win(time);
     this.recorder.addMove('win');

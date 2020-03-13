@@ -1,0 +1,10 @@
+.mobile-input {
+  position: fixed;
+  z-index: 3;
+  display: inline-block;
+  font-size: 3rem;
+  padding: 1rem;
+  background: $color-tertiary;
+  border: 0.1rem solid $color-quaternary;
+  opacity: 0.5;
+}
