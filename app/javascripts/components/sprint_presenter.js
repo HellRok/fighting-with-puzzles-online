@@ -36,8 +36,14 @@ export default class SprintPresenter {
         CurrentUser.isPresent() ?
           CurrentUser.data.bests.sprint ?
           [
-            m('div', `Personal Best: ${displayMilliseconds(CurrentUser.data.bests.sprint.time)}`),
-            m(m.route.Link, { href: `/sprint/replay/${CurrentUser.data.bests.sprint.id}`, class: 'best-replay' }, 'Replay'),
+            m('div', [
+              'Personal Best:',
+              m(
+                m.route.Link,
+                { href: `/sprint/replay/${CurrentUser.data.bests.sprint.id}`, class: 'best-replay' },
+                displayMilliseconds(CurrentUser.data.bests.sprint.time),
+              ),
+            ])
           ] :
           m('p', "You haven't played this mode yet! Play a game to get a best time.") :
         m('p', "You must be logged in to have a best time.")

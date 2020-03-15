@@ -36,8 +36,14 @@ export default class SurvivalPresenter {
         CurrentUser.isPresent() ?
           CurrentUser.data.bests.survival ?
           [
-            m('div', `Personal Best: ${displayMilliseconds(CurrentUser.data.bests.survival.time)}`),
-            m(m.route.Link, { href: `/survival/replay/${CurrentUser.data.bests.survival.id}`, class: 'best-replay' }, 'Replay'),
+            m('div', [
+              'Personal Best:',
+              m(
+                m.route.Link,
+                { href: `/survival/replay/${CurrentUser.data.bests.survival.id}`, class: 'best-replay' },
+                displayMilliseconds(CurrentUser.data.bests.survival.time),
+              )
+            ])
           ] :
           m('p', "You haven't played this mode yet! Play a game to get a best time.") :
         m('p', "You must be logged in to have a best time.")

@@ -37,8 +37,14 @@ export default class UltraPresenter {
         CurrentUser.isPresent() ?
           CurrentUser.data.bests.ultra ?
           [
-            m('div', `Personal Best: ${displayScore(CurrentUser.data.bests.ultra.score)}`),
-            m(m.route.Link, { href: `/ultra/replay/${CurrentUser.data.bests.ultra.id}`, class: 'best-replay' }, 'Replay'),
+            m('div', [
+              'Personal Best:',
+              m(
+                m.route.Link,
+                { href: `/ultra/replay/${CurrentUser.data.bests.ultra.id}`, class: 'best-replay' },
+                displayScore(CurrentUser.data.bests.ultra.score),
+              )
+            ])
           ] :
           m('p', "You haven't played this mode yet! Play a game to get a best score.") :
         m('p', "You must be logged in to have a best score.")
