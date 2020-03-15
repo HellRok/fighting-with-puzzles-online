@@ -23,8 +23,11 @@ export default class Player {
     this.lockdelayElement = document.querySelector('.lockdelay-progress');
 
     const _this = this;
-    this.keyDownEvent = document.addEventListener('keydown', (e) => { _this.keyDown(e) }, false);
-    this.keyUpEvent   = document.addEventListener('keyup',   (e) => { _this.keyUp(e) },   false);
+    this.keyDownEvent = (e) => { _this.keyDown(e) };
+    document.addEventListener('keydown', this.keyDownEvent, false);
+    this.keyUpEvent = (e) => { _this.keyUp(e) }
+    document.addEventListener('keyup', this.keyUpEvent, false);
+
     this.resetKeystate();
     this.state = {
       lastGameLoopTimestamp:   timestamp(),
@@ -66,6 +69,8 @@ export default class Player {
 
   destroy() {
     this.state.toBeDestroyed = true;
+    document.removeEventListener('keydown', this.keyDownEvent);
+    document.removeEventListener('keyup', this.keyUpEvent);
   }
 
   gameLoop() {
@@ -265,6 +270,11 @@ export default class Player {
   }
 
   keyDown(event) {
+    // We only care to catch the key presses for our game
+    if (Object.values(Settings.keys).indexOf(event.keyCode) > -1) {
+      event.preventDefault();
+    }
+
     if (event.keyCode === Settings.keys.restart && !this.keyState.restart) {
       this.keyState.restart = true;
       this.keyState.restartHandled = false;
