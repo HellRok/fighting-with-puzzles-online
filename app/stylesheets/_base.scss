@@ -1,7 +1,16 @@
 .content {
-  margin-left: auto;
-  margin-right: auto;
   padding: 0.5rem;
+  transition: margin-right 0.25s;
+
+  @media screen and (min-width: 1024px) {
+    &.sidebar-shown {
+      margin-right: $sidebar-width;
+    }
+
+    &.sidebar-hidden {
+      margin-right: 0px;
+    }
+  }
 }
 
 .max-width-960 {

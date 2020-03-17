@@ -9,22 +9,19 @@ import CurrentUser from '../lib/current_user';
 import Api from '../lib/api';
 import UserModel from '../lib/models/user_model';
 
-export default class Nav {
-  constructor() {
-    this.showSidebar = isBigScreen();
-    this.showSettings = false;
-  }
+const Nav = {
+  showSidebar: isBigScreen(),
+  showSettings: false,
 
-  toggle() {
+  toggle: function() {
     this.showSidebar = !this.showSidebar;
-  }
+  },
 
-  toggleSettings() {
+  toggleSettings: function() {
     this.showSettings = !this.showSettings;
-  }
+  },
 
   view() {
-    const _this = this;
     return [
       m('nav', [
         m('.content', [
@@ -36,50 +33,34 @@ export default class Nav {
           m('.icons', [
             m('.toggle-settings.icon-cog-alt',
               {
-                title: this.showSettings ? 'Close the settings' : 'Open the settings',
-                onclick: () => _this.toggleSettings(),
+                title: Nav.showSettings ? 'Close the settings' : 'Open the settings',
+                onclick: () => Nav.toggleSettings(),
               }),
             m('.toggle-sidebar',
               {
-                class: this.showSidebar ? 'icon-cancel' : 'icon-menu',
-                title: this.showSidebar ? 'Close the sidebar' : 'Open the sidebar',
-                onclick: () => _this.toggle(),
+                class: Nav.showSidebar ? 'icon-cancel' : 'icon-menu',
+                title: Nav.showSidebar ? 'Close the sidebar' : 'Open the sidebar',
+                onclick: () => Nav.toggle(),
               }),
           ]),
         ])
       ]),
       m('.sidebar', {
-        class: (this.showSidebar ? 'shown' : 'hidden'),
+        class: (Nav.showSidebar ? 'shown' : 'hidden'),
       }, [
-        m(SidebarLink, {
-          href: '/', sidebar: this,
-        }, 'Home'),
+        m(SidebarLink, { href: '/', }, 'Home'),
 
           CurrentUser.data.id ? [
-            m(SidebarLink, {
-              href: `/users/${CurrentUser.data.id}`, sidebar: this,
-            }, CurrentUser.data.username),
+            m(SidebarLink, { href: `/users/${CurrentUser.data.id}`, }, CurrentUser.data.username),
           ] : [
-            m(SidebarLink, {
-              href: `/login`, sidebar: this,
-            }, 'Login'),
-            m(SidebarLink, {
-              href: `/register`, sidebar: this,
-            }, 'Register'),
+            m(SidebarLink, { href: `/login`, }, 'Login'),
+            m(SidebarLink, { href: `/register`, }, 'Register'),
           ],
 
-          m(SidebarLink, {
-            href: '/sprint', sidebar: this,
-          }, 'Sprint'),
-          m(SidebarLink, {
-            href: '/ultra', sidebar: this,
-          }, 'Ultra'),
-          m(SidebarLink, {
-            href: '/survival', sidebar: this,
-          }, 'Survival'),
-          m(SidebarLink, {
-            href: '/leader_board', sidebar: this,
-          }, 'Leader Board'),
+          m(SidebarLink, { href: '/sprint', }, 'Sprint'),
+          m(SidebarLink, { href: '/ultra', }, 'Ultra'),
+          m(SidebarLink, { href: '/survival', }, 'Survival'),
+          m(SidebarLink, { href: '/leader_board', }, 'Leader Board'),
 
           CurrentUser.data.id ? [
             m(m.route.Link, {
@@ -87,24 +68,23 @@ export default class Nav {
               href: '/',
               onclick: function(e) {
                 CurrentUser.logout();
-                if (!isBigScreen()) { _this.toggle(); }
+                if (!isBigScreen()) { Nav.toggle(); }
               }
             }, 'Logout')
           ] : '',
-          m(SidebarLink, {
-            href: '/how_to_play', sidebar: this,
-          }, 'How to Play'),
+          m(SidebarLink, { href: '/how_to_play', }, 'How to Play'),
         ]),
       m(SettingsForm,
         {
           extraClass: `
-            ${this.showSidebar ? 'double' : ''}
-            ${this.showSettings ? 'shown' : 'hidden'}
+            ${Nav.showSidebar ? 'double' : ''}
+            ${Nav.showSettings ? 'shown' : 'hidden'}
           `,
-          nav: this,
         }
       ),
       m(FlashManager),
     ];
   }
 };
+
+export default Nav;

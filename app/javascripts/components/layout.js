@@ -1,5 +1,6 @@
 import m from 'mithril';
 
+import Nav from './nav';
 import Settings from '../lib/settings';
 import Audio from '../lib/audio';
 
@@ -13,7 +14,7 @@ export default class Layout {
 
   view(vnode) {
     return [
-      m('.content', [
+      m(`.content${ Nav.showSidebar ? '.sidebar-shown' : '.sidbar-hidden' }`, [
         (Settings.site.beenHereBefore ? '' : m(m.route.Link,
           {
             href: '/how_to_play',

@@ -23,7 +23,7 @@ nav {
 .sidebar {
   position: fixed;
   top: 0;
-  width: 300px;
+  width: $sidebar-width;
   height: 100vh;
   padding-top: 42px;
   background: $color-tertiary;
@@ -33,7 +33,7 @@ nav {
   transition: right 0.1s;
 
   &.shown  { right: 0; }
-  &.hidden { right: -300px; }
+  &.hidden { right: -$sidebar-width; }
 
   .sidebar-link {
     display: inline-block;
@@ -49,7 +49,7 @@ nav {
 .settings-form {
   position: fixed;
   top: 0;
-  width: 300px;
+  width: $sidebar-width;
   height: 100vh;
   padding: 42px 0 0 0;
   background: white;
@@ -60,7 +60,7 @@ nav {
 
   .header {
     position: fixed;
-    width: 300px;
+    width: $sidebar-width;
     padding: 10px 10px 0 0;
     margin: 0;
     background: $color-tertiary;
@@ -75,11 +75,11 @@ nav {
   &.shown  {
     right: 0;
     &.double {
-      right: 300px;
+      right: $sidebar-width;
     }
   }
   &.hidden {
-    right: -300px;
+    right: -$sidebar-width;
     &.double {
       right: 0;
     }

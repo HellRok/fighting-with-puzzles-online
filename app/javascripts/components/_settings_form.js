@@ -1,5 +1,6 @@
 import m from 'mithril';
 
+import Nav from './nav';
 import Settings from '../lib/settings';
 import Audio from '../lib/audio';
 import { keyboardMap } from '../lib/helpers';
@@ -53,12 +54,12 @@ export default class SettingsForm {
           m('.header', [
             m('button.button-outline', { onclick: (e) => {
               e.preventDefault();
-              vnode.attrs.nav.showSettings = false;
+              Nav.showSettings = false;
             } }, 'Close'),
             m('button', { onclick: (e) => {
               e.preventDefault();
               _this.save();
-              vnode.attrs.nav.showSettings = false;
+              Nav.showSettings = false;
             } }, 'Save'),
           ]),
 

@@ -19,6 +19,7 @@
 @import 'milligram/Utility';
 
 // My stuff
+@import 'variables'; // Must come first
 @import 'base';
 @import 'button_extensions';
 @import 'board';
