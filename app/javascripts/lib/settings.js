@@ -51,17 +51,17 @@ export default {
     this.site.displayMobileControls = toSave.site.displayMobileControls;
 
     localStorage.setItem('site.displayMobileControls', toSave.site.displayMobileControls);
-    localStorage.setItem('keys.restart',               toSave.keys.restart);
-    localStorage.setItem('keys.left',                  toSave.keys.left);
-    localStorage.setItem('keys.right',                 toSave.keys.right);
-    localStorage.setItem('keys.hardDrop',              toSave.keys.hardDrop);
-    localStorage.setItem('keys.softDrop',              toSave.keys.softDrop);
-    localStorage.setItem('keys.ccw',                   toSave.keys.ccw);
-    localStorage.setItem('keys.cw',                    toSave.keys.cw);
-    localStorage.setItem('keys.switch',                toSave.keys.switch);
-    localStorage.setItem('game.volume',                toSave.game.volume);
-    localStorage.setItem('game.das',                   toSave.game.das);
-    localStorage.setItem('game.arr',                   toSave.game.arr);
+    if (toSave.keys.restart)  { localStorage.setItem('keys.restart',               toSave.keys.restart); }
+    if (toSave.keys.left)     { localStorage.setItem('keys.left',                  toSave.keys.left); }
+    if (toSave.keys.right)    { localStorage.setItem('keys.right',                 toSave.keys.right); }
+    if (toSave.keys.hardDrop) { localStorage.setItem('keys.hardDrop',              toSave.keys.hardDrop); }
+    if (toSave.keys.softDrop) { localStorage.setItem('keys.softDrop',              toSave.keys.softDrop); }
+    if (toSave.keys.ccw)      { localStorage.setItem('keys.ccw',                   toSave.keys.ccw); }
+    if (toSave.keys.cw)       { localStorage.setItem('keys.cw',                    toSave.keys.cw); }
+    if (toSave.keys.switch)   { localStorage.setItem('keys.switch',                toSave.keys.switch); }
+    if (toSave.game.volume)   { localStorage.setItem('game.volume',                toSave.game.volume); }
+    if (toSave.game.das)      { localStorage.setItem('game.das',                   toSave.game.das); }
+    if (toSave.game.arr)      { localStorage.setItem('game.arr',                   toSave.game.arr); }
 
     this.populateFrom(toSave);
 

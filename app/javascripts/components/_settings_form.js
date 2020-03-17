@@ -7,7 +7,7 @@ import { keyboardMap } from '../lib/helpers';
 
 export default class SettingsForm {
   constructor() {
-    this.unsaved = { site: {}, keys: {}, game: {} };
+    this.resetUnsaved();
   }
 
   save() {
@@ -16,8 +16,13 @@ export default class SettingsForm {
     this.unsaved.game.arr = document.querySelector('.settings-form #arr').value;
     this.unsaved.site.displayMobileControls = document.querySelector('.settings-form #displayMobileControls').checked ? 1 : 0;
     Settings.save(this.unsaved);
+    this.resetUnsaved();
     Audio.setVolume(Settings.game.volume);
     m.redraw();
+  }
+
+  resetUnsaved() {
+    this.unsaved = { site: {}, keys: {}, game: {} };
   }
 
   valueFor(group, key) {
@@ -27,6 +32,7 @@ export default class SettingsForm {
   resetDefaults() {
     if (confirm("This  will wipe all your settings, are you sure?")) {
       Settings.resetDefaults();
+      this.resetUnsaved();
       Nav.showSettings = false;
       m.redraw();
     }
@@ -56,6 +62,7 @@ export default class SettingsForm {
           m('.header', [
             m('button.button-outline', { onclick: (e) => {
               e.preventDefault();
+              _this.resetUnsaved();
               Nav.showSettings = false;
             } }, 'Close'),
             m('button', { onclick: (e) => {
@@ -170,7 +177,7 @@ export default class SettingsForm {
               value: keyboardMap[this.valueFor('keys', 'switch')],
             }),
 
-            m('.button.warning.width-100', { onclick: this.resetDefaults }, 'Reset Defaults'),
+            m('.button.warning.width-100', { onclick: () => _this.resetDefaults() }, 'Reset Defaults'),
           ]),
         ]),
     ];
