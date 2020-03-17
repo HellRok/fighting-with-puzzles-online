@@ -51,10 +51,10 @@ const Nav = {
         m(SidebarLink, { href: '/', }, 'Home'),
 
           CurrentUser.data.id ? [
-            m(SidebarLink, { href: `/users/${CurrentUser.data.id}`, }, CurrentUser.data.username),
+            m(SidebarLink, { href: `/profile/${CurrentUser.data.id}`, }, CurrentUser.data.username),
           ] : [
-            m(SidebarLink, { href: `/login`, }, 'Login'),
-            m(SidebarLink, { href: `/register`, }, 'Register'),
+            m(SidebarLink, { href: '/login', }, 'Login'),
+            m(SidebarLink, { href: '/register', }, 'Register'),
           ],
 
           m(SidebarLink, { href: '/sprint', }, 'Sprint'),

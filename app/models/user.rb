@@ -1,14 +1,18 @@
 class User < ApplicationRecord
   has_secure_password
   has_secure_token
+  serialize :settings
 
   validates_uniqueness_of :username
 
   has_many :replays
 
   has_one :best_sprint, -> { where(mode: Replay.modes[:sprint]).order(time: :asc) }, class_name: 'Replay'
+  has_many :best_sprints, -> { where(mode: Replay.modes[:sprint]).order(time: :asc).limit(10) }, class_name: 'Replay'
   has_one :best_ultra, -> { where(mode: Replay.modes[:ultra]).order(score: :desc) }, class_name: 'Replay'
+  has_many :best_ultras, -> { where(mode: Replay.modes[:ultra]).order(score: :desc).limit(10) }, class_name: 'Replay'
   has_one :best_survival, -> { where(mode: Replay.modes[:survival]).order(time: :desc) }, class_name: 'Replay'
+  has_many :best_survivals, -> { where(mode: Replay.modes[:survival]).order(time: :desc).limit(10) }, class_name: 'Replay'
 
 
   # TODO: Come back and fix this properly, it currently will load a _lot_ of stuff

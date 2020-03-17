@@ -3,9 +3,15 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, only: [:index, :show, :create]
-      resources :sessions, only: [:index, :create]
-      resources :replays do
+      resources :users, only: [:index, :show, :create] do
+        resources :replays, shallow: true, only: :index do
+          collection do
+            get :leader_board
+          end
+        end
+      end
+      resource :sessions, only: [:show, :create, :update]
+      resources :replays, only: [:index, :show, :create] do
         collection do
           get :leader_board
         end

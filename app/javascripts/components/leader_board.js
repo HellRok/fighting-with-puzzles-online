@@ -1,7 +1,7 @@
 import m from 'mithril';
 
 import Layout from './layout';
-import { displayMilliseconds, displayScore, replayVersion } from '../lib/helpers';
+import ReplaysTable from './_replays_table';
 
 import Api from '../lib/api';
 import CurrentUser from '../lib/current_user';
@@ -26,66 +26,11 @@ export default class LeaderBoard {
     return m(Layout, [
       m('h2.text-centre', 'Leader Board'),
 
-      m('h3.text-centre', 'Sprints'),
-      m('table.max-width-960', [
-        m('thead', m('tr', [
-          m('th', 'Place'),
-          m('th', 'User'),
-          m('th', 'Version'),
-          m('th', 'Time'),
-        ])),
-        m('tbody',
-          this.sprints.map((replay, place) => m('tr', [
-            m('td', place + 1),
-            m('td', replay.user.username),
-            m('td', replay.version),
-            (replay.version === replayVersion() ?
-              m('td', m(m.route.Link, { href: `/sprint/replay/${replay.id}` }, displayMilliseconds(replay.time))) :
-              m('td', { title: "Can't play old replays" }, displayMilliseconds(replay.time))),
-          ]))
-        ),
-      ]),
-
-      m('h3.text-centre', 'Ultras'),
-      m('table.max-width-960', [
-        m('thead', m('tr', [
-          m('th', 'Place'),
-          m('th', 'User'),
-          m('th', 'Version'),
-          m('th', 'Score'),
-        ])),
-        m('tbody',
-          this.ultras.map((replay, place) => m('tr', [
-            m('td', place + 1),
-            m('td', replay.user.username),
-            m('td', replay.version),
-            (replay.version === replayVersion() ?
-              m('td', m(m.route.Link, { href: `/ultra/replay/${replay.id}` }, displayScore(replay.score))) :
-              m('td', { title: "Can't play old replays" }, displayScore(replay.score))),
-          ]))
-        ),
-      ]),
-
-      m('h3.text-centre', 'Survivals'),
-      m('table.max-width-960', [
-        m('thead', m('tr', [
-          m('th', 'Place'),
-          m('th', 'User'),
-          m('th', 'Version'),
-          m('th', 'Time'),
-        ])),
-        m('tbody',
-          this.survivals.map((replay, place) => m('tr', [
-            m('td', place + 1),
-            m('td', replay.user.username),
-            m('td', replay.version),
-            (replay.version === replayVersion() ?
-              m('td', m(m.route.Link, { href: `/survival/replay/${replay.id}` }, displayMilliseconds(replay.time))) :
-              m('td', { title: "Can't play old replays" }, displayMilliseconds(replay.time))),
-          ]))
-        ),
-      ]),
-
+      m(ReplaysTable, {
+        sprints: this.sprints,
+        ultras: this.ultras,
+        survivals: this.survivals,
+      }),
     ]);
   }
 };

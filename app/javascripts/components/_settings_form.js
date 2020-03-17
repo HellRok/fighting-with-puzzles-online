@@ -7,10 +7,7 @@ import { keyboardMap } from '../lib/helpers';
 
 export default class SettingsForm {
   constructor() {
-    this.unsaved = {};
-    this.unsaved.site = { ...Settings.site };
-    this.unsaved.keys = { ...Settings.keys };
-    this.unsaved.game = { ...Settings.game };
+    this.unsaved = { site: {}, keys: {}, game: {} };
   }
 
   save() {
@@ -23,10 +20,15 @@ export default class SettingsForm {
     m.redraw();
   }
 
+  valueFor(group, key) {
+    return this.unsaved[group][key] || Settings[group][key];
+  }
+
   resetDefaults() {
-    if (confirm("This  will wipe all your settings and refresh the page, are you sure?")) {
+    if (confirm("This  will wipe all your settings, are you sure?")) {
       Settings.resetDefaults();
-      window.location = window.location;
+      Nav.showSettings = false;
+      m.redraw();
     }
   }
 
@@ -74,13 +76,13 @@ export default class SettingsForm {
               step: 1,
               'data-group': 'game',
               'data-setting': 'volume',
-              value: this.unsaved.game.volume,
+              value: this.valueFor('game', 'volume'),
             }),
 
             m('label', { for: 'displayMobileControls' }, 'Use Mobile Controls'),
             m('input#displayMobileControls.', {
               type: 'checkbox',
-              checked: this.unsaved.site.displayMobileControls,
+              checked: this.valueFor('site', 'displayMobileControls'),
               'data-group': 'site',
               'data-setting': 'displayMobileControls',
               value: 1,
@@ -91,7 +93,7 @@ export default class SettingsForm {
               type: 'text',
               'data-group': 'game',
               'data-setting': 'das',
-              value: this.unsaved.game.das,
+              value: this.valueFor('game', 'das'),
             }),
 
             m('label', { for: 'arr' }, 'Auto-Repeat Rate (ARR)'),
@@ -99,7 +101,7 @@ export default class SettingsForm {
               type: 'text',
               'data-group': 'game',
               'data-setting': 'arr',
-              value: this.unsaved.game.arr,
+              value: this.valueFor('game', 'arr'),
             }),
 
             m('h2', 'Controls'),
@@ -109,7 +111,7 @@ export default class SettingsForm {
               type: 'text',
               'data-group': 'keys',
               'data-setting': 'restart',
-              value: keyboardMap[this.unsaved.keys.restart],
+              value: keyboardMap[this.valueFor('keys', 'restart')],
             }),
 
             m('label', { for: 'left' }, 'Move Left'),
@@ -117,7 +119,7 @@ export default class SettingsForm {
               type: 'text',
               'data-group': 'keys',
               'data-setting': 'left',
-              value: keyboardMap[this.unsaved.keys.left],
+              value: keyboardMap[this.valueFor('keys', 'left')],
             }),
 
             m('label', { for: 'right' }, 'Move Right'),
@@ -125,7 +127,7 @@ export default class SettingsForm {
               type: 'text',
               'data-group': 'keys',
               'data-setting': 'right',
-              value: keyboardMap[this.unsaved.keys.right],
+              value: keyboardMap[this.valueFor('keys', 'right')],
             }),
 
             m('label', { for: 'hardDrop' }, 'Hard Drop'),
@@ -133,7 +135,7 @@ export default class SettingsForm {
               type: 'text',
               'data-group': 'keys',
               'data-setting': 'hardDrop',
-              value: keyboardMap[this.unsaved.keys.hardDrop],
+              value: keyboardMap[this.valueFor('keys', 'hardDrop')],
             }),
 
             m('label', { for: 'softDrop' }, 'Soft Drop'),
@@ -141,7 +143,7 @@ export default class SettingsForm {
               type: 'text',
               'data-group': 'keys',
               'data-setting': 'softDrop',
-              value: keyboardMap[this.unsaved.keys.softDrop],
+              value: keyboardMap[this.valueFor('keys', 'softDrop')],
             }),
 
             m('label', { for: 'cw' }, 'Rotate Clockwise'),
@@ -149,7 +151,7 @@ export default class SettingsForm {
               type: 'text',
               'data-group': 'keys',
               'data-setting': 'cw',
-              value: keyboardMap[this.unsaved.keys.cw],
+              value: keyboardMap[this.valueFor('keys', 'cw')],
             }),
 
             m('label', { for: 'ccw' }, 'Rotate Counter-Clockwise'),
@@ -157,7 +159,7 @@ export default class SettingsForm {
               type: 'text',
               'data-group': 'keys',
               'data-setting': 'ccw',
-              value: keyboardMap[this.unsaved.keys.ccw],
+              value: keyboardMap[this.valueFor('keys', 'ccw')],
             }),
 
             m('label', { for: 'switch' }, 'Switch Pieces'),
@@ -165,7 +167,7 @@ export default class SettingsForm {
               type: 'text',
               'data-group': 'keys',
               'data-setting': 'switch',
-              value: keyboardMap[this.unsaved.keys.switch],
+              value: keyboardMap[this.valueFor('keys', 'switch')],
             }),
 
             m('.button.warning.width-100', { onclick: this.resetDefaults }, 'Reset Defaults'),

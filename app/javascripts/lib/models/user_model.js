@@ -3,7 +3,7 @@ import BaseModel from './base_model';
 import ReplayModel from './replay_model';
 
 export default class UserModel extends BaseModel {
-  constructor(opts) {
+  constructor(opts={}) {
     super();
 
     this.id = opts.id;
@@ -11,10 +11,20 @@ export default class UserModel extends BaseModel {
     this.username = opts.username;
     this.createdAt = opts.createdAt;
     this.updatedAt = opts.updatedAt;
+
+    this.settings = opts.settings;
+
     this.bests = {};
-    if (opts.bests.sprint) { this.bests.sprint = new ReplayModel(opts.bests.sprint); }
-    if (opts.bests.ultra) { this.bests.ultra = new ReplayModel(opts.bests.ultra); }
-    if (opts.bests.survival) { this.bests.survival = new ReplayModel(opts.bests.survival); }
+    if (opts.bests) {
+      if (opts.bests.sprint) { this.bests.sprint = new ReplayModel(opts.bests.sprint); }
+      if (opts.bests.ultra) { this.bests.ultra = new ReplayModel(opts.bests.ultra); }
+      if (opts.bests.survival) { this.bests.survival = new ReplayModel(opts.bests.survival); }
+    }
+
+    this.stats = {};
+    if (opts.stats) {
+      this.stats = opts.stats;
+    }
   }
 
   save() {

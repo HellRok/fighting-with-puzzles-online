@@ -1,7 +1,8 @@
+import CurrentUser from './current_user';
 import { isBigScreen } from './helpers';
 
-function valueOrDefault(value, defaultValue) {
-  const storedValue = localStorage.getItem(value);
+function valueOrDefault(key, defaultValue) {
+  const storedValue = localStorage.getItem(key);
   if (storedValue === null) { return defaultValue; }
   return parseInt(storedValue);
 };
@@ -31,23 +32,47 @@ export default {
     arr:    valueOrDefault('game.arr',    33),
   },
 
+  populateFrom: function(settings) {
+    if (settings.keys.restart)  { this.keys.restart  = settings.keys.restart; }
+    if (settings.keys.left)     { this.keys.left     = settings.keys.left; }
+    if (settings.keys.right)    { this.keys.right    = settings.keys.right; }
+    if (settings.keys.hardDrop) { this.keys.hardDrop = settings.keys.hardDrop; }
+    if (settings.keys.softDrop) { this.keys.softDrop = settings.keys.softDrop; }
+    if (settings.keys.ccw)      { this.keys.ccw      = settings.keys.ccw; }
+    if (settings.keys.cw)       { this.keys.cw       = settings.keys.cw; }
+    if (settings.keys.switch)   { this.keys.switch   = settings.keys.switch; }
+
+    if (settings.game.volume) { this.game.volume = settings.game.volume; }
+    if (settings.game.das)    { this.game.das    = settings.game.das; }
+    if (settings.game.arr)    { this.game.arr    = settings.game.arr; }
+  },
+
   save: function(toSave) {
     this.site.displayMobileControls = toSave.site.displayMobileControls;
-    this.keys = { ...toSave.keys };
-    this.game = { ...toSave.game };
 
-    localStorage.setItem('site.displayMobileControls', this.site.displayMobileControls);
-    localStorage.setItem('keys.restart',               this.keys.restart);
-    localStorage.setItem('keys.left',                  this.keys.left);
-    localStorage.setItem('keys.right',                 this.keys.right);
-    localStorage.setItem('keys.hardDrop',              this.keys.hardDrop);
-    localStorage.setItem('keys.softDrop',              this.keys.softDrop);
-    localStorage.setItem('keys.ccw',                   this.keys.ccw);
-    localStorage.setItem('keys.cw',                    this.keys.cw);
-    localStorage.setItem('keys.switch',                this.keys.switch);
-    localStorage.setItem('game.volume',                this.game.volume);
-    localStorage.setItem('game.das',                   this.game.das);
-    localStorage.setItem('game.arr',                   this.game.arr);
+    localStorage.setItem('site.displayMobileControls', toSave.site.displayMobileControls);
+    localStorage.setItem('keys.restart',               toSave.keys.restart);
+    localStorage.setItem('keys.left',                  toSave.keys.left);
+    localStorage.setItem('keys.right',                 toSave.keys.right);
+    localStorage.setItem('keys.hardDrop',              toSave.keys.hardDrop);
+    localStorage.setItem('keys.softDrop',              toSave.keys.softDrop);
+    localStorage.setItem('keys.ccw',                   toSave.keys.ccw);
+    localStorage.setItem('keys.cw',                    toSave.keys.cw);
+    localStorage.setItem('keys.switch',                toSave.keys.switch);
+    localStorage.setItem('game.volume',                toSave.game.volume);
+    localStorage.setItem('game.das',                   toSave.game.das);
+    localStorage.setItem('game.arr',                   toSave.game.arr);
+
+    this.populateFrom(toSave);
+
+    if (CurrentUser.isPresent()) {
+      CurrentUser.update({
+        settings: {
+          keys: this.keys,
+          game: this.game,
+        }
+      });
+    }
   },
 
   beenHereNow: function() {
@@ -68,5 +93,22 @@ export default {
     localStorage.removeItem('game.volume');
     localStorage.removeItem('game.das');
     localStorage.removeItem('game.arr');
+
+    this.site.displayMobileControls = valueOrDefault('site.displayMobileControls', isBigScreen() ? 0 : 1);
+
+    this.keys.restart = valueOrDefault('keys.restart',  113);
+    this.keys.left = valueOrDefault('keys.left',      37);
+    this.keys.right = valueOrDefault('keys.right',     39);
+    this.keys.hardDrop = valueOrDefault('keys.hardDrop',  38);
+    this.keys.softDrop = valueOrDefault('keys.softDrop',  40);
+    this.keys.ccw = valueOrDefault('keys.ccw',       88);
+    this.keys.cw = valueOrDefault('keys.cw',        67);
+    this.keys.switch = valueOrDefault('keys.switch',    90);
+
+    this.game.volume = valueOrDefault('game.volume', 70);
+    this.game.das = valueOrDefault('game.das',   183);
+    this.game.arr = valueOrDefault('game.arr',    33);
+
+    this.save(this);
   },
 };

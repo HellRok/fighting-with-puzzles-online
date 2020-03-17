@@ -9,11 +9,7 @@ export default {
   replaysLeaderboard: function() {
     return this.get('/api/v1/replays/leader_board').then((response) => {
       if (response.success) {
-        return {
-          sprints: response.data.sprints.map(replay => (new ReplayModel(replay))),
-          ultras: response.data.ultras.map(replay => (new ReplayModel(replay))),
-          survivals: response.data.survivals.map(replay => (new ReplayModel(replay))),
-        };
+        return this.replaysByMode(response.data);
       } else {
         return response;
       }
@@ -22,6 +18,16 @@ export default {
 
   replaysFind: function(id) {
     return this.load('/api/v1/replays/:id', id, ReplayModel);
+  },
+
+  replaysForUser: function(userId) {
+    return this.get('/api/v1/users/:id/replays/leader_board', { params: { id: userId } }).then((response) => {
+      if (response.success) {
+        return this.replaysByMode(response.data);
+      } else {
+        return response;
+      }
+    });
   },
 
   replaysCreate: function(data) {
@@ -56,6 +62,12 @@ export default {
     return this.create('/api/v1/sessions', { session: data }, UserModel);
   },
 
+  sessionUpdate: function(data) {
+    return this.update('/api/v1/sessions', data, UserModel).then(response => {
+      return response;
+    });
+  },
+
   // Generic
   loadAll: function(url, klass) {
     return this.get(url).then((response) => {
@@ -87,6 +99,16 @@ export default {
     });
   },
 
+  update: function(url, data, klass) {
+    return this.patch(url, data).then(response => {
+      if (response.success) {
+        return { success: true, data: new klass(response.data) };
+      } else {
+        return response;
+      }
+    });
+  },
+
   get: function(url, opts={}) {
     return m.request({
       ...{
@@ -109,11 +131,33 @@ export default {
     });
   },
 
+  patch: function(url, body, opts={}) {
+    return m.request({
+      ...{
+        method: 'PATCH',
+        url: url,
+        headers: this.headers(),
+        body: body,
+      },
+      ...opts,
+    });
+  },
+
+
   headers: function() {
     if (CurrentUser.token === undefined) { return {}; }
 
     return {
       'Authorization': `Token ${CurrentUser.token}`,
+    };
+  },
+
+  // Specific but shared
+  replaysByMode: function(replays) {
+    return {
+      sprints: replays.sprints.map(replay => (new ReplayModel(replay))),
+      ultras: replays.ultras.map(replay => (new ReplayModel(replay))),
+      survivals: replays.survivals.map(replay => (new ReplayModel(replay))),
     };
   },
 }

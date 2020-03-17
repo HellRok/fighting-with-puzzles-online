@@ -8,9 +8,9 @@ class Api::V1::ReplaysController < ApplicationController
   end
 
   def leader_board
-    @sprints = User.best_sprints
-    @ultras = User.best_ultras
-    @survivals = User.best_survivals
+    @sprints = (@user.presence || User).best_sprints
+    @ultras = (@user.presence || User).best_ultras
+    @survivals = (@user.presence || User).best_survivals
   end
 
   def show; end

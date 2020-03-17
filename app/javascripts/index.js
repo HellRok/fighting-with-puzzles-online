@@ -6,13 +6,19 @@ import Home from './components/home';
 import Nav from './components/nav';
 import Login from './components/login';
 import Register from './components/register';
+import Profile from './components/profile';
+
 import SprintPresenter from './components/sprint_presenter';
 import SprintReplayPresenter from './components/sprint_replay_presenter';
+
 import UltraPresenter from './components/ultra_presenter';
 import UltraReplayPresenter from './components/ultra_replay_presenter';
+
 import SurvivalPresenter from './components/survival_presenter';
 import SurvivalReplayPresenter from './components/survival_replay_presenter';
+
 import LeaderBoard from './components/leader_board';
+
 import HowToPlay from './components/how_to_play';
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -23,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "/": Home,
     "/login": Login,
     "/register": Register,
+    "/profile/:key": Profile,
     "/sprint": SprintPresenter,
     "/sprint/replay/:key": SprintReplayPresenter,
     "/ultra": UltraPresenter,
