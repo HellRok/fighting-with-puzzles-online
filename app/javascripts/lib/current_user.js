@@ -12,7 +12,7 @@ export default {
 
   isPresent() { return this.token && !isEmpty(this.data); },
 
-  initFromToken: function() {
+  initFromToken() {
     if (this.token && isEmpty(this.data)) {
       this.refresh();
     }
@@ -45,7 +45,7 @@ export default {
     });
   },
 
-  setUser: function(user) {
+  setUser(user) {
     this.data = user;
     this.token = user.token;
     this.settings = user.settings;
@@ -53,7 +53,7 @@ export default {
     localStorage.setItem('sessionToken', user.token);
   },
 
-  refresh: function() {
+  refresh() {
     Api.sessionCurrent().then(response => {
       if (response.success) {
         this.setUser(response.data);
@@ -61,7 +61,7 @@ export default {
     });
   },
 
-  update: function(data) {
+  update(data) {
     Api.sessionUpdate({ user: data }).then(response => {
       if (response.success) {
         this.setUser(response.data);

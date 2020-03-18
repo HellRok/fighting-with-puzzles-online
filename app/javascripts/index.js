@@ -17,6 +17,8 @@ import UltraReplayPresenter from './components/ultra_replay_presenter';
 import SurvivalPresenter from './components/survival_presenter';
 import SurvivalReplayPresenter from './components/survival_replay_presenter';
 
+import OnlinePresenter from './components/online_presenter';
+
 import LeaderBoard from './components/leader_board';
 
 import HowToPlay from './components/how_to_play';
@@ -30,12 +32,15 @@ document.addEventListener("DOMContentLoaded", () => {
     "/login": Login,
     "/register": Register,
     "/profile/:key": Profile,
+
     "/sprint": SprintPresenter,
     "/sprint/replay/:key": SprintReplayPresenter,
     "/ultra": UltraPresenter,
     "/ultra/replay/:key": UltraReplayPresenter,
     "/survival": SurvivalPresenter,
     "/survival/replay/:key": SurvivalReplayPresenter,
+    "/online": OnlinePresenter,
+
     "/leader_board": LeaderBoard,
     "/how_to_play": HowToPlay,
   });

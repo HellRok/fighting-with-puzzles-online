@@ -60,6 +60,7 @@ const Nav = {
           m(SidebarLink, { href: '/sprint', }, 'Sprint'),
           m(SidebarLink, { href: '/ultra', }, 'Ultra'),
           m(SidebarLink, { href: '/survival', }, 'Survival'),
+          m(SidebarLink, { href: '/online', }, 'Online'),
           m(SidebarLink, { href: '/leader_board', }, 'Leader Board'),
 
           CurrentUser.data.id ? [

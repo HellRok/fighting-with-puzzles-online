@@ -3,8 +3,18 @@ import m from 'mithril';
 import CurrentUser from './current_user';
 import UserModel from './models/user_model';
 import ReplayModel from './models/replay_model';
+import RoomModel from './models/room_model';
 
 export default {
+  // Room
+  roomsAll: function() {
+    return this.loadAll('/api/v1/rooms', RoomModel);
+  },
+
+  roomsCreate: function(data) {
+    return this.create('/api/v1/rooms', { room: data }, RoomModel);
+  },
+
   // Replay
   replaysLeaderboard: function() {
     return this.get('/api/v1/replays/leader_board').then((response) => {
