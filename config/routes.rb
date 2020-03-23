@@ -19,7 +19,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :rooms, only: [:index, :create, :update]
+      resources :rooms, only: [:index, :show, :create, :update]
     end
   end
 

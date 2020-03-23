@@ -20,7 +20,10 @@ export default class OnlinePresenter {
         max_players: 6,
       }
     }).then(response => {
+      Rooms.current = response.data;
+      console.table(Rooms.current);
       Rooms.refresh();
+      m.route.set(`/room/${Rooms.current.id}`);
     });
   }
 

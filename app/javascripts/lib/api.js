@@ -15,6 +15,10 @@ export default {
     return this.create('/api/v1/rooms', { room: data }, RoomModel);
   },
 
+  roomsFind: function(id) {
+    return this.load('/api/v1/rooms/:id', id, RoomModel);
+  },
+
   // Replay
   replaysLeaderboard: function() {
     return this.get('/api/v1/replays/leader_board').then((response) => {

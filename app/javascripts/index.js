@@ -18,6 +18,7 @@ import SurvivalPresenter from './components/survival_presenter';
 import SurvivalReplayPresenter from './components/survival_replay_presenter';
 
 import OnlinePresenter from './components/online_presenter';
+import RoomPresenter from './components/room_presenter';
 
 import LeaderBoard from './components/leader_board';
 
@@ -40,16 +41,29 @@ document.addEventListener("DOMContentLoaded", () => {
     "/survival": SurvivalPresenter,
     "/survival/replay/:key": SurvivalReplayPresenter,
     "/online": OnlinePresenter,
+    "/room/:key": RoomPresenter,
 
     "/leader_board": LeaderBoard,
     "/how_to_play": HowToPlay,
   });
 
   CurrentUser.initFromToken();
-  const socket = new WebSocket('ws://localhost:9001/game/1');
-  socket.addEventListener('message', (e) => {
-    console.log(e);
-    socket.send(`RESPONDING AS ${CurrentUser.data.username}`)
-  });
-  socket.addEventListener('open', (e) => { socket.send(`CONNECTING AS ${CurrentUser.data.username}`) });
+  //const socket1 = new WebSocket('ws://localhost:3002/game/1');
+  //socket1.addEventListener('message', (e) => {
+  //  console.log(e);
+  //  socket1.send(`RESPONDING AS ${CurrentUser.data.username}`)
+  //});
+  //socket1.addEventListener('open', (e) => { socket1.send(`CONNECTING AS ${CurrentUser.data.username}`) });
+  //const socket2 = new WebSocket('ws://localhost:3002/game/2');
+  //socket2.addEventListener('message', (e) => {
+  //  console.log(e);
+  //  socket2.send(`RESPONDING AS ${CurrentUser.data.username}`)
+  //});
+  //socket2.addEventListener('open', (e) => { socket2.send(`CONNECTING AS ${CurrentUser.data.username}`) });
+  //const socket3 = new WebSocket('ws://localhost:3002/game/3');
+  //socket3.addEventListener('message', (e) => {
+  //  console.log(e);
+  //  socket3.send(`RESPONDING AS ${CurrentUser.data.username}`)
+  //});
+  //socket3.addEventListener('open', (e) => { socket3.send(`CONNECTING AS ${CurrentUser.data.username}`) });
 });

@@ -13,7 +13,10 @@ export default class Player {
     this.playerBoard = playerBoard;
     this.playerBoard.debug.show = true;
     this.playerBoard.game = this;
+
     this.boards = boards;
+    this.boards.forEach(board => board.game = this);
+
     this.queueLength = 3;
     this.gravityTimeout = 500;
     this.lockdelayTimeout = 350;

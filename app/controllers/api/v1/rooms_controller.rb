@@ -2,6 +2,7 @@ class Api::V1::RoomsController < ApplicationController
   load_and_authorize_resource
 
   def index; end
+  def show; end
 
   def create
     @room.save

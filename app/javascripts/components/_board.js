@@ -10,8 +10,8 @@ import Settings from '../lib/settings';
 import { displayMilliseconds } from '../lib/helpers';
 
 export default class Board {
-  constructor() {
-    this.id = 1;
+  constructor(id=1) {
+    this.id = id;
     this.width = 6;
     this.height = 12;
     this.theme = document.querySelector('#gems');
@@ -93,7 +93,7 @@ export default class Board {
       if (square) { square.render(_this.context()); }
     });
 
-    if (Settings.debug) {
+    if (Settings.debug && this.id === 1) {
       this.context().fillText(`Game:     ${this.debug.gameTick}ms`,                    2, 10);
       this.context().fillText(`Render:   ${this.debug.renderTick}ms`,                  2, 20);
       this.context().fillText(`Gems:     ${filter(this.data, gem => gem).length}`,     2, 30);
