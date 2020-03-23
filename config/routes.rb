@@ -16,6 +16,8 @@ Rails.application.routes.draw do
           get :leader_board
         end
       end
+
+      resources :stats, only: :index
     end
   end
 
