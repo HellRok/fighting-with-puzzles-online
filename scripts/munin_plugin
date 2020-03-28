@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require 'open-uri'
+require 'json'
+
+if ARGV[0] == 'config'
+  puts <<-STR
+graph_title Stats
+graph_vlabel count
+graph_category Fighting with Puzzles Online
+users.label Users
+sprints.label Sprints
+ultras.label Ultras
+survivals.label Survivals
+  STR
+else
+  values = JSON.parse(URI.open('https://fighting-with-puzzles-online.herokuapp.com/api/v1/stats.json').read)
+  puts <<-STR
+users.value #{values['user_count']}
+sprints.value #{values['replays']['sprint_count']}
+ultras.value #{values['replays']['ultra_count']}
+survivals.value #{values['replays']['survival_count']}
+  STR
+end

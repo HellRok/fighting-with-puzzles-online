@@ -5,7 +5,7 @@ import { min, max } from 'lodash/math';
 import Gem from './gem';
 import Settings from './settings';
 import Audio from './audio';
-import RandomPieceGenerator from './piece_generators/random_piece_generator';
+import BagPieceGenerator from './piece_generators/bag_piece_generator';
 import { timestamp, offsetPositions, keyboardMap } from './helpers';
 
 export default class Player {
@@ -61,7 +61,7 @@ export default class Player {
 
   restart() {
     this.setup();
-    this.pieceGenerator = new RandomPieceGenerator(this.queueLength);
+    this.pieceGenerator = new BagPieceGenerator(this.queueLength);
     this.resetKeystate();
     this.playerBoard.clear();
     this.playerBoard.activePiece = this.nextPiece();

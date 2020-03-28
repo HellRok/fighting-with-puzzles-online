@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       end
 
       resources :rooms, only: [:index, :show, :create, :update]
+      resources :stats, only: :index
     end
   end
 
