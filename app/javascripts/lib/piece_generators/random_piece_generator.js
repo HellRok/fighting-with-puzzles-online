@@ -2,15 +2,10 @@ import { sample } from 'lodash/collection';
 import { range } from 'lodash/util';
 
 import Gem from '../gem';
-import { timestamp, offsetPositions, randomPercent } from '../helpers';
+import BasePieceGenerator from './base_piece_generator';
+import { randomPercent } from '../helpers';
 
-export default class RandomPieceGenerator {
-  constructor(queueLength) {
-    this.queueLength = queueLength;
-    this.queue = [];
-    this.fillQueue();
-  }
-
+export default class RandomPieceGenerator extends BasePieceGenerator {
   generatePiece() {
     return [
       new Gem(undefined, 0, 0,
@@ -22,16 +17,5 @@ export default class RandomPieceGenerator {
         (randomPercent() > 80)
       ),
     ]
-  }
-
-  nextPiece() {
-    this.queue.push(this.generatePiece());
-    return this.queue.shift();
-  }
-
-  fillQueue() {
-    range(0, this.queueLength).forEach(() => {
-      this.queue.push(this.generatePiece());
-    });
   }
 }
