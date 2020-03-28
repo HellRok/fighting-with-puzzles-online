@@ -30,6 +30,11 @@ export function displayScore(score) {
   return score.toLocaleString();
 }
 
+export function displayDate(time) {
+  const date = new Date(time);
+  return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+}
+
 export function isBigScreen() {
   return window.innerWidth > 1024;
 }
