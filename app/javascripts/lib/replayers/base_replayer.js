@@ -39,7 +39,7 @@ export default class BaseReplayer extends Player {
       this.pieceGenerator.load(this.pieces);
       this.playerBoard.activePiece = this.nextPiece();
       this.loading = false;
-      this.state.alive = true;
+      this.countdown();
     });
   }
 

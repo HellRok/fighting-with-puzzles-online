@@ -63,12 +63,35 @@ export default class Player {
     this.playerBoard.clear();
     this.playerBoard.activePiece = this.nextPiece();
     this.playerBoard.pieceQueue = this.pieceGenerator.queue;
-    this.state.alive = true;
     this.state.lockdelayTotal = 0;
+    this.countdown();
+  }
+
+  countdown() {
+    clearTimeout(this.countinTimer);
+    clearTimeout(this.goTimer);
+
+    this.playerBoard.overlay = 'Ready';
+    m.redraw();
+
+    this.countinTimer = setTimeout(() => {
+      this.playerBoard.overlay = 'Go!';
+      m.redraw();
+
+      this.goTimer = setTimeout(() => {
+        this.playerBoard.overlay = undefined;
+        m.redraw();
+        this.state.alive = true;
+        this.playerBoard.stats.start = timestamp();
+        console.log(this.playerBoard.stats.start);
+      }, 250);
+    }, 1000);
   }
 
   destroy() {
     this.state.toBeDestroyed = true;
+    clearTimeout(this.countinTimer);
+    clearTimeout(this.goTimer);
     document.removeEventListener('keydown', this.keyDownEvent);
     document.removeEventListener('keyup', this.keyUpEvent);
   }
