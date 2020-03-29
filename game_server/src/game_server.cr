@@ -14,7 +14,6 @@ ws "/game/:id" do |socket, context|
   Room.players << Room.players.size
 
   socket.on_message do |message|
-    sleep 3
     log_with_time message
     socket.send(Room.players.map{|player| player.to_s}.join(":"))
   end

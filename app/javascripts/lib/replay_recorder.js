@@ -15,14 +15,8 @@ export default class ReplayRecorder {
 
   addPiece(gems) {
     this.pieces.push([
-      {
-        colour: gems[0].colour,
-        smasher: gems[0].smasher,
-      },
-      {
-        colour: gems[1].colour,
-        smasher: gems[1].smasher,
-      },
+      this.simplifyGem(gems[0]),
+      this.simplifyGem(gems[1])
     ]);
   }
 
@@ -62,4 +56,12 @@ export default class ReplayRecorder {
       data: this.toString(),
     });
   }
-}
+
+  // Helper methods go here
+  simplifyGem(gem) {
+    return {
+      colour: gem.colour,
+      smasher: gem.smasher,
+    };
+  }
+};

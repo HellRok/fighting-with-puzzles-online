@@ -20,7 +20,7 @@ export default class RoomPresenter {
       Api.roomsFind(vnode.key).then(response => Rooms.current = response);
     }
 
-    this.player = new Room(this.playerBoard, this.boards);
+    this.player = new Room(this.playerBoard, this.boards, vnode.key);
     this.player.gameLoop();
     this.player.renderLoop();
   }

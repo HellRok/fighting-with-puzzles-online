@@ -49,11 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  //const socket1 = new WebSocket('ws://localhost:3002/game/1');
-  //socket1.addEventListener('message', (e) => {
-  //  console.log(e);
-  //  socket1.send(`RESPONDING AS ${CurrentUser.data.username}`)
-  //});
   //socket1.addEventListener('open', (e) => { socket1.send(`CONNECTING AS ${CurrentUser.data.username}`) });
   //const socket2 = new WebSocket('ws://localhost:3002/game/2');
   //socket2.addEventListener('message', (e) => {

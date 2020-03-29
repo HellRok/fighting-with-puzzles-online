@@ -1,7 +1,7 @@
 import m from 'mithril';
 
 import Player from '../player';
-import ReplayRecorder from '../replay_recorder';
+import OnlineRecorder from '../online_recorder';
 import Settings from '../settings';
 import Flash from '../flash';
 import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
@@ -9,8 +9,18 @@ import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 import CurrentUser from '../current_user';
 
 export default class Room extends Player {
+  constructor(playerBoard, boards=[], roomId) {
+    super(playerBoard, boards);
+    this.socket = new WebSocket(`ws://localhost:3002/game/${roomId}`);
+
+    this.socket.addEventListener('message', (e) => {
+      console.log(e);
+      //this.socket.send(`RESPONDING AS ${CurrentUser.data.username}`)
+    });
+  }
+
   setup() {
-    this.recorder = new ReplayRecorder('sprint');
+    this.recorder = new OnlineRecorder(this.socket);
     this.playerBoard.stats.start = timestamp();
   }
 
