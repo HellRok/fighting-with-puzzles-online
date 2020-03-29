@@ -83,7 +83,6 @@ export default class Player {
         m.redraw();
         this.state.alive = true;
         this.playerBoard.stats.start = timestamp();
-        console.log(this.playerBoard.stats.start);
       }, 250);
     }, 1000);
   }

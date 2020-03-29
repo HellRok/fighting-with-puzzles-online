@@ -25,7 +25,12 @@ export default class UltraReplayPresenter {
   view() {
     return m(Layout, m('.ultra-replay.single-player', [
       m('h2', 'Ultra Replay'),
+      m('p.replay-user', this.replay && this.replay.user ?
+        m(m.route.Link, { href: `/profile/${this.replay.user.id}` }, this.replay.user.username) : ''
+      ),
+
       m(this.replayBoard),
+
       m('.stats', [
         m('.time', 'Time: ', m('span.value', displayMilliseconds(0))),
         m('.score', `Score: ${displayScore(this.replayBoard.stats.score)}`),

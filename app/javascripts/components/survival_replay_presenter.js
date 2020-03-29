@@ -25,7 +25,12 @@ export default class SurvivalReplayPresenter {
   view() {
     return m(Layout, m('.survival-replay.single-player', [
       m('h2', 'Survival Replay'),
+      m('p.replay-user', this.replay && this.replay.user ?
+        m(m.route.Link, { href: `/profile/${this.replay.user.id}` }, this.replay.user.username) : ''
+      ),
+
       m(this.replayBoard),
+
       m('.stats', [
         m('.next-dump', '2 garbage in 00:05.000'),
         m('.time', 'Time: ', m('span.value', displayMilliseconds(this.replayBoard.stats.runningTime))),

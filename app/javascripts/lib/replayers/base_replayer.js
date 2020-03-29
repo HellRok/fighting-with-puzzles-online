@@ -33,6 +33,7 @@ export default class BaseReplayer extends Player {
 
   load(id) {
     Api.replaysFind(id).then(replay => {
+      this.user = replay.user;
       this.gameMode = replay.parsedData().gameMode;
       this.pieces = replay.parsedData().pieces;
       this.moves = replay.parsedData().moves;
