@@ -32,6 +32,12 @@ export default class Player {
     document.addEventListener('keyup', this.keyUpEvent, false);
 
     this.resetKeystate();
+    this.resetState();
+
+    this.setup();
+  }
+
+  resetState() {
     this.state = {
       lastGameLoopTimestamp:   timestamp(),
       lastRenderLoopTimestamp: timestamp(),
@@ -40,9 +46,7 @@ export default class Player {
       locking:                 false,
       alive:                   false,
       toBeDestroyed:           false,
-    }
-
-    this.setup();
+    };
   }
 
   resetKeystate() {
@@ -56,22 +60,45 @@ export default class Player {
       ccw:        false, ccwHandled:      true,
       cw:         false, cwHandled:       true,
       switch:     false, switchHandled:   true,
-    }
+    };
   }
 
   restart() {
     this.setup();
     this.pieceGenerator = new BagPieceGenerator(this.queueLength);
     this.resetKeystate();
+    this.resetState();
     this.playerBoard.clear();
     this.playerBoard.activePiece = this.nextPiece();
     this.playerBoard.pieceQueue = this.pieceGenerator.queue;
-    this.state.alive = true;
     this.state.lockdelayTotal = 0;
+    this.countdown();
+  }
+
+  countdown() {
+    clearTimeout(this.countinTimer);
+    clearTimeout(this.goTimer);
+
+    this.playerBoard.overlay = 'Ready';
+    m.redraw();
+
+    this.countinTimer = setTimeout(() => {
+      this.playerBoard.overlay = 'Go!';
+      m.redraw();
+
+      this.goTimer = setTimeout(() => {
+        this.playerBoard.overlay = undefined;
+        m.redraw();
+        this.state.alive = true;
+        this.playerBoard.stats.start = timestamp();
+      }, 250);
+    }, 1000);
   }
 
   destroy() {
     this.state.toBeDestroyed = true;
+    clearTimeout(this.countinTimer);
+    clearTimeout(this.goTimer);
     document.removeEventListener('keydown', this.keyDownEvent);
     document.removeEventListener('keyup', this.keyUpEvent);
   }

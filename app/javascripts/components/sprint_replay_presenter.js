@@ -25,7 +25,12 @@ export default class SprintReplayPresenter {
   view() {
     return m(Layout, m('.sprint-replay.single-player', [
       m('h2', 'Sprint Replay'),
+      m('p.replay-user', this.replay && this.replay.user ?
+        m(m.route.Link, { href: `/profile/${this.replay.user.id}` }, this.replay.user.username) : ''
+      ),
+
       m(this.replayBoard),
+
       m('.stats', [
         m('.time', 'Time: ', m('span.value', displayMilliseconds(this.replayBoard.stats.runningTime))),
         m('.gems-left', `Gems: ${140 - this.replayBoard.stats.gemsSmashed}`),

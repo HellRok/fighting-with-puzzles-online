@@ -11,15 +11,15 @@ import CurrentUser from '../current_user';
 export default class Sprint extends Player {
   setup() {
     this.recorder = new ReplayRecorder('sprint');
-    this.playerBoard.stats.start = timestamp();
   }
 
   tick(delta) {
-    this.playerBoard.stats.runningTime += delta;
-    this.recorder.currentTime = this.playerBoard.stats.runningTime;
     this.input(delta);
 
     if (!this.state.alive) { return; }
+
+    this.playerBoard.stats.runningTime += delta;
+    this.recorder.currentTime = this.playerBoard.stats.runningTime;
 
     this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
 
