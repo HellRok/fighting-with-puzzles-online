@@ -29,6 +29,12 @@ export default class Player {
     document.addEventListener('keyup', this.keyUpEvent, false);
 
     this.resetKeystate();
+    this.resetState();
+
+    this.setup();
+  }
+
+  resetState() {
     this.state = {
       lastGameLoopTimestamp:   timestamp(),
       lastRenderLoopTimestamp: timestamp(),
@@ -37,9 +43,7 @@ export default class Player {
       locking:                 false,
       alive:                   false,
       toBeDestroyed:           false,
-    }
-
-    this.setup();
+    };
   }
 
   resetKeystate() {
@@ -53,13 +57,14 @@ export default class Player {
       ccw:        false, ccwHandled:      true,
       cw:         false, cwHandled:       true,
       switch:     false, switchHandled:   true,
-    }
+    };
   }
 
   restart() {
     this.setup();
     this.pieceGenerator = new BagPieceGenerator(this.queueLength);
     this.resetKeystate();
+    this.resetState();
     this.playerBoard.clear();
     this.playerBoard.activePiece = this.nextPiece();
     this.playerBoard.pieceQueue = this.pieceGenerator.queue;
