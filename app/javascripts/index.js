@@ -25,20 +25,20 @@ document.addEventListener("DOMContentLoaded", () => {
   m.mount(document.querySelector('#nav'), Nav);
   m.route.prefix = '';
 
-  m.route(document.querySelector('#app'), "/", {
-    "/": Home,
-    "/login": Login,
-    "/register": Register,
-    "/profile/:key": Profile,
-    "/sprint": SprintPresenter,
-    "/sprint/replay/:key": SprintReplayPresenter,
-    "/ultra": UltraPresenter,
-    "/ultra/replay/:key": UltraReplayPresenter,
-    "/survival": SurvivalPresenter,
-    "/survival/replay/:key": SurvivalReplayPresenter,
-    "/leader_board": LeaderBoard,
-    "/how_to_play": HowToPlay,
+  CurrentUser.initFromToken().then(() => {
+    m.route(document.querySelector('#app'), "/", {
+      "/": Home,
+      "/login": Login,
+      "/register": Register,
+      "/profile/:key": Profile,
+      "/sprint": SprintPresenter,
+      "/sprint/replay/:key": SprintReplayPresenter,
+      "/ultra": UltraPresenter,
+      "/ultra/replay/:key": UltraReplayPresenter,
+      "/survival": SurvivalPresenter,
+      "/survival/replay/:key": SurvivalReplayPresenter,
+      "/leader_board": LeaderBoard,
+      "/how_to_play": HowToPlay,
+    });
   });
-
-  CurrentUser.initFromToken();
 })

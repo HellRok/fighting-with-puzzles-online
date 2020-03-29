@@ -14,7 +14,9 @@ export default {
 
   initFromToken: function() {
     if (this.token && isEmpty(this.data)) {
-      this.refresh();
+      return this.refresh();
+    } else {
+      return Promise.resolve();
     }
   },
 
@@ -54,7 +56,7 @@ export default {
   },
 
   refresh: function() {
-    Api.sessionCurrent().then(response => {
+    return Api.sessionCurrent().then(response => {
       if (response.success) {
         this.setUser(response.data);
       }
@@ -62,7 +64,7 @@ export default {
   },
 
   update: function(data) {
-    Api.sessionUpdate({ user: data }).then(response => {
+    return Api.sessionUpdate({ user: data }).then(response => {
       if (response.success) {
         this.setUser(response.data);
       }
