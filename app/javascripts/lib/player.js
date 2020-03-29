@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { sortBy } from 'lodash/collection';
+import { last } from 'lodash/array';
 import { min, max } from 'lodash/math';
 
 import Gem from './gem';
@@ -62,13 +63,19 @@ export default class Player {
 
   restart() {
     this.setup();
+
     this.pieceGenerator = new BagPieceGenerator(this.queueLength);
+    this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
+
     this.resetKeystate();
     this.resetState();
+
     this.playerBoard.clear();
     this.playerBoard.activePiece = this.nextPiece();
     this.playerBoard.pieceQueue = this.pieceGenerator.queue;
+
     this.state.lockdelayTotal = 0;
+
     this.countdown();
   }
 
@@ -139,7 +146,7 @@ export default class Player {
     gems[1].x = 3;
     gems[1].y = this.playerBoard.height - 1;
 
-    this.recorder.addPiece(gems);
+    this.recorder.addPiece(last(this.pieceGenerator.queue));
 
     return gems;
   }
