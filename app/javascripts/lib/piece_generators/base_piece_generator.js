@@ -2,9 +2,11 @@ import { sample } from 'lodash/collection';
 import { range } from 'lodash/util';
 
 import Gem from '../gem';
+import Random from '../random';
 
 export default class BasePieceGenerator {
-  constructor(queueLength) {
+  constructor(queueLength, seed=Date.now()) {
+    this.prng = new Random(seed);
     this.queueLength = queueLength;
     this.queue = [];
     this.setup();

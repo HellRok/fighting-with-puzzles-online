@@ -13,8 +13,8 @@ export default class SprintPresenter {
     this.playerBoard = new Board();
   }
 
-  oncreate() {
-    this.player = new Sprint(this.playerBoard);
+  oncreate(vnode) {
+    this.player = new Sprint(this.playerBoard, vnode.attrs.seed);
     this.player.gameLoop();
     this.player.renderLoop();
     if (Settings.site.displayMobileControls) {

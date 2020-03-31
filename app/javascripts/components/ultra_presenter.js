@@ -14,8 +14,8 @@ export default class UltraPresenter {
 
   }
 
-  oncreate() {
-    this.player = new Ultra(this.playerBoard);
+  oncreate(vnode) {
+    this.player = new Ultra(this.playerBoard, vnode.attrs.seed);
     this.player.gameLoop();
     this.player.renderLoop();
     if (Settings.site.displayMobileControls) {
