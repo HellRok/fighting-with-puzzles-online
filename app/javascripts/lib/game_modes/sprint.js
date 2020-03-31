@@ -10,7 +10,7 @@ import CurrentUser from '../current_user';
 
 export default class Sprint extends Player {
   setup() {
-    this.recorder = new ReplayRecorder('sprint');
+    this.recorder = new ReplayRecorder('sprint', this.seed);
   }
 
   tick(delta) {

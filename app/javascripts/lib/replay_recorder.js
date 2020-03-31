@@ -40,10 +40,10 @@ export default class ReplayRecorder {
       gameMode: this.gameMode,
       pieces: this.pieces,
       moves: this.moves,
-      seed: this.seed,
       settings: {
-        das: Settings.das,
-        arr: Settings.arr,
+        seed: this.seed,
+        das: Settings.game.das,
+        arr: Settings.game.arr,
       }
     }
   }
