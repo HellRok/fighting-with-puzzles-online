@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: ../
+    links:
+      - pg
+    depends_on:
+      - pg
+    ports:
+      - "9999:3000"
+    environment:
+      - RAILS_ENV=test
+      - DATABASE_URL=postgres://postgres:password@pg:5432/fwpo
+      - SECRET_KEY_BASE=teiceekahphaexe5Xuajoath4DooLae3
+      - RAILS_MASTER_KEY=Xahphae1Thee7Bao6ohrie1dohngee2f
+
+  pg:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
