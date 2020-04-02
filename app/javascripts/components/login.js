@@ -53,7 +53,7 @@ export default class Login {
           m('label', { for: 'password' }, 'Password'),
           m('input', { id: 'password', for: 'password', type: 'password' }, 'Password'),
 
-          m('input.width-100', { type: 'submit', disabled: this.submitting })
+          m('input.width-100', { type: 'submit', disabled: this.submitting, value: 'Submit' })
         ])
       ])
     ]);

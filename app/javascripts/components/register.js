@@ -71,7 +71,7 @@ export default class Register {
           this.errorsFor('password_confirmation').map(error => m('.error-text', error)),
         ]),
 
-        m('input.width-100', { type: 'submit', disabled: this.submitting })
+        m('input.width-100', { type: 'submit', disabled: this.submitting, value: 'Submit' })
       ])
     ]);
   }
