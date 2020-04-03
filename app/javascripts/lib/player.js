@@ -10,7 +10,7 @@ import BagPieceGenerator from './piece_generators/bag_piece_generator';
 import { timestamp, offsetPositions, keyboardMap } from './helpers';
 
 export default class Player {
-  constructor(playerBoard, seed=Date.now(), boards=[]) {
+  constructor(playerBoard, seed, boards=[]) {
     this.seed = seed;
     this.playerBoard = playerBoard;
     this.playerBoard.debug.show = true;
@@ -65,7 +65,7 @@ export default class Player {
   restart() {
     this.setup();
 
-    this.pieceGenerator = new BagPieceGenerator(this.queueLength, this.seed);
+    this.pieceGenerator = new BagPieceGenerator(this.queueLength, (this.seed ? this.seed : Date.now()));
     this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
 
     this.resetKeystate();
