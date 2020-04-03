@@ -5,12 +5,14 @@ require 'bundler'
 Bundler.require
 
 require 'capybara/rspec'
+require 'capybara-screenshot/rspec'
 require 'webdrivers'
 
 Capybara.run_server = false
-Capybara.default_driver = :selenium
+Capybara.default_driver = ENV.fetch('CAPYBARA_DRIVER', :selenium_chrome_headless).to_sym
 Capybara.app_host = 'http://localhost:9999'
 Capybara.current_session.current_window.resize_to(1280, 800)
+Capybara.save_path = './tmp'
 
 describe 'First time banner', type: :feature do
   before do
@@ -97,7 +99,7 @@ describe 'Sprint game mode', type: :feature do
     require './games/sprint_win'
     sprint_win
     expect(page).to have_content 'Finished'
-    expect(page).to have_content 'You took 0:05'
+    expect(page).to have_content 'You took 0:0'
     expect(page).to have_content 'Gems: -4'
     expect(page).to have_content 'Replay saved'
   end
@@ -109,7 +111,7 @@ describe 'Sprint game mode', type: :feature do
     expect(page).to have_content 'Sprint Replay'
     expect(page).to have_content 'TestUser'
     expect(page).to have_content 'Finished'
-    expect(page).to have_content 'They took 0:05'
+    expect(page).to have_content 'They took 0:0'
     expect(page).to have_content 'Gems: -4'
   end
 end

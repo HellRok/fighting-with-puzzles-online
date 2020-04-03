@@ -1,9 +1,11 @@
 #!/bin/bash
 set -exuo pipefail
 
+docker-compose build
 docker-compose up -d
 docker-compose exec app rails db:create db:schema:load
 
-bundle exec test_suite.rb
+bundle install
+bundle exec rspec test_suite.rb
 
 docker-compose down

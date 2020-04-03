@@ -1,4 +1,4 @@
-FROM node:alpine AS node_build
+FROM node:latest AS node_build
 WORKDIR /app
 COPY package.json yarn.lock /app/
 RUN yarn install
