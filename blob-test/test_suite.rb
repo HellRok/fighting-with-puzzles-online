@@ -143,6 +143,41 @@ describe 'Survival game mode', type: :feature do
   end
 end
 
+describe 'Ultra game mode', type: :feature do
+  before do
+    login
+    visit '/ultra?seed=123456'
+    setup_keys
+  end
+
+  it 'lets you die' do
+    press_key 'q'
+    sleep 1.3
+    15.times { press_key 'w' }
+    expect(page).to have_content 'Oh no, you topped out!'
+  end
+
+  it 'lets you win' do
+    press_key 'q'
+    sleep 1.3
+    play_replay('./games/ultra_win.json')
+    expect(page).to have_content 'Finished'
+    expect(page).to have_content 'Score: 46,900'
+    expect(page).to have_content 'Replay saved'
+  end
+
+  it 'can play the replay' do
+    click_link 'TestUser'
+    click_link href: /ultra\/replay\/\d/
+    sleep 183
+    expect(page).to have_content 'Ultra Replay'
+    expect(page).to have_content 'TestUser'
+    expect(page).to have_content 'Finished'
+    expect(page).to have_content 'Their score was 46,900!'
+    expect(page).to have_content 'Score: 46,900'
+  end
+end
+
 def login
   visit '/login'
   fill_in 'Username', with: 'TestUser'
@@ -165,7 +200,7 @@ def press_key(key)
     const keydown = new KeyboardEvent('keydown', { keyCode : #{keycodes[key]} });
     const keyup = new KeyboardEvent('keyup', { keyCode : #{keycodes[key]} });
     document.dispatchEvent(keydown);
-    setTimeout(() => { document.dispatchEvent(keyup) }, 16);
+    setTimeout(() => { document.dispatchEvent(keyup) }, 5);
   JS
   page.driver.browser.execute_script(keypress_script)
   sleep 0.016
@@ -173,6 +208,8 @@ end
 
 def setup_keys
   page.find('.toggle-settings').click
+  page.find('#das').send_keys :backspace, :backspace, :backspace, '117'
+  page.find('#arr').send_keys :backspace, :backspace, '0'
   page.find('#restart').send_keys 'q'
   page.find('#left').send_keys 'a'
   page.find('#right').send_keys 'd'
@@ -182,4 +219,36 @@ def setup_keys
   page.find('#ccw').send_keys 'k'
   page.find('#switch').send_keys 'l'
   click_button 'Save'
+end
+
+def play_replay(file)
+  replay = JSON.parse(File.read(file))
+  move_keys = {
+    'hardDrop' => 'w',
+    'moveActivePieceLeft' => 'a',
+    'moveActivePieceRight' => 'd',
+    'rotateActivePieceCW' => 'j',
+    'rotateActivePieceCCW' => 'k',
+    'switchActivePieceGems' => 'l',
+  }
+  moves = replay['moves']
+  current_time = (Time.now.to_f * 1000).to_i
+  elapsed_time = 0
+
+  loop do
+    moves.each { |move|
+      break if move['timestamp'] > elapsed_time
+
+      if move_keys.keys.include?(move['move'])
+        press_key move_keys[move['move']]
+      end
+
+      moves.shift
+    }
+
+    break if moves.size.zero?
+
+    new_time = (Time.now.to_f * 1000).to_i
+    elapsed_time = new_time - current_time
+  end
 end
