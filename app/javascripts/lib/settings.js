@@ -11,8 +11,9 @@ export default {
   debug: valueOrDefault('debug', 0),
 
   site: {
-    beenHereBefore: valueOrDefault('site.beenHereBefore', 0),
+    beenHereBefore:        valueOrDefault('site.beenHereBefore',        0),
     displayMobileControls: valueOrDefault('site.displayMobileControls', isBigScreen() ? 0 : 1),
+    lightMode:             valueOrDefault('site.lightMode',             0),
   },
 
   keys: {
@@ -33,24 +34,35 @@ export default {
   },
 
   populateFrom: function(settings) {
-    if (settings.keys.restart)  { this.keys.restart  = settings.keys.restart; }
-    if (settings.keys.left)     { this.keys.left     = settings.keys.left; }
-    if (settings.keys.right)    { this.keys.right    = settings.keys.right; }
-    if (settings.keys.hardDrop) { this.keys.hardDrop = settings.keys.hardDrop; }
-    if (settings.keys.softDrop) { this.keys.softDrop = settings.keys.softDrop; }
-    if (settings.keys.ccw)      { this.keys.ccw      = settings.keys.ccw; }
-    if (settings.keys.cw)       { this.keys.cw       = settings.keys.cw; }
-    if (settings.keys.switch)   { this.keys.switch   = settings.keys.switch; }
+    if (settings.site) {
+      if (settings.site.lightMode)  { this.site.lightMode  = settings.site.lightMode; }
+    }
 
-    if (settings.game.volume) { this.game.volume = settings.game.volume; }
-    if (settings.game.das)    { this.game.das    = settings.game.das; }
-    if (settings.game.arr)    { this.game.arr    = settings.game.arr; }
+    if (settings.keys) {
+      if (settings.keys.restart)  { this.keys.restart  = settings.keys.restart; }
+      if (settings.keys.left)     { this.keys.left     = settings.keys.left; }
+      if (settings.keys.right)    { this.keys.right    = settings.keys.right; }
+      if (settings.keys.hardDrop) { this.keys.hardDrop = settings.keys.hardDrop; }
+      if (settings.keys.softDrop) { this.keys.softDrop = settings.keys.softDrop; }
+      if (settings.keys.ccw)      { this.keys.ccw      = settings.keys.ccw; }
+      if (settings.keys.cw)       { this.keys.cw       = settings.keys.cw; }
+      if (settings.keys.switch)   { this.keys.switch   = settings.keys.switch; }
+    }
+
+    if (settings.game) {
+      if (settings.game.volume) { this.game.volume = settings.game.volume; }
+      if (settings.game.das)    { this.game.das    = settings.game.das; }
+      if (settings.game.arr)    { this.game.arr    = settings.game.arr; }
+    }
   },
 
   save: function(toSave) {
     this.site.displayMobileControls = toSave.site.displayMobileControls;
+    this.site.lightMode = toSave.site.lightMode;
 
     localStorage.setItem('site.displayMobileControls', toSave.site.displayMobileControls);
+    localStorage.setItem('site.lightMode',             toSave.site.lightMode);
+
     if (toSave.keys.restart)  { localStorage.setItem('keys.restart',               toSave.keys.restart); }
     if (toSave.keys.left)     { localStorage.setItem('keys.left',                  toSave.keys.left); }
     if (toSave.keys.right)    { localStorage.setItem('keys.right',                 toSave.keys.right); }
@@ -82,6 +94,7 @@ export default {
 
   resetDefaults: function() {
     localStorage.removeItem('site.displayMobileControls');
+    localStorage.removeItem('site.lightMode');
     localStorage.removeItem('keys.restart');
     localStorage.removeItem('keys.left');
     localStorage.removeItem('keys.right');
@@ -95,6 +108,7 @@ export default {
     localStorage.removeItem('game.arr');
 
     this.site.displayMobileControls = valueOrDefault('site.displayMobileControls', isBigScreen() ? 0 : 1);
+    this.site.lightMode = valueOrDefault('site.lightMode', 0);
 
     this.keys.restart = valueOrDefault('keys.restart',  113);
     this.keys.left = valueOrDefault('keys.left',      37);
@@ -111,4 +125,8 @@ export default {
 
     this.save(this);
   },
+
+  applySiteSettings: function() {
+    document.querySelector('body').className = this.site.lightMode === 1 ? 'light-mode' : 'dark-mode';
+  }
 };

@@ -1,6 +1,49 @@
-
 // Form
 // ––––––––––––––––––––––––––––––––––––––––––––––––––
+.light-mode
+  input[type='email'],
+  input[type='number'],
+  input[type='password'],
+  input[type='search'],
+  input[type='tel'],
+  input[type='text'],
+  input[type='url'],
+  input[type='color'],
+  input[type='date'],
+  input[type='month'],
+  input[type='week'],
+  input[type='datetime'],
+  input[type='datetime-local'],
+  input:not([type]),
+  textarea,
+  select
+    color: $colour-light-secondary
+    background: $colour-light-background
+    border: .1rem solid $colour-light-quaternary
+    &:focus
+      border-color: $colour-light-primary
+.dark-mode
+  input[type='email'],
+  input[type='number'],
+  input[type='password'],
+  input[type='search'],
+  input[type='tel'],
+  input[type='text'],
+  input[type='url'],
+  input[type='color'],
+  input[type='date'],
+  input[type='month'],
+  input[type='week'],
+  input[type='datetime'],
+  input[type='datetime-local'],
+  input:not([type]),
+  textarea,
+  select
+    color: $colour-dark-secondary
+    background: $colour-dark-background
+    border: .1rem solid $colour-dark-quaternary
+    &:focus
+      border-color: $colour-dark-primary
 
 input[type='email'],
 input[type='number'],
@@ -22,7 +65,7 @@ select
 	-webkit-appearance: none // Removes awkward default styles on some inputs for iOS
 	-mozilla-appearance: none // Removes awkward default styles on some inputs for iOS
 	background-color: transparent
-	border: .1rem solid $color-quaternary
+	border: .1rem solid $colour-light-quaternary
 	border-radius: .4rem
 	box-shadow: none
 	box-sizing: inherit // Forced to replace inherit values of the normalize.css
@@ -31,7 +74,7 @@ select
 	width: 100%
 
 	&:focus
-		border-color: $color-primary
+		border-color: $colour-light-primary
 		outline: 0
 
 select

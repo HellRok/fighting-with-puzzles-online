@@ -3,11 +3,17 @@
   text-align: center;
 }
 
+.light-mode .home-link {
+  background: $colour-light-tertiary;
+  border: 0.1rem solid $colour-light-quaternary;
+}
+.dark-mode .home-link {
+  background: $colour-dark-tertiary;
+  border: 0.1rem solid $colour-dark-quaternary;
+}
 .home-link {
   display: inline-block;
   width: 100%;
-  background: $color-tertiary;
-  border: 0.1rem solid $color-quaternary;
   padding: 0.5rem;
   margin-bottom: 1rem;
   box-sizing: border-box;
@@ -17,14 +23,20 @@
   }
 }
 
+.light-mode .show-how-to-play {
+  background: $colour-light-tertiary;
+  border: 0.1rem solid $colour-light-quaternary;
+}
+.dark-mode .show-how-to-play {
+  background: $colour-dark-tertiary;
+  border: 0.1rem solid $colour-dark-quaternary;
+}
 .show-how-to-play {
   max-width: 940px;
   margin: auto;
   display: block;
   padding: 0.5rem;
   font-size: 2.0rem;
-  background: $color-tertiary;
-  border: 0.1rem solid $color-quaternary;
 
   .close {
     float: right;

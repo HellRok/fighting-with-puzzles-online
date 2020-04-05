@@ -1,8 +1,18 @@
+.light-mode {
+  nav {
+    background: $colour-light-tertiary;
+    border-bottom: 0.1rem solid $colour-light-quaternary;
+  }
+}
+.dark-mode {
+  nav {
+    background: $colour-dark-tertiary;
+    border-bottom: 0.1rem solid $colour-dark-quaternary;
+  }
+}
 nav {
   position: fixed;
   width: 100%;
-  background: $color-tertiary;
-  border-bottom: 0.1rem solid $color-quaternary;
   z-index: 3;
 
   .logo {
@@ -20,14 +30,32 @@ nav {
   }
 }
 
+.light-mode {
+  .sidebar {
+    background: $colour-light-tertiary;
+    border-left: 0.1rem solid $colour-light-quaternary;
+    .sidebar-link {
+      border-bottom: 0.1rem solid $colour-light-quaternary;
+      &:hover { background: $colour-light-quinary; }
+    }
+  }
+}
+.dark-mode {
+  .sidebar {
+    background: $colour-dark-tertiary;
+    border-left: 0.1rem solid $colour-dark-quaternary;
+    .sidebar-link {
+      border-bottom: 0.1rem solid $colour-dark-quaternary;
+      &:hover { background: $colour-dark-quinary; }
+    }
+  }
+}
 .sidebar {
   position: fixed;
   top: 0;
   width: $sidebar-width;
   height: 100vh;
   padding-top: 42px;
-  background: $color-tertiary;
-  border-left: 0.1rem solid $color-quaternary;
   z-index: 2;
   overflow-y: auto;
   transition: right 0.1s;
@@ -40,20 +68,35 @@ nav {
     width: 100%;
     font-size: 2rem;
     padding: 1rem;
-    border-bottom: 0.1rem solid $color-quaternary;
-
-    &:hover { background: $color-quinary; }
   }
 }
 
+.light-mode {
+  .settings-form {
+    background: $colour-light-background;
+    border-left: 0.1rem solid $colour-light-quaternary;
+    .header {
+      background: $colour-light-tertiary;
+      border-bottom: 0.1rem solid $colour-light-quaternary;
+    }
+  }
+}
+.dark-mode {
+  .settings-form {
+    background: $colour-dark-background;
+    border-left: 0.1rem solid $colour-dark-quaternary;
+    .header {
+      background: $colour-dark-tertiary;
+      border-bottom: 0.1rem solid $colour-dark-quaternary;
+    }
+  }
+}
 .settings-form {
   position: fixed;
   top: 0;
   width: $sidebar-width;
   height: 100vh;
   padding: 42px 0 0 0;
-  background: white;
-  border-left: 0.1rem solid $color-quaternary;
   z-index: 1;
   overflow-y: auto;
   transition: right 0.1s;
@@ -63,8 +106,6 @@ nav {
     width: $sidebar-width;
     padding: 10px 10px 0 0;
     margin: 0;
-    background: $color-tertiary;
-    border-bottom: 0.1rem solid $color-quaternary;
     text-align: right;
   }
 

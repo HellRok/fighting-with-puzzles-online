@@ -1,13 +1,26 @@
-.button {
+.light-mode .button {
   &.success {
-    color: $color-success;
-    background: lighten($color-success, 30%);
-    border: 1px solid $color-success;
+    color: $colour-success;
+    background: lighten($colour-success, 30%);
+    border: 1px solid $colour-success;
   }
 
   &.warning {
-    color: $color-warning;
-    background: lighten($color-warning, 30%);
-    border: 1px solid $color-warning;
+    color: $colour-success;
+    background: lighten($colour-success, 30%);
+    border: 1px solid $colour-success;
+  }
+}
+.dark-mode .button {
+  &.success {
+    color: darken($colour-success, 30%);
+    background: $colour-success;
+    border: 1px solid darken($colour-success, 30%);
+  }
+
+  &.warning {
+    color: darken($colour-warning, 30%);
+    background: $colour-warning;
+    border: 1px solid darken($colour-warning, 30%);
   }
 }

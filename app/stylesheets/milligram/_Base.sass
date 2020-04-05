@@ -16,7 +16,14 @@ html
 
 // Default body styles
 body
-	color: $color-secondary
+  &.light-mode
+    color: $colour-light-secondary
+    background: $colour-light-background
+  &.dark-mode
+    color: $colour-dark-secondary
+    background: $colour-dark-background
+
+body
 	font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif
 	font-size: 1.6em // Currently ems cause chrome bug misinterpreting rems on body element
 	font-weight: 300

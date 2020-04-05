@@ -2,17 +2,30 @@
 // Code
 // ––––––––––––––––––––––––––––––––––––––––––––––––––
 
+.light-mode
+  code
+    background: $colour-light-tertiary
+.dark-mode
+  code
+    background: $colour-dark-tertiary
+
 code
-	background: $color-tertiary
 	border-radius: .4rem
 	font-size: 86%
 	margin: 0 .2rem
 	padding: .2rem .5rem
 	white-space: nowrap
 
+.light-mode
+  pre
+    background: $colour-light-tertiary
+    border-left: .3rem solid $colour-light-primary
+.dark-mode
+  pre
+    background: $colour-dark-tertiary
+    border-left: .3rem solid $colour-dark-primary
+
 pre
-	background: $color-tertiary
-	border-left: .3rem solid $color-primary
 	overflow-y: hidden
 
 	& > code

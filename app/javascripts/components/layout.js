@@ -10,11 +10,18 @@ export default class Layout {
       gtag('config', 'UA-157003509-1', { 'page_path': m.route.get() });
     };
     Audio.setVolume(Settings.game.volume);
+    Settings.applySiteSettings();
   }
 
   view(vnode) {
     return [
-      m(`.content${ Nav.showSidebar ? '.sidebar-shown' : '.sidbar-hidden' }`, [
+      m('.content',
+        {
+          class: `
+            ${ Nav.showSidebar ? 'sidebar-shown' : 'sidbar-hidden' }
+          `,
+        },
+        [
         (Settings.site.beenHereBefore ? '' : m(m.route.Link,
           {
             href: '/how_to_play',
