@@ -15,9 +15,11 @@ export default class SettingsForm {
     this.unsaved.game.das = document.querySelector('.settings-form #das').value;
     this.unsaved.game.arr = document.querySelector('.settings-form #arr').value;
     this.unsaved.site.displayMobileControls = document.querySelector('.settings-form #displayMobileControls').checked ? 1 : 0;
+    this.unsaved.site.lightMode = document.querySelector('.settings-form #lightMode').checked ? 1 : 0;
     Settings.save(this.unsaved);
     this.resetUnsaved();
     Audio.setVolume(Settings.game.volume);
+    Settings.applySiteSettings();
     m.redraw();
   }
 
@@ -92,6 +94,15 @@ export default class SettingsForm {
               checked: this.valueFor('site', 'displayMobileControls'),
               'data-group': 'site',
               'data-setting': 'displayMobileControls',
+              value: 1,
+            }),
+
+            m('label', { for: 'lightMode' }, 'Use Light Mode'),
+            m('input#lightMode.', {
+              type: 'checkbox',
+              checked: this.valueFor('site', 'lightMode'),
+              'data-group': 'site',
+              'data-setting': 'lightMode',
               value: 1,
             }),
 

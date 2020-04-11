@@ -3,9 +3,10 @@
   position: relative;
 }
 
+.light-mode .board-wrapper { border: 0.1rem solid $colour-light-quaternary; }
+.dark-mode .board-wrapper { border: 0.1rem solid $colour-dark-quaternary; }
 .board-wrapper {
   display: inline-block;
-  border: 0.1rem solid $color-quaternary;
   font-size: 0;
 }
 
@@ -13,17 +14,19 @@
   display: inline-block;
 }
 
+.light-mode .lockdelay-progress { background: $colour-light-primary; }
+.dark-mode .lockdelay-progress { background: $colour-dark-primary; }
 .lockdelay-progress {
-  background: $color-primary;
   height: 3px;
 }
 
+.light-mode .overlay { background: $colour-light-tertiary; }
+.dark-mode .overlay { background: $colour-dark-tertiary; }
 .overlay {
   position: absolute;
   top: 150px;
   left: 1px;
   text-align: center;
-  background: $color-tertiary;
   opacity: 0.8;
 }
 

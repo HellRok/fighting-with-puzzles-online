@@ -10,7 +10,7 @@ import CurrentUser from '../current_user';
 
 export default class Ultra extends Player {
   setup() {
-    this.recorder = new ReplayRecorder('ultra');
+    this.recorder = new ReplayRecorder('ultra', this.seed);
     this.ultraTime = 180000; // 3 minutes
   }
 

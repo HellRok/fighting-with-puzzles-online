@@ -13,7 +13,7 @@ import CurrentUser from '../current_user';
 export default class Sprint extends Player {
   setup() {
     this.dumpText = document.querySelector('.next-dump');
-    this.recorder = new ReplayRecorder('survival');
+    this.recorder = new ReplayRecorder('survival', this.seed);
     this.nextDumpAt = 5000;
     this.dumpTotal = 1;
     this.dumpMultiplier = 2;

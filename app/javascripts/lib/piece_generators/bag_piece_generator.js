@@ -1,4 +1,4 @@
-import { shuffle } from 'lodash/collection';
+import { pullAt } from 'lodash/array';
 import { times } from 'lodash/util';
 
 import Gem from '../gem';
@@ -18,7 +18,7 @@ export default class BagPieceGenerator extends BasePieceGenerator{
 
   pullFromBag() {
     if (this.bag.length === 0) { this.fillBag(); };
-    return this.bag.pop();
+    return pullAt(this.bag, this.prng.max(this.bag.length))[0];
   }
 
   fillBag() {
@@ -30,6 +30,5 @@ export default class BagPieceGenerator extends BasePieceGenerator{
     this.bag.push(new Gem(undefined, 0, 0, 'blue', true));
     this.bag.push(new Gem(undefined, 0, 0, 'orange', true));
     this.bag.push(new Gem(undefined, 0, 0, 'purple', true));
-    this.bag = shuffle(this.bag);
   }
 };

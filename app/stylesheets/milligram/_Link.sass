@@ -2,10 +2,18 @@
 // Link
 // ––––––––––––––––––––––––––––––––––––––––––––––––––
 
-a
-	color: $color-primary
-	text-decoration: none
+.light-mode
+  a
+    color: $colour-light-primary
+    &:focus,
+    &:hover
+      color: $colour-light-secondary
+.dark-mode
+  a
+    color: $colour-dark-primary
+    &:focus,
+    &:hover
+      color: $colour-dark-secondary
 
-	&:focus,
-	&:hover
-		color: $color-secondary
+a
+	text-decoration: none

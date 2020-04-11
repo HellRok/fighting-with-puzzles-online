@@ -13,8 +13,8 @@ export default class SurvivalPresenter {
     this.playerBoard = new Board();
   }
 
-  oncreate() {
-    this.player = new Survival(this.playerBoard);
+  oncreate(vnode) {
+    this.player = new Survival(this.playerBoard, vnode.attrs.seed);
     this.player.gameLoop();
     this.player.renderLoop();
     if (Settings.site.displayMobileControls) {

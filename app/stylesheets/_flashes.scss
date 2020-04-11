@@ -4,6 +4,34 @@
   width: 100%;
 }
 
+.light-mode .flash {
+  background: $colour-light-tertiary;
+  border: 0.1rem solid $colour-light-quaternary;
+
+  &.success {
+    background: lighten($colour-success, 30%);
+    border: 1px solid $colour-success;
+  }
+
+  &.warning {
+    background: lighten($colour-warning, 30%);
+    border: 1px solid $colour-warning;
+  }
+}
+.dark-mode .flash {
+  background: $colour-dark-tertiary;
+  border: 0.1rem solid $colour-dark-quaternary;
+
+  &.success {
+    background: $colour-success;
+    border: 1px solid darken($colour-success, 30%);
+  }
+
+  &.warning {
+    background: $colour-warning;
+    border: 1px solid darken($colour-warning, 30%);
+  }
+}
 .flash {
   width: 95%;
   max-width: 940px;
@@ -15,18 +43,6 @@
   position: absolute;
   padding: 0.5rem;
   font-size: 2.0rem;
-  background: $color-tertiary;
-  border: 0.1rem solid $color-quaternary;
-
-  &.success {
-    background: lighten($color-success, 30%);
-    border: 1px solid $color-success;
-  }
-
-  &.warning {
-    background: lighten($color-warning, 30%);
-    border: 1px solid $color-warning;
-  }
 }
 
 .flash-text {

@@ -1,12 +1,12 @@
 fieldset.error {
-  label { color: $color-warning; }
+  label { color: $colour-warning; }
 
   input {
-    border: 1px solid $color-warning;
+    border: 1px solid $colour-warning !important;
   }
 
   .error-text {
-    color: $color-warning;
+    color: $colour-warning;
   }
 }
 

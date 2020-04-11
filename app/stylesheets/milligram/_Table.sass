@@ -6,9 +6,18 @@ table
 	border-spacing: 0
 	width: 100%
 
+.light-mode
+  td,
+  th
+    border-bottom: .1rem solid $colour-light-quinary
+.dark-mode
+  td,
+  th
+    border-bottom: .1rem solid $colour-dark-quinary
+
 td,
 th
-	border-bottom: .1rem solid $color-quinary
+	border-bottom: .1rem solid $colour-light-quinary
 	padding: 1.2rem 1.5rem
 	text-align: left
 
@@ -19,14 +28,29 @@ th
 		padding-right: 0
 
 @media screen and (max-width: 40.0rem)
+  .light-mode
+    table.responsive
+      thead
+        border-right: solid .1rem $colour-light-quinary
+
+      tbody
+        tr
+          border-right: solid .1rem $colour-light-quinary
+  .dark-mode
+    table.responsive
+      thead
+        border-right: solid .1rem $colour-dark-quinary
+
+      tbody
+        tr
+          border-right: solid .1rem $colour-dark-quinary
+
   table.responsive
     border-spacing: 0
     display: flex
     width: 100%
 
     thead
-      border-right: solid .1rem $color-quinary
-
       td,
       th
         padding-left: 0
@@ -43,8 +67,6 @@ th
       white-space: nowrap
 
       tr
-        border-right: solid .1rem $color-quinary
-
         &:last-child
           border-right: none
 

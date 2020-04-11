@@ -6,8 +6,9 @@ import CurrentUser from './current_user';
 import { replayVersion } from './helpers';
 
 export default class ReplayRecorder {
-  constructor(gameMode) {
+  constructor(gameMode, seed) {
     this.gameMode = gameMode;
+    this.seed = seed;
     this.pieces = [];
     this.moves = [];
     this.currentTime = 0;
@@ -34,8 +35,9 @@ export default class ReplayRecorder {
       pieces: this.pieces,
       moves: this.moves,
       settings: {
-        das: Settings.das,
-        arr: Settings.arr,
+        seed: this.seed,
+        das: Settings.game.das,
+        arr: Settings.game.arr,
       }
     }
   }
