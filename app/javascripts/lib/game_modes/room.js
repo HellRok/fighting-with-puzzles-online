@@ -9,13 +9,17 @@ import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 import CurrentUser from '../current_user';
 
 export default class Room extends Player {
-  constructor(playerBoard, boards=[], roomId) {
+  constructor(playerBoard, seed, boards=[], roomId) {
     super(playerBoard, boards);
     this.socket = new WebSocket(`ws://localhost:3002/game/${roomId}`);
 
     this.socket.addEventListener('message', (e) => {
-      console.log(e);
-      //this.socket.send(`RESPONDING AS ${CurrentUser.data.username}`)
+      console.log(e.data);
+    });
+
+    this.seed = 123
+    this.socket.addEventListener('open', () => {
+      this.socket.send('hi');
     });
   }
 
@@ -49,19 +53,8 @@ export default class Room extends Player {
     this.recorder.addMove('win');
 
     this.state.alive = false;
-    let newBest = false;
-    let oldBest;
 
-    if (CurrentUser.isPresent()) {
-      oldBest = CurrentUser.data.bests.sprint;
-      if (oldBest) {
-        newBest = oldBest.time - this.playerBoard.stats.runningTime;
-      } else {
-        newBest = true;
-      }
-    }
-
-    this.recorder.persist(0, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
+    this.recorder.persist(3, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
       if (newBest) { CurrentUser.refresh(); }
       this.lastReplay = response.data;
       Flash.addFlash({

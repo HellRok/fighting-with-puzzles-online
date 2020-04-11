@@ -1,10 +1,3 @@
-FROM crystallang/crystal:latest-alpine AS server_build
-WORKDIR /app
-COPY game_server/shard.yml game_server/shard.lock /app/
-RUN shards install
-COPY game_server/src/ /app/src/
-RUN crystal build --release --no-debug --static src/game_server.cr
-
 FROM node:latest AS node_build
 WORKDIR /app
 COPY package.json yarn.lock /app/
@@ -16,12 +9,16 @@ RUN yarn run production:build
 FROM ruby:alpine
 WORKDIR /app
 COPY Gemfile Gemfile.lock /app/
+COPY game_server/Gemfile game_server/Gemfile.lock /app/game_server/
 RUN gem install bundler && \
   apk update && \
   apk add make libxml2 libxslt-dev g++ gcc libc-dev postgresql-dev && \
   rm -f /var/cache/apk/*
 RUN bundle config set without 'development test' && \
-  bundle install
+  bundle install && \
+  cd game_server && \
+  bundle install && \
+  cd ..
 COPY . /app
 COPY --from=node_build /app/public/assets /app/public/assets
 RUN make digest-assets

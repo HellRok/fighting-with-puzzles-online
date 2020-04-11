@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    iodine (0.7.38)
+    rack (2.2.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  iodine
+  rack
+
+BUNDLED WITH
+   2.1.2
