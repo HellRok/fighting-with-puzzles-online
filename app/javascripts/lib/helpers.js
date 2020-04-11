@@ -28,7 +28,7 @@ export function displayScore(score) {
 
 export function displayDate(time) {
   const date = new Date(time);
-  return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
 export function isBigScreen() {
