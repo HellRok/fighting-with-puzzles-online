@@ -356,6 +356,11 @@ export default class Player {
   }
 
   keyUp(event) {
+    if (event.keyCode === Settings.keys.restart) {
+      this.keyState.restart = false;
+      this.keyState.restartHandled = false;
+    }
+
     if (event.keyCode === Settings.keys.right) {
       this.keyState.right = false;
       this.keyState.rightHandled = true;

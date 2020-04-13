@@ -1,7 +1,7 @@
 import m from 'mithril';
 
 import Player from '../player';
-import OnlineRecorder from '../online_recorder';
+import RoomStateConnecting from './room_states/connecting';
 import Settings from '../settings';
 import Flash from '../flash';
 import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
@@ -11,41 +11,56 @@ import CurrentUser from '../current_user';
 export default class Room extends Player {
   constructor(playerBoard, seed, boards=[], roomId) {
     super(playerBoard, boards);
+
     this.socket = new WebSocket(`ws://localhost:3002/game/${roomId}`);
+    this.state = new RoomStateConnecting(this);
 
     this.socket.addEventListener('message', (e) => {
-      console.log(e.data);
+      this.state.handle(JSON.parse(e.data));
     });
 
     this.seed = 123
-    this.socket.addEventListener('open', () => {
-      this.socket.send('hi');
-    });
+  }
+
+  changeState(newState) {
+    this.state.teardown();
+    this.state = new newState(this);
   }
 
   setup() {
-    this.recorder = new OnlineRecorder(this.socket);
     this.playerBoard.stats.start = timestamp();
+    this.state.ready = false;
   }
 
   tick(delta) {
-    this.playerBoard.stats.runningTime += delta;
-    this.recorder.currentTime = this.playerBoard.stats.runningTime;
-    this.input(delta);
+    this.state.tick();
 
-    if (!this.state.alive) { return; }
+    //this.input(delta);
 
-    this.gravity(delta);
+    //if (!this.state.alive) { return; }
+
+    //this.playerBoard.stats.runningTime += delta;
+    //this.recorder.currentTime = this.playerBoard.stats.runningTime;
+    //this.gravity(delta);
+  }
+
+  input(delta) {
+    this.state.input(delta);
   }
 
   deadInput() {
-    if (this.keyState.restart) {
-      this.restart();
+    if (this.keyState.restart && !this.keyState.restartHandled) {
+      this.readyUp();
     }
   }
 
+  readyUp() {
+    this.recorder.readyUp()
+    this.keyState.restartHandled = true;
+  }
+
   attemptRestart() {
-    this.restart();
+    // Do nothing
   }
 
   win(time) {
@@ -55,7 +70,6 @@ export default class Room extends Player {
     this.state.alive = false;
 
     this.recorder.persist(3, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
-      if (newBest) { CurrentUser.refresh(); }
       this.lastReplay = response.data;
       Flash.addFlash({
         text: 'Replay saved',
