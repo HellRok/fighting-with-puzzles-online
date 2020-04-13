@@ -19,7 +19,7 @@ export default class Room extends Player {
       this.state.handle(JSON.parse(e.data));
     });
 
-    this.seed = 123
+    this.players = [];
   }
 
   changeState(newState) {

@@ -12,7 +12,6 @@ import Room from '../lib/game_modes/room';
 export default class RoomPresenter {
   constructor() {
     this.playerBoard = new Board(1);
-    this.boards = [new Board(2)];
   }
 
   oncreate(vnode) {
@@ -29,7 +28,7 @@ export default class RoomPresenter {
     return m(Layout, [
       m('h2.text-centre', ['Room: ', Rooms.current.name]),
       m(this.playerBoard),
-      this.boards.map(board => m(board)),
+      this.player ? this.player.boards.map(board => m(board)) : '',
     ]);
   }
 };
