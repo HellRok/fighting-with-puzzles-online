@@ -48,7 +48,7 @@ export default class Board {
 
   context() {
     if (!this.context2d) {
-      this.context2d = document.querySelector(`#board-${this.id}`).getContext('2d');
+      this.context2d = this.boardElement().getContext('2d');
       this.context2d.font = 'normal normal 10px monospace';
     }
 
@@ -76,11 +76,19 @@ export default class Board {
     m.redraw();
   }
 
+  boardElement() {
+    return document.querySelector(`#board-${this.id}`);
+  }
+
   blank() {
     this.context().clearRect(0, 0, 32 * this.width, 32 * this.height);
   }
 
   render() {
+    // Turns out this can be called before the element itself has been drawn by
+    // mithril, so we defer a frame in that case.
+    if (!this.boardElement()) { return };
+
     const _this = this;
     this.blank();
 

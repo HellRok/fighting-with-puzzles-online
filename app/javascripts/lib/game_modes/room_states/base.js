@@ -32,6 +32,7 @@ export default class RoomStateBase {
       case 'leave':
         this.removePlayer(message.data);
         break;
+
       default:
         console.log(`DUNNO HOW TO HANDLE: ${message.action}`);
     }
@@ -42,10 +43,12 @@ export default class RoomStateBase {
 
   addPlayer(player) {
     this.game.boards.push(new Board(player.uuid));
+    m.redraw();
   }
 
   removePlayer(player) {
     this.game.boards = filter(this.game.boards, board => board.id !== player.uuid)
+    m.redraw();
   }
 
   // All of these need to be handled in the respective child class
