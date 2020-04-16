@@ -2,7 +2,7 @@ import m from 'mithril';
 import { isEmpty } from 'lodash/lang';
 
 import Layout from './layout';
-import Board from './_board';
+import PlayerBoard from './_player_board';
 import Settings from '../lib/settings';
 
 import Api from '../lib/api';
@@ -11,7 +11,7 @@ import Room from '../lib/game_modes/room';
 
 export default class RoomPresenter {
   constructor() {
-    this.playerBoard = new Board(1);
+    this.playerBoard = new PlayerBoard(1);
   }
 
   oncreate(vnode) {

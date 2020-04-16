@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { filter } from 'lodash/collection';
 
-import Board from '../../../components/_board';
+import OpponentBoard from '../../../components/_opponent_board';
 
 export default class RoomStateBase {
   constructor(game) {
@@ -12,8 +12,8 @@ export default class RoomStateBase {
   setup() { }
   teardown() { }
 
-  send(data) {
-    this.game.recorder.send(data);
+  send(action, data={}) {
+    this.game.recorder.send(action, data);
   }
 
   handle(message) {
@@ -42,7 +42,7 @@ export default class RoomStateBase {
   input(delta) { }
 
   addPlayer(player) {
-    this.game.boards.push(new Board(player.uuid));
+    this.game.boards.push(new OpponentBoard(player));
     m.redraw();
   }
 

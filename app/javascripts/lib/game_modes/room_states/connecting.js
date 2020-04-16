@@ -27,12 +27,9 @@ export default class RoomStateConnecting extends RoomStateBase {
 
     m.redraw();
 
-    this.send({
-      action: 'join',
-      data: {
-        id: CurrentUser.data.id,
-        username: CurrentUser.data.username,
-      }
+    this.send('join', {
+      id: CurrentUser.data.id,
+      username: CurrentUser.data.username,
     });
   }
 }

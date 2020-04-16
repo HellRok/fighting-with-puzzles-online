@@ -9,7 +9,7 @@ export default class OnlineRecorder extends ReplayRecorder {
 
   addPiece(gems) {
     super.addPiece(gems);
-    this.send({ addPiece: [
+    this.send('move', { addPiece: [
       this.simplifyGem(gems[0]),
       this.simplifyGem(gems[1])
     ] });
@@ -17,17 +17,18 @@ export default class OnlineRecorder extends ReplayRecorder {
 
   addMove(move, options={}) {
     super.addMove(move, options);
-    this.send({ addMove: [move, options] })
+    this.send('move', { addMove: [move, options] })
   }
 
   readyUp() {
-    this.send({ state: 'ready' });
+    this.send('ready');
   }
 
-  send(data) {
+  send(action, data={}) {
     this.socket.send(JSON.stringify(
       {
         uuid: this.uuid,
+        action: action,
         data: data
       }
     ));
