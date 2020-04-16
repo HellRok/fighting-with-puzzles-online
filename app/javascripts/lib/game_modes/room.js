@@ -32,21 +32,8 @@ export default class Room extends Player {
     this.state.ready = false;
   }
 
-  tick(delta) {
-    this.gameState.tick();
-
-    //this.input(delta);
-
-    //if (!this.state.alive) { return; }
-
-    //this.playerBoard.stats.runningTime += delta;
-    //this.recorder.currentTime = this.playerBoard.stats.runningTime;
-    //this.gravity(delta);
-  }
-
-  input(delta) {
-    this.gameState.input(delta);
-  }
+  tick(delta)  { this.gameState.tick(delta); }
+  input(delta) { this.gameState.input(delta); }
 
   deadInput() {
     if (this.keyState.restart && !this.keyState.restartHandled) {
@@ -81,4 +68,7 @@ export default class Room extends Player {
     `);
     m.redraw();
   }
+
+  // Can't restart a live match, so just do nothing
+  attemptRestart() { }
 }

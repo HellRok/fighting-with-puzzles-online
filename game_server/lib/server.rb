@@ -43,6 +43,10 @@ class Server
     when 'ready'
       @player.ready
       client.publish @path, { action: 'ready', data: { uuid: @uuid } }.to_json;
+      if @room.all_players_ready?
+        @room.players.map { |player| player.state = 'playing'; player.save }
+        client.publish @path, { action: 'start', data: { seed: Time.now.to_i } }.to_json;
+      end
 
     when 'unready'
       @player.unready

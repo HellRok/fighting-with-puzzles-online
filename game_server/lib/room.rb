@@ -31,4 +31,8 @@ class Room < RedisModel
   def players
     Player.all(self)
   end
+
+  def all_players_ready?
+    players.all? { |player| player.state == 'ready' }
+  end
 end

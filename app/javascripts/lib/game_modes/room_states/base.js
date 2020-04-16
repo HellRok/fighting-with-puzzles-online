@@ -17,7 +17,7 @@ export default class RoomStateBase {
   }
 
   handle(message) {
-    if (message.data.uuid === this.game.uuid) { return; }
+    if (message.data.uuid && message.data.uuid === this.game.uuid) { return; }
     console.log(message);
 
     switch(message.action) {
@@ -39,6 +39,10 @@ export default class RoomStateBase {
 
       case 'unready':
         this.unreadyPlayer(message.data.uuid);
+        break;
+
+      case 'start':
+        this.start();
         break;
 
       default:
@@ -69,6 +73,10 @@ export default class RoomStateBase {
 
   unreadyPlayer(uuid) {
     this.findPlayer(uuid).unready();
+  }
+
+  start() {
+    throw "Need to overload start in child class";
   }
 
   // All of these need to be handled in the respective child class

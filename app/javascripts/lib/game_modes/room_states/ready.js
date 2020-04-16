@@ -2,6 +2,7 @@ import m from 'mithril';
 
 import RoomStateBase from './base';
 import RoomStateNotReady from './not_ready';
+import RoomStatePlaying from './playing';
 
 import Settings from '../../settings';
 import { keyboardMap }  from '../../helpers';
@@ -35,5 +36,10 @@ export default class RoomStateReady extends RoomStateBase {
     this.game.recorder.unready()
     this.game.keyState.restartHandled = true;
     this.game.changeState(RoomStateNotReady);
+  }
+
+  start(seed) {
+    this.game.boards.forEach(board => board.overlay = null);
+    this.game.changeState(RoomStatePlaying);
   }
 }
