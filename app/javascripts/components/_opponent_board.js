@@ -6,6 +6,17 @@ export default class OpponentBoard extends Board {
   constructor(player) {
     super(player.uuid);
     this.player = player;
+    this.unready();
+  }
+
+  ready() {
+    this.overlay = 'Ready!';
+    m.redraw();
+  }
+
+  unready() {
+    this.overlay = 'Waiting...';
+    m.redraw();
   }
 
   view(vnode) {

@@ -13,18 +13,18 @@ export default class Room extends Player {
     super(playerBoard, boards);
 
     this.socket = new WebSocket(`ws://localhost:3002/game/${roomId}`);
-    this.state = new RoomStateConnecting(this);
+    this.changeState(RoomStateConnecting);
 
     this.socket.addEventListener('message', (e) => {
-      this.state.handle(JSON.parse(e.data));
+      this.gameState.handle(JSON.parse(e.data));
     });
 
     this.players = [];
   }
 
   changeState(newState) {
-    this.state.teardown();
-    this.state = new newState(this);
+    if (this.gameState) { this.gameState.teardown(); }
+    this.gameState = new newState(this);
   }
 
   setup() {
@@ -33,7 +33,7 @@ export default class Room extends Player {
   }
 
   tick(delta) {
-    this.state.tick();
+    this.gameState.tick();
 
     //this.input(delta);
 
@@ -45,7 +45,7 @@ export default class Room extends Player {
   }
 
   input(delta) {
-    this.state.input(delta);
+    this.gameState.input(delta);
   }
 
   deadInput() {
@@ -57,10 +57,6 @@ export default class Room extends Player {
   readyUp() {
     this.recorder.readyUp()
     this.keyState.restartHandled = true;
-  }
-
-  attemptRestart() {
-    // Do nothing
   }
 
   win(time) {

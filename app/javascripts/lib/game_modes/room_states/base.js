@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { filter } from 'lodash/collection';
+import { filter, find } from 'lodash/collection';
 
 import OpponentBoard from '../../../components/_opponent_board';
 
@@ -18,8 +18,8 @@ export default class RoomStateBase {
 
   handle(message) {
     if (message.data.uuid === this.game.uuid) { return; }
-
     console.log(message);
+
     switch(message.action) {
       case 'connected':
         this.connected(message.data);
@@ -31,6 +31,14 @@ export default class RoomStateBase {
 
       case 'leave':
         this.removePlayer(message.data);
+        break;
+
+      case 'ready':
+        this.readyPlayer(message.data.uuid);
+        break;
+
+      case 'unready':
+        this.unreadyPlayer(message.data.uuid);
         break;
 
       default:
@@ -49,6 +57,18 @@ export default class RoomStateBase {
   removePlayer(player) {
     this.game.boards = filter(this.game.boards, board => board.id !== player.uuid)
     m.redraw();
+  }
+
+  findPlayer(uuid) {
+    return find(this.game.boards, board => board.id === uuid);
+  }
+
+  readyPlayer(uuid) {
+    this.findPlayer(uuid).ready();
+  }
+
+  unreadyPlayer(uuid) {
+    this.findPlayer(uuid).unready();
   }
 
   // All of these need to be handled in the respective child class

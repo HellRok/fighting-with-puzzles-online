@@ -7,7 +7,9 @@ require 'connection_pool'
 require 'redis'
 
 require './lib/server'
+require './lib/redis_model'
 require './lib/room'
+require './lib/player'
 
 APP = Proc.new do |env|
   request = Rack::Request.new(env)

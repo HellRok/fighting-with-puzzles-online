@@ -24,6 +24,10 @@ export default class OnlineRecorder extends ReplayRecorder {
     this.send('ready');
   }
 
+  unready() {
+    this.send('unready');
+  }
+
   send(action, data={}) {
     this.socket.send(JSON.stringify(
       {
