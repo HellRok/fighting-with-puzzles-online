@@ -45,6 +45,14 @@ export default class RoomStateBase {
         this.start();
         break;
 
+      case 'lost':
+        this.losePlayer(message.data.uuid);
+        break;
+
+      case 'won':
+        this.winPlayer(message.data.winner, message.data.timestamp);
+        break;
+
       default:
         console.log(`DUNNO HOW TO HANDLE: ${message.action}`);
     }
@@ -73,6 +81,14 @@ export default class RoomStateBase {
 
   unreadyPlayer(uuid) {
     this.findPlayer(uuid).unready();
+  }
+
+  losePlayer(uuid) {
+    throw 'Need to overload losePlayer in child class';
+  }
+
+  winPlayer(uuid, timestamp) {
+    throw 'Need to overload winPlayer in child class';
   }
 
   start() {

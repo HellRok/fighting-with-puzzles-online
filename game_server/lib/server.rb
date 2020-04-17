@@ -30,7 +30,8 @@ class Server
   #     }
   def on_message client, data
     parsed = JSON.parse(data)
-    log parsed
+    log parsed unless parsed['action'] == 'move'
+
     case parsed['action']
     when 'join'
       @player = Player.create @room, @uuid, parsed['data']['id'], parsed['data']['username']
@@ -43,7 +44,7 @@ class Server
     when 'ready'
       @player.ready
       client.publish @path, { action: 'ready', data: { uuid: @uuid } }.to_json;
-      if @room.all_players_ready?
+      if @room.all_players_ready? && @room.players.size > 1
         @room.players.map { |player| player.state = 'playing'; player.save }
         client.publish @path, { action: 'start', data: { seed: Time.now.to_i } }.to_json;
       end
@@ -51,6 +52,21 @@ class Server
     when 'unready'
       @player.unready
       client.publish @path, { action: 'unready', data: { uuid: @uuid } }.to_json;
+
+    when 'move'
+      response = parsed['data'].merge(uuid: parsed['uuid'])
+      client.publish @path, { action: 'move', data: response }.to_json;
+
+    when 'lose'
+      @player.state = 'lost'
+      @player.save
+      client.publish @path, { action: 'lost', data: { uuid: @uuid } }.to_json;
+      remaining_players = @room.players_remaining
+      if remaining_players.size == 1
+        client.publish @path, { action: 'won', data: {
+          winner: remaining_players.first.uuid, timestamp: parsed['data']['timestamp']
+        } }.to_json;
+      end
 
     else
       log "DUNNO HOW TO HANDLE #{parsed['action']}"

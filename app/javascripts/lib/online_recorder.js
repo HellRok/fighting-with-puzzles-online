@@ -33,6 +33,7 @@ export default class OnlineRecorder extends ReplayRecorder {
       {
         uuid: this.uuid,
         action: action,
+        timestamp: this.currentTime,
         data: data
       }
     ));

@@ -52,22 +52,28 @@ export default class Room extends Player {
 
     this.state.alive = false;
 
-    this.recorder.persist(3, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
-      this.lastReplay = response.data;
-      Flash.addFlash({
-        text: 'Replay saved',
-        href: `/sprint/replay/${this.lastReplay.id}`,
-        timeout: 5000,
-      });
-    });
+    //this.recorder.persist(3, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
+    //  this.lastReplay = response.data;
+    //  Flash.addFlash({
+    //    text: 'Replay saved',
+    //    href: `/sprint/replay/${this.lastReplay.id}`,
+    //    timeout: 5000,
+    //  });
+    //});
 
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
-      You took ${displayMilliseconds(this.playerBoard.stats.runningTime)}!
-      ${ newBest > 0 && oldBest ? `You improved your best by ${displayMilliseconds(newBest)}` : ''}
+      You survived ${displayMilliseconds(time)}!
     `);
     m.redraw();
   }
+
+  lose() {
+    super.lose();
+    this.playerBoard.overlay = 'Oh no, you topped out!';
+    this.gameState.send('lose', { timestamp: this.recorder.currentTime });
+  }
+
 
   // Can't restart a live match, so just do nothing
   attemptRestart() { }

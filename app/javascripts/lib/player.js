@@ -577,7 +577,6 @@ export default class Player {
   }
 
   lose() {
-    this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
     this.recorder.addMove('lose');
     this.state.alive = false;
     this.playerBoard.overlay = m.trust(`
@@ -592,7 +591,6 @@ export default class Player {
   }
 
   win() {
-    this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
     Audio.win.play();
   }
 }

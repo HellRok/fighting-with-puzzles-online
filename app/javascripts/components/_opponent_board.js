@@ -2,6 +2,8 @@ import m from 'mithril';
 
 import Board from './_board';
 
+import { displayMilliseconds }  from '../lib/helpers';
+
 export default class OpponentBoard extends Board {
   constructor(player) {
     super(player.uuid);
@@ -16,6 +18,16 @@ export default class OpponentBoard extends Board {
 
   unready() {
     this.overlay = 'Waiting...';
+    m.redraw();
+  }
+
+  lose() {
+    this.overlay = 'Topped out.';
+    m.redraw();
+  }
+
+  win(timestamp) {
+    this.overlay = `Winner! They survived ${ displayMilliseconds(timestamp) }.`;
     m.redraw();
   }
 
