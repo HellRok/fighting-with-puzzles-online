@@ -1,5 +1,7 @@
 #!/bin/sh
 
+redis-server &
 cd game_server
-bundle exec iodine -p 3000 config.ru
+bundle exec iodine -p 3002 config.ru &
+cd ../
 bundle exec puma config.ru

@@ -8,6 +8,7 @@ services:
     depends_on:
       - pg
     ports:
+      - "9998:3002"
       - "9999:3000"
     environment:
       - RAILS_ENV=test
