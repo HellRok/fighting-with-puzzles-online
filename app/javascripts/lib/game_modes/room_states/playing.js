@@ -12,9 +12,9 @@ export default class RoomStatePlaying extends RoomStateBase {
 
   teardown() {
     this.game.playerBoard.clear();
-    this.game.boards.forEach(board => {
-      board.clear();
-      board.overlay = 'Waiting...';
+    this.game.opponents.forEach(opponent => {
+      opponent.playerBoard.clear();
+      opponent.playerBoard.overlay = 'Waiting...';
     });
     m.redraw();
   }
@@ -31,7 +31,7 @@ export default class RoomStatePlaying extends RoomStateBase {
   }
 
   losePlayer(uuid) {
-    this.findPlayer(uuid).lose();
+    this.findPlayer(uuid).playerBoard.lose();
   }
 
   winPlayer(uuid, timestamp) {
@@ -46,7 +46,7 @@ export default class RoomStatePlaying extends RoomStateBase {
       const winner = this.findPlayer(uuid);
       winner.win(timestamp);
       Flash.addFlash({
-        text: `${winner.player.username || 'Anon'} won!`,
+        text: `${winner.playerBoard.player.username || 'Anon'} won!`,
         level: 'info',
         timeout: 5000,
       });
@@ -55,5 +55,11 @@ export default class RoomStatePlaying extends RoomStateBase {
     setTimeout(() => {
       this.game.changeState(RoomStateNotReady);
     }, 5000);
+  }
+
+  movePlayer(response) {
+    console.log(response);
+    const player = this.findPlayer(response.uuid);
+    player.executeMove(response.move, response.options)
   }
 }

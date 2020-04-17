@@ -19,7 +19,7 @@ export default class RoomPresenter {
       Api.roomsFind(vnode.key).then(response => Rooms.current = response);
     }
 
-    this.player = new Room(this.playerBoard, null, this.boards, vnode.key);
+    this.player = new Room(this.playerBoard, null, vnode.key);
     this.player.gameLoop();
     this.player.renderLoop();
   }
@@ -28,7 +28,7 @@ export default class RoomPresenter {
     return m(Layout, [
       m('h2.text-centre', ['Room: ', Rooms.current.name]),
       m(this.playerBoard),
-      this.player ? this.player.boards.map(board => m(board)) : '',
+      this.player ? this.player.opponents.map(opponent => m(opponent.playerBoard)) : '',
     ]);
   }
 };

@@ -2,6 +2,7 @@ import m from 'mithril';
 import { filter, find } from 'lodash/collection';
 
 import OpponentBoard from '../../../components/_opponent_board';
+import Opponent from '../../opponent';
 
 export default class RoomStateBase {
   constructor(game) {
@@ -53,6 +54,10 @@ export default class RoomStateBase {
         this.winPlayer(message.data.winner, message.data.timestamp);
         break;
 
+      case 'move':
+        this.movePlayer(message.data, message.data.timestamp);
+        break;
+
       default:
         console.log(`DUNNO HOW TO HANDLE: ${message.action}`);
     }
@@ -62,25 +67,27 @@ export default class RoomStateBase {
   input(delta) { }
 
   addPlayer(player) {
-    this.game.boards.push(new OpponentBoard(player));
+    const newBoard = new OpponentBoard(player);
+    const newOpponent = new Opponent(newBoard);
+    this.game.opponents.push(newOpponent);
     m.redraw();
   }
 
   removePlayer(player) {
-    this.game.boards = filter(this.game.boards, board => board.id !== player.uuid)
+    this.game.opponents = filter(this.game.opponets, opponent => opponent.playerBoard.id !== player.uuid)
     m.redraw();
   }
 
   findPlayer(uuid) {
-    return find(this.game.boards, board => board.id === uuid);
+    return find(this.game.opponents, opponent => opponent.playerBoard.id === uuid);
   }
 
   readyPlayer(uuid) {
-    this.findPlayer(uuid).ready();
+    this.findPlayer(uuid).playerBoard.ready();
   }
 
   unreadyPlayer(uuid) {
-    this.findPlayer(uuid).unready();
+    this.findPlayer(uuid).playerBoard.unready();
   }
 
   losePlayer(uuid) {
@@ -88,6 +95,10 @@ export default class RoomStateBase {
   }
 
   winPlayer(uuid, timestamp) {
+    throw 'Need to overload winPlayer in child class';
+  }
+
+  movePlayer(data, timestamp) {
     throw 'Need to overload winPlayer in child class';
   }
 

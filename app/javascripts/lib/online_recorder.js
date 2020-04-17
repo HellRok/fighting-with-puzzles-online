@@ -17,7 +17,7 @@ export default class OnlineRecorder extends ReplayRecorder {
 
   addMove(move, options={}) {
     super.addMove(move, options);
-    this.send('move', { addMove: [move, options] })
+    this.send('move', { move: move, options: options })
   }
 
   readyUp() {

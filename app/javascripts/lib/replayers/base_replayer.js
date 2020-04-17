@@ -54,7 +54,7 @@ export default class BaseReplayer extends Player {
     }
   }
 
-  executeMove(move, delta) {
+  executeMove(move, delta=0) {
     switch (move.move) {
       case 'moveActivePieceRight': this.moveActivePieceRight(); break;
       case 'moveActivePieceLeft': this.moveActivePieceLeft(); break;

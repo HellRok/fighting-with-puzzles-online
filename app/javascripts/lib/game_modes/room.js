@@ -1,6 +1,7 @@
 import m from 'mithril';
 
 import Player from '../player';
+import Opponent from '../opponent';
 import RoomStateConnecting from './room_states/connecting';
 import Settings from '../settings';
 import Flash from '../flash';
@@ -9,8 +10,8 @@ import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 import CurrentUser from '../current_user';
 
 export default class Room extends Player {
-  constructor(playerBoard, seed, boards=[], roomId) {
-    super(playerBoard, boards);
+  constructor(playerBoard, seed, roomId) {
+    super(playerBoard);
 
     this.socket = new WebSocket(`ws://localhost:3002/game/${roomId}`);
     this.changeState(RoomStateConnecting);

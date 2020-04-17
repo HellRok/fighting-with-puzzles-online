@@ -10,15 +10,13 @@ import BagPieceGenerator from './piece_generators/bag_piece_generator';
 import { timestamp, offsetPositions, keyboardMap } from './helpers';
 
 export default class Player {
-  constructor(playerBoard, seed, boards=[]) {
+  constructor(playerBoard, seed) {
     this.seed = seed;
     this.playerBoard = playerBoard;
     this.playerBoard.debug.show = true;
     this.playerBoard.game = this;
 
-    this.boards = boards;
-    this.boards.forEach(board => board.game = this);
-
+    this.opponents = [];
     this.queueLength = 3;
     this.gravityTimeout = 500;
     this.lockdelayTimeout = 350;
@@ -134,7 +132,7 @@ export default class Player {
     this.playerBoard.debug.renderTick = delta;
 
     this.playerBoard.render();
-    this.boards.forEach(board => board.render());
+    this.opponents.forEach(opponent => opponent.playerBoard.render());
     if (!this.state.toBeDestroyed) {
       window.requestAnimationFrame(() => _this.renderLoop())
     }
