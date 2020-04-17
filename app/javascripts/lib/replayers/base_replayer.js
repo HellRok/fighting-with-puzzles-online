@@ -7,15 +7,8 @@ import Gem from '../gem';
 import Settings from '../settings';
 import Api from '../api';
 import ReplayPieceGenerator from '../piece_generators/replay_piece_generator';
+import NullRecorder from '../null_recorder';
 import { displayMilliseconds, offsetPositions } from '../helpers';
-
-class NullRecorder {
-  constructor(gameMode) { }
-  addPiece(gems) { }
-  addMove(move) { }
-  output() { return {} }
-  toString() { return '' }
-}
 
 export default class BaseReplayer extends Player {
   setup() {
@@ -63,7 +56,7 @@ export default class BaseReplayer extends Player {
       case 'rotateActivePieceCCW': this.rotateActivePieceCCW(); break;
       case 'hardDrop': this.hardDrop(); break;
       case 'softDrop': this.softDrop(); break;
-      case 'gravity': this.gravity(delta); break;
+      case 'gravity': this.gravity(); break;
       case 'gravityLock': this.lock(); break;
       case 'dump': this.dump(); break;
       case 'queueGarbage': this.queueGarbage(move.options.column, move.options.colour); break;
@@ -81,7 +74,7 @@ export default class BaseReplayer extends Player {
     this.gravityTimestamp = 0;
   }
 
-  gravity(delta) {
+  gravity() {
     this.moveActivePieceDown();
   }
 

@@ -39,7 +39,11 @@ export default class RoomStateReady extends RoomStateBase {
   }
 
   start(seed) {
-    this.game.opponents.forEach(opponent => opponent.playerBoard.overlay = null);
+    this.game.seed = seed;
+    this.game.opponents.forEach(opponent => {
+      opponent.seed = seed;
+      opponent.playerBoard.overlay = null;
+    });
     this.game.changeState(RoomStatePlaying);
   }
 }

@@ -19,7 +19,6 @@ export default class RoomStateBase {
 
   handle(message) {
     if (message.data.uuid && message.data.uuid === this.game.uuid) { return; }
-    console.log(message);
 
     switch(message.action) {
       case 'connected':
@@ -43,7 +42,7 @@ export default class RoomStateBase {
         break;
 
       case 'start':
-        this.start();
+        this.start(message.data.seed);
         break;
 
       case 'lost':

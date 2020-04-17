@@ -7,14 +7,6 @@ export default class OnlineRecorder extends ReplayRecorder {
     this.uuid = uuid;
   }
 
-  addPiece(gems) {
-    super.addPiece(gems);
-    this.send('move', { addPiece: [
-      this.simplifyGem(gems[0]),
-      this.simplifyGem(gems[1])
-    ] });
-  }
-
   addMove(move, options={}) {
     super.addMove(move, options);
     this.send('move', { move: move, options: options })

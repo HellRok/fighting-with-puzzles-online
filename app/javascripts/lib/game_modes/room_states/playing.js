@@ -8,6 +8,7 @@ import RoomStateNotReady from './not_ready';
 export default class RoomStatePlaying extends RoomStateBase {
   setup() {
     this.game.restart();
+    this.game.opponents.forEach(opponent => opponent.restart());
   }
 
   teardown() {
@@ -58,8 +59,7 @@ export default class RoomStatePlaying extends RoomStateBase {
   }
 
   movePlayer(response) {
-    console.log(response);
     const player = this.findPlayer(response.uuid);
-    player.executeMove(response.move, response.options)
+    player.executeMove(response)
   }
 }
