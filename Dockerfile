@@ -27,6 +27,7 @@ ENV RAILS_ENV production
 ENV MALLOC_ARENA_MAX 2
 ENV RAILS_SERVE_STATIC_FILES true
 ENV SECRET_KEY_BASE NOT-A-REAL-KEY
+ENV GAME_SERVER_URL ws://localhost:3002
 
 RUN adduser -D -s /bin/sh puma
 RUN mkdir -p tmp/pids log && \

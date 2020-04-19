@@ -10,10 +10,10 @@ import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 import CurrentUser from '../current_user';
 
 export default class Room extends Player {
-  constructor(playerBoard, seed, roomId) {
+  constructor(playerBoard, seed, roomId, gameServerUrl) {
     super(playerBoard);
 
-    this.socket = new WebSocket(`ws://localhost:3002/game/${roomId}`);
+    this.socket = new WebSocket(`${gameServerUrl}/game/${roomId}`);
     this.changeState(RoomStateConnecting);
 
     this.socket.addEventListener('message', (e) => {

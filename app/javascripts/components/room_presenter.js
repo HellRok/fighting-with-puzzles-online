@@ -16,10 +16,17 @@ export default class RoomPresenter {
 
   oncreate(vnode) {
     if (isEmpty(Rooms.current)) {
-      Api.roomsFind(vnode.key).then(response => Rooms.current = response);
+      Api.roomsFind(vnode.key).then(response => {
+        Rooms.current = response;
+        this.setup(vnode.key);
+      });
+    } else {
+      this.setup(vnode.key);
     }
+  }
 
-    this.player = new Room(this.playerBoard, null, vnode.key);
+  setup(roomId) {
+    this.player = new Room(this.playerBoard, null, roomId, Rooms.current.gameServerUrl);
     this.player.gameLoop();
     this.player.renderLoop();
   }
