@@ -1,6 +1,7 @@
 import m from 'mithril';
 
 import Layout from './layout';
+import RoomItem from './_room_item';
 
 import Api from '../lib/api';
 import Rooms from '../lib/rooms';
@@ -28,27 +29,27 @@ export default class OnlinePresenter {
   }
 
   view() {
-    return m(Layout, [
-      m('h2.text-centre', 'Online'),
+    return m(Layout,
+      m('.max-width-960', [
+        m('h2.text-centre', 'Online'),
 
-      m('form.room-form', {
-        onsubmit: e => { this.roomSubmit(e) }
-      },[
-        m('fieldset', [
-          m('label', { for: 'name' }, 'Name'),
-          m('input', { id: 'name', for: 'name' }, 'Name'),
+        m('form.room-form', {
+          onsubmit: e => { this.roomSubmit(e) }
+        },[
+          m('fieldset', [
+            m('label', { for: 'name' }, 'Name'),
+            m('input', { id: 'name', for: 'name' }, 'Name'),
 
-          m('input.width-100', { type: 'submit', disabled: this.submitting })
-        ])
-      ]),
+            m('input.width-100', { type: 'submit', disabled: this.submitting })
+          ])
+        ]),
 
-      Rooms.data.map(room => {
-        return m('room-container', [
-          m('room-name', room.name),
-          m('room-players', room.players.length),
-        ]);
-      }),
-
-    ]);
+        m('.rooms-container',
+          Rooms.data.map(room => {
+            return m(RoomItem, { room: room })
+          }),
+        ),
+      ])
+    );
   }
 };

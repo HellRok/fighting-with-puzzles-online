@@ -8,6 +8,10 @@
 class Room < RedisModel
   attr_reader :id
 
+  def self.find(id)
+    Room.new(id) if Room.get "#{id}/state"
+  end
+
   def initialize(id)
     @id = id
     self.state = 'waiting' unless state

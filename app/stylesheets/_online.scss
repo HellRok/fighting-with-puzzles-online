@@ -1,0 +1,32 @@
+.rooms-container {
+  padding: 0.5rem;
+}
+
+.light-mode .room {
+  background: $colour-light-tertiary;
+  border: 0.1rem solid $colour-light-quaternary;
+}
+.dark-mode .room {
+  background: $colour-dark-tertiary;
+  border: 0.1rem solid $colour-dark-quaternary;
+}
+.room {
+  display: inline-block;
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+
+  .player-name {
+    display: inline-block;
+
+    &+ .player-name {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .join {
+    float: right;
+    margin-bottom: 0;
+  }
+}
