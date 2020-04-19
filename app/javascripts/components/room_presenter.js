@@ -25,6 +25,10 @@ export default class RoomPresenter {
     }
   }
 
+  onremove() {
+    this.player.destroy();
+  }
+
   setup(roomId) {
     this.player = new Room(this.playerBoard, null, roomId, Rooms.current.gameServerUrl);
     this.player.gameLoop();

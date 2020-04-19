@@ -28,6 +28,11 @@ export default class Room extends Player {
     this.gameState = new newState(this);
   }
 
+  destroy() {
+    this.socket.close();
+    super.destroy();
+  }
+
   setup() {
     this.playerBoard.stats.start = timestamp();
     this.state.ready = false;
