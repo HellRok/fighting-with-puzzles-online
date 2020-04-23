@@ -25,9 +25,6 @@ export default class RoomStateBase {
         this.connected(message.data);
         break;
 
-      case 'disconnect':
-        this.disconnect(message.data.uuid);
-
       case 'join':
         this.addPlayer(message.data);
         break;
@@ -76,8 +73,7 @@ export default class RoomStateBase {
   }
 
   removePlayer(uuid) {
-    console.log(`REMOVING: ${uuid}`);
-    this.game.opponents = filter(this.game.opponets, opponent => opponent.playerBoard.id !== uuid)
+    this.game.opponents = filter(this.game.opponents, opponent => opponent.playerBoard.id !== uuid)
     m.redraw();
   }
 
@@ -103,11 +99,6 @@ export default class RoomStateBase {
 
   movePlayer(data, timestamp) {
     throw 'Need to overload winPlayer in child class';
-  }
-
-  disconnect(uuid) {
-    console.log(`DISCONNECTING: ${uuid}`);
-    this.removePlayer(uuid);
   }
 
   start() {

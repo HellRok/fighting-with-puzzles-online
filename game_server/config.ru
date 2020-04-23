@@ -66,16 +66,16 @@ Iodine.run_every(5_000) do
       room.players.each do |player|
         if Time.now.to_f - player.last_ping > 5
           puts "#{Time.now}: Disconnect #{player.uuid}"
-          Iodine.publish room.id, { action: 'disconnect', data: { uuid: player.uuid } }.to_json;
+          Iodine.publish room.id, { action: 'leave', data: { uuid: player.uuid, disconnect: true } }.to_json;
           player.destroy
 
           remaining_players = room.players_remaining
-          room.state = 'waiting' if remaining_players.size <= 1
 
           if remaining_players.size == 1 && room.state == 'playing'
             Iodine.publish room.id, { action: 'won', data: {
               winner: remaining_players.first.uuid
             } }.to_json;
+            room.state = 'waiting' if remaining_players.size <= 1
           end
         end
       end

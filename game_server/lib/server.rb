@@ -85,18 +85,19 @@ class Server
 
   private
   def lose(timestamp=nil)
-    if @room.state == 'playing'
-      @client.publish @path, { action: 'lost', data: { uuid: @uuid } }.to_json
-    end
-
     remaining_players = @room.players_remaining
 
-    @room.state = 'waiting' if remaining_players.size <= 1
-    if remaining_players.size == 1
-      @client.publish @path, { action: 'won', data: {
-        winner: remaining_players.first.uuid, timestamp: @parsed['data']['timestamp']
-      } }.to_json;
+    if @room.state == 'playing'
+      @client.publish @path, { action: 'lost', data: { uuid: @uuid } }.to_json
+
+      if remaining_players.size == 1
+        @client.publish @path, { action: 'won', data: {
+          winner: remaining_players.first.uuid, timestamp: @parsed['data']['timestamp']
+        } }.to_json;
+      end
     end
+
+    @room.state = 'waiting' if remaining_players.size <= 1
   end
 
   def log(message)
