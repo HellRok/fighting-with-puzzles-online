@@ -35,7 +35,9 @@ APP = Proc.new do |env|
         []
       ]
     else
-      room = Room.find(request.path)
+      # We deliberately create the room setup if it doesn't exist yet, just
+      # seems nicer than errors every time I reboot the server.
+      room = Room.new(request.path)
       status = 200
       body = {}
 
@@ -58,8 +60,27 @@ APP = Proc.new do |env|
   end
 end
 
-# By default, Pub/Sub performs in process cluster mode.
-Iodine.workers = 1
+Iodine.run_every(5_000) do
+  if Iodine.master?
+    Room.all.each do |room|
+      room.players.each do |player|
+        if Time.now.to_f - player.last_ping > 5
+          puts "#{Time.now}: Disconnect #{player.uuid}"
+          Iodine.publish room.id, { action: 'disconnect', data: { uuid: player.uuid } }.to_json;
+          player.destroy
 
-# # or in config.ru
+          remaining_players = room.players_remaining
+          room.state = 'waiting' if remaining_players.size <= 1
+
+          if remaining_players.size == 1 && room.state == 'playing'
+            Iodine.publish room.id, { action: 'won', data: {
+              winner: remaining_players.first.uuid
+            } }.to_json;
+          end
+        end
+      end
+    end
+  end
+end
+
 run APP

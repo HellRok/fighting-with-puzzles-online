@@ -29,23 +29,32 @@ class Server
   #       // Relevant data
   #     }
   def on_message client, data
-    parsed = JSON.parse(data)
-    log parsed unless parsed['action'] == 'move'
+    @parsed = JSON.parse(data)
+    @client = client
 
-    case parsed['action']
+    log @parsed unless %w(move ping).include? @parsed['action']
+
+    case @parsed['action']
+    when 'ping'
+      @player.ping
+
     when 'join'
-      @player = Player.create @room, @uuid, parsed['data']['id'], parsed['data']['username']
-      client.publish @path, { action: 'join', data: parsed['data'].merge(uuid: @uuid) }.to_json;
+      @player = Player.create @room, @uuid, @parsed['data']['id'], @parsed['data']['username']
+      client.publish @path, { action: 'join', data: @parsed['data'].merge(uuid: @uuid) }.to_json;
 
     when 'leave'
       @player.destroy
-      client.publish @path, { action: 'join', data: { uuid: @uuid } }.to_json;
+      client.publish @path, { action: 'leave', data: { uuid: @uuid } }.to_json;
 
     when 'ready'
       @player.ready
       client.publish @path, { action: 'ready', data: { uuid: @uuid } }.to_json;
       if @room.all_players_ready? && @room.players.size > 1
-        @room.players.map { |player| player.state = 'playing'; player.save }
+        @room.players.map { |player|
+          player.state = 'playing'
+          player.save
+        }
+        @room.state = 'playing'
         client.publish @path, { action: 'start', data: { seed: Time.now.to_i } }.to_json;
       end
 
@@ -54,32 +63,42 @@ class Server
       client.publish @path, { action: 'unready', data: { uuid: @uuid } }.to_json;
 
     when 'move'
-      response = parsed['data'].merge(uuid: parsed['uuid'])
+      response = @parsed['data'].merge(uuid: @parsed['uuid'])
       client.publish @path, { action: 'move', data: response }.to_json;
 
     when 'lose'
       @player.state = 'lost'
       @player.save
-      client.publish @path, { action: 'lost', data: { uuid: @uuid } }.to_json;
-      remaining_players = @room.players_remaining
-      if remaining_players.size == 1
-        client.publish @path, { action: 'won', data: {
-          winner: remaining_players.first.uuid, timestamp: parsed['data']['timestamp']
-        } }.to_json;
-      end
+      lose @parsed['data']['timestamp']
 
     else
-      log "DUNNO HOW TO HANDLE #{parsed['action']}"
+      log "DUNNO HOW TO HANDLE #{@parsed['action']}"
     end
   end
 
   def on_close client
     log "Closed: #{@uuid}"
     @player.destroy
+    lose
     client.publish @path, { action: 'leave', data: { uuid: @uuid } }.to_json;
   end
 
   private
+  def lose(timestamp=nil)
+    if @room.state == 'playing'
+      @client.publish @path, { action: 'lost', data: { uuid: @uuid } }.to_json
+    end
+
+    remaining_players = @room.players_remaining
+
+    @room.state = 'waiting' if remaining_players.size <= 1
+    if remaining_players.size == 1
+      @client.publish @path, { action: 'won', data: {
+        winner: remaining_players.first.uuid, timestamp: @parsed['data']['timestamp']
+      } }.to_json;
+    end
+  end
+
   def log(message)
     puts "#{Time.now}: #{message}"
   end

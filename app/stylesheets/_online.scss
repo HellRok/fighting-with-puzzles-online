@@ -17,6 +17,19 @@
   margin-bottom: 1rem;
   box-sizing: border-box;
 
+  .room-name {
+    display: inline-block;
+  }
+
+  .room-state {
+    padding-left: 0.5rem;
+    display: inline-block;
+
+    .icon-flag, .icon-clock {
+      display: inline-block;
+    }
+  }
+
   .player-name {
     display: inline-block;
 

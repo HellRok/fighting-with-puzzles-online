@@ -7,7 +7,6 @@ class Player < RedisModel
 
       player_values = (conn.mget *player_keys).map { |value| JSON.parse(value) }
 
-      #player_keys.map { |key| key.split('/').last }.zip(player_values).map { |uuid, value| value.merge(uuid: uuid) }
       player_keys.zip(player_values).map { |key, value|
         Player.new(room, key.split('/').last, value['id'], value['username'], value['state'])
       }
@@ -15,7 +14,9 @@ class Player < RedisModel
   end
 
   def self.create(room, uuid, id, username)
-    self.new(room, uuid, id, username, 'not_ready').save
+    player = self.new(room, uuid, id, username, 'not_ready').save
+    player.ping
+    player
   end
 
   attr_reader :room, :uuid, :id, :username
@@ -44,6 +45,7 @@ class Player < RedisModel
 
   def destroy
     Player.del "#{@room.id}/players/#{@uuid}"
+    Player.del "#{@uuid}/ping"
   end
 
   def ready
@@ -54,6 +56,14 @@ class Player < RedisModel
   def unready
     @state = 'unready'
     save
+  end
+
+  def ping
+    Player.set_json "#{@uuid}/ping", Time.now.to_f
+  end
+
+  def last_ping
+    Player.get_json "#{@uuid}/ping"
   end
 
   def to_h

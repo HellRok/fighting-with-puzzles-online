@@ -1,16 +1,13 @@
-# Things to store in redis
-#   - Room state (waiting for players, playing)
-#   - Player state (connecting, not ready, ready, playing, lost)
-#   - Player wins (int)
-#
-# TODO: This stuff is so far from acid compliant it's not funny, fix it I guess?
-
 class Room < RedisModel
-  attr_reader :id
+  def self.all
+    Room.redis.with do |conn|
+      room_keys = conn.keys "/room/*/state"
 
-  def self.find(id)
-    Room.new(id) if Room.get "#{id}/state"
+      room_keys.map { |key| Room.new(key.chomp("/state")) }
+    end
   end
+
+  attr_reader :id
 
   def initialize(id)
     @id = id

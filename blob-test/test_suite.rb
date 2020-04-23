@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+# https://stackoverflow.com/a/38861839
+
 require 'bundler'
 
 Bundler.require

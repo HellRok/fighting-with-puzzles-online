@@ -2,6 +2,7 @@ import m from 'mithril';
 
 import RoomStateBase from './base';
 import RoomStateNotReady from './not_ready';
+import RoomStateLost from './lost';
 import OnlineRecorder from '../../online_recorder';
 
 import CurrentUser from '../../current_user';
@@ -36,6 +37,10 @@ export default class RoomStateConnecting extends RoomStateBase {
     switch(data.state) {
       case 'waiting':
         this.game.changeState(RoomStateNotReady);
+        break;
+
+      case 'playing':
+        this.game.changeState(RoomStateLost);
         break;
 
       default:

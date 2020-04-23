@@ -20,7 +20,16 @@ export default class Room extends Player {
       this.gameState.handle(JSON.parse(e.data));
     });
 
+    this.socket.addEventListener('open', (e) => {
+      this.ping();
+    });
+
     this.players = [];
+  }
+
+  ping() {
+    if (this.recorder) { this.recorder.send('ping'); }
+    this.pingTimeout = setTimeout(() => this.ping(), 1000);
   }
 
   changeState(newState) {
@@ -30,6 +39,7 @@ export default class Room extends Player {
 
   destroy() {
     this.socket.close();
+    clearTimeout(this.pingTimeout);
     super.destroy();
   }
 

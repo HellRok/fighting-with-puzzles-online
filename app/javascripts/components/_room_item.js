@@ -7,6 +7,7 @@ export default class RoomItem {
   oninit(vnode) {
     this.room = vnode.attrs.room;
     this.loading = true;
+    this.state = null;
     Api.get(
       `http://${this.room.gameServerUrl}/room/${this.room.id}`, 
       {
@@ -15,6 +16,7 @@ export default class RoomItem {
       }
     ).then(response => {
       console.log(response.data);
+      this.state = response.data.state
       this.players = response.data.players;
       this.loading = false;
     }).catch(error => {
@@ -28,9 +30,25 @@ export default class RoomItem {
       m('.player-name', 'Anon');
   }
 
+  displayState() {
+    switch(this.state) {
+      case 'waiting':
+        return [m('.icon-clock'), 'between games'];
+        break;
+
+      case 'playing':
+        return [m('.icon-flag'), 'game in progress'];
+        break;
+
+      default:
+        return '';
+    };
+  }
+
   view() {
     return m('.room', [
       m('.room-name', `Room: ${this.room.name}`),
+      m('.room-state', this.displayState()),
       this.loading ?
         'Loading...' : [
           m('.room-players', [

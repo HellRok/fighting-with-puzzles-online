@@ -36,6 +36,9 @@ export default class RoomStatePlaying extends RoomStateBase {
   }
 
   winPlayer(uuid, timestamp) {
+    // When a player disconnects there is no timestamp, so just assume now
+    timestamp = timestamp ? timestamp : this.game.playerBoard.stats.runningTime;
+
     if (uuid === this.game.uuid) {
       Flash.addFlash({
         text: 'You won!',

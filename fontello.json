@@ -71,6 +71,18 @@
       "css": "restart",
       "code": 59401,
       "src": "fontawesome"
+    },
+    {
+      "uid": "598a5f2bcf3521d1615de8e1881ccd17",
+      "css": "clock",
+      "code": 59402,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "d7a614bd701f6712e8e3b2be124899e1",
+      "css": "flag",
+      "code": 61726,
+      "src": "fontawesome"
     }
   ]
 }
