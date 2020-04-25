@@ -1,3 +1,4 @@
+$mobile-opponent-width: 192px * 0.50;
 $shrink-opponent-width: 192px * 0.50;
 
 .room-presenter {
@@ -12,47 +13,80 @@ $shrink-opponent-width: 192px * 0.50;
   // When you're the only player in the room
   &.solo { .player-board { width: 100%; } }
 
-  // When there's only 2 of you (or in the future there's just enough room for
-  // everyone to be full)
-  &.full {
-    .player-board, .opponent-board {
-      margin: 0 3rem;
-    }
-    .player-board, .oppnents {
-      width: 50%;
+  @media screen and (max-width: 767px) {
+    &.full {
+      .opponents {
+        .opponent-board {
+          position: absolute;
+          right: 30px;
+          top: 250px;
+        }
+
+        canvas {
+          width: $mobile-opponent-width;
+        }
+
+        .stats {
+          padding-right: 0;
+          width: $shrink-opponent-width;
+        }
+
+        .overlay{
+          width: $shrink-opponent-width;
+          top: 75px;
+        }
+
+        .piece-queue, .lockdelay-progress {
+          display: none;
+        }
+      }
     }
   }
 
-  // When every one can't all fit at once, start shrinking!
-  &.shrink {
-    .player-board {
-      margin: 0 3rem;
-      width: 30%;
+  @media screen and (min-width: 768px) {
+    // When there's only 2 of you (or in the future there's just enough room for
+    // everyone to be full)
+    &.full {
+      .player-board, .opponent-board {
+        margin: 0 3rem;
+      }
+      .player-board, .opponents {
+        width: 50%;
+      }
     }
 
-    .oppnents {
-      width: 70%;
-    }
-
-    .opponent-board {
-      margin: 1rem;
-
-      canvas {
-        width: $shrink-opponent-width;
+    // When every one can't all fit at once, start shrinking!
+    &.shrink {
+      .player-board {
+        margin: 0 3rem;
+        width: 30%;
       }
 
-      .piece-queue, .lockdelay-progress {
-        display: none;
+      .opponents {
+        width: 70%;
+        text-align: left;
       }
 
-      .stats {
-        padding-right: 0;
-        width: $shrink-opponent-width;
-      }
+      .opponent-board {
+        margin: 1rem;
 
-      .overlay{
-        width: $shrink-opponent-width;
-        top: 75px;
+        canvas {
+          width: $shrink-opponent-width;
+        }
+
+        .piece-queue, .lockdelay-progress {
+          display: none;
+        }
+
+        .stats {
+          padding-right: 0;
+          width: $shrink-opponent-width;
+        }
+
+        .overlay{
+          width: $shrink-opponent-width;
+          top: 75px;
+        }
       }
     }
   }
