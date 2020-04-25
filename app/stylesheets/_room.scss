@@ -49,7 +49,11 @@ $shrink-opponent-width: 192px * 0.50;
     &.shrink {
       .opponents { display: none; }
       .opponent-count {
+        position: absolute;
+        right: 30px;
+        top: 250px;
         display: inline-block;
+        font-size: 4rem;
       }
     }
   }

@@ -26,7 +26,7 @@ export default class RoomStateBase {
       case 'server_shutdown':
         Flash.addFlash({
           level: 'warning',
-          text: 'Server shuting down...',
+          text: 'Server shutting down...',
         });
         m.route.set('/online');
         break;
@@ -79,6 +79,13 @@ export default class RoomStateBase {
     const newBoard = new OpponentBoard(player);
     const newOpponent = new Opponent(newBoard);
     this.game.opponents.push(newOpponent);
+
+    if (player.state === 'ready') {
+      newOpponent.ready();
+    } else if (player.state === 'playing') {
+      newOpponent.playerBoard.overlay = undefined;
+    }
+
     m.redraw();
   }
 

@@ -8,6 +8,7 @@ import Settings from '../lib/settings';
 import Api from '../lib/api';
 import Rooms from '../lib/rooms';
 import Room from '../lib/game_modes/room';
+import RoomStatePlaying from '../lib/game_modes/room_states/playing';
 
 export default class RoomPresenter {
   constructor() {
@@ -29,10 +30,28 @@ export default class RoomPresenter {
     this.player.destroy();
   }
 
-  playersAlive() {
-    if (!this.player) { return 0; }
+  opponentCount() {
+    if (!this.player) { return '0 / 0'; }
 
-    return this.player.opponents.filter(opponent => opponent.playerBoard.player.state === 'playing').length;
+    const total = this.player.opponents.length;
+    let count = 0;
+    if (this.opponentState() === 'Alive') {
+      count = this.player.opponents.filter(opponent => opponent.playerBoard.player.state === 'playing').length;
+    } else {
+      count = this.player.opponents.filter(opponent => opponent.playerBoard.player.state === 'ready').length;
+    }
+
+    return `${count} / ${total}`;
+  }
+
+  opponentState() {
+    if (!this.player) { return 'Alive'; }
+
+    if (this.player.gameState instanceof RoomStatePlaying) {
+      return 'Alive';
+    } else {
+      return 'Ready';
+    }
   }
 
   roomSize() {
@@ -56,8 +75,8 @@ export default class RoomPresenter {
       m('.room-presenter', { class: this.roomSize() }, [
         m(this.playerBoard),
         m('.opponent-count', [
-          m('.oppenent-count-value', this.playersAlive()),
-          m('.oppenent-count-text', 'Alive'),
+          m('.oppenent-count-value', this.opponentCount()),
+          m('.oppenent-count-text', this.opponentState()),
         ]),
         m('.opponents',
           this.player ? this.player.opponents.map(opponent => m(opponent.playerBoard)) : '',
