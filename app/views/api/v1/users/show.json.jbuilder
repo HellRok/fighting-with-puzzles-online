@@ -3,9 +3,29 @@ json.success true
 json.data do
   json.partial! 'api/v1/users/user', user: @user
   json.stats do
-    json.total_games_finished @user.replays.count
-    json.total_sprints_finished @user.replays.where(mode: Replay.modes[:sprint]).count
-    json.total_ultras_finished @user.replays.where(mode: Replay.modes[:ultra]).count
-    json.total_survivals_finished @user.replays.where(mode: Replay.modes[:survival]).count
+    json.games do
+      json.count @user.replays.count
+      json.time @user.replays.sum(:time)
+    end
+
+    json.sprints do
+      json.count @user.replays.where(mode: Replay.modes[:sprint]).count
+      json.time @user.replays.where(mode: Replay.modes[:sprint]).sum(:time)
+    end
+
+    json.ultras do
+      json.count @user.replays.where(mode: Replay.modes[:ultra]).count
+      json.time @user.replays.where(mode: Replay.modes[:ultra]).sum(:time)
+    end
+
+    json.survivals do
+      json.count @user.replays.where(mode: Replay.modes[:survival]).count
+      json.time @user.replays.where(mode: Replay.modes[:survival]).sum(:time)
+    end
+
+    json.online do
+      json.count @user.replays.where(mode: Replay.modes[:online]).count
+      json.time @user.replays.where(mode: Replay.modes[:online]).sum(:time)
+    end
   end
 end

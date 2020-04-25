@@ -68,14 +68,14 @@ export default class Room extends Player {
 
     this.state.alive = false;
 
-    //this.recorder.persist(3, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
-    //  this.lastReplay = response.data;
-    //  Flash.addFlash({
-    //    text: 'Replay saved',
-    //    href: `/sprint/replay/${this.lastReplay.id}`,
-    //    timeout: 5000,
-    //  });
-    //});
+    this.recorder.persist(3, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
+      this.lastReplay = response.data;
+      Flash.addFlash({
+        text: 'Replay saved',
+        //href: `/online/replay/${this.lastReplay.id}`,
+        timeout: 5000,
+      });
+    });
 
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>

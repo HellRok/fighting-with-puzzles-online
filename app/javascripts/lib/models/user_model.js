@@ -21,7 +21,13 @@ export default class UserModel extends BaseModel {
       if (opts.bests.survival) { this.bests.survival = new ReplayModel(opts.bests.survival); }
     }
 
-    this.stats = {};
+    this.stats = {
+      games: { count: 0, time: 0 },
+      online: { count: 0, time: 0 },
+      sprints: { count: 0, time: 0 },
+      ultras: { count: 0, time: 0 },
+      survivals: { count: 0, time: 0 },
+    };
     if (opts.stats) {
       this.stats = opts.stats;
     }

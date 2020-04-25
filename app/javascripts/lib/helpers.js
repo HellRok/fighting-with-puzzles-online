@@ -22,6 +22,20 @@ export function displayMilliseconds(time) {
   return `${minutes}:${padStart(seconds, 2, 0)}.${padStart(milliseconds, 3, 0)}`;
 }
 
+export function displayHumanMilliseconds(time) {
+  const days = time / 1000 / 60 / 60 / 24;
+  const hours = time / 1000 / 60 / 60;
+  const minutes = Math.floor(time / 1000 / 60);
+
+  if (days >= 1) {
+    return `${days.toFixed(2)} days`;
+  } else if (hours >= 1) {
+    return `${hours.toFixed(1)} hours`;
+  } else {
+    return `${minutes} minutes`;
+  }
+}
+
 export function displayScore(score) {
   return score.toLocaleString();
 }
