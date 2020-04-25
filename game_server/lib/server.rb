@@ -10,6 +10,7 @@ class Server
     log "#{@uuid}: connected #{@path} - players #{@room.players.size}"
 
     client.subscribe @path
+    client.subscribe :system
 
     response = { uuid: @uuid }.merge(@room.current_state)
 
@@ -81,6 +82,10 @@ class Server
     @player.destroy
     lose
     client.publish @path, { action: 'leave', data: { uuid: @uuid } }.to_json;
+  end
+
+  def on_shutdown client
+    client.write({ action: 'server_shutdown', data: { } }.to_json);
   end
 
   private

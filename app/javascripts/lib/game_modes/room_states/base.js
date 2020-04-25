@@ -4,6 +4,8 @@ import { filter, find } from 'lodash/collection';
 import OpponentBoard from '../../../components/_opponent_board';
 import Opponent from '../../opponent';
 
+import Flash  from '../../flash';
+
 export default class RoomStateBase {
   constructor(game) {
     this.game = game;
@@ -21,6 +23,14 @@ export default class RoomStateBase {
     if (message.data.uuid && message.data.uuid === this.game.uuid) { return; }
 
     switch(message.action) {
+      case 'server_shutdown':
+        Flash.addFlash({
+          level: 'warning',
+          text: 'Server shuting down...',
+        });
+        m.route.set('/online');
+        break;
+
       case 'connected':
         this.connected(message.data);
         break;

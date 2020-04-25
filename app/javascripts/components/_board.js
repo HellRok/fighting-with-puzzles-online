@@ -248,9 +248,6 @@ export default class Board {
         m('.overlay',
           {
             class: (this.overlay ? '' : 'hide'),
-            style: {
-              width: `${32 * this.width}px`,
-            }
           }, this.overlay),
       ]),
     ];

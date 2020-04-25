@@ -33,7 +33,7 @@ export default class OpponentBoard extends Board {
 
   view(vnode) {
     return [
-      m('.player-board', [
+      m('.opponent-board', [
         super.view(vnode),
         m('.stats', [
           (this.player.id ?

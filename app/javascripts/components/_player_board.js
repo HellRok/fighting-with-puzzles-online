@@ -1,6 +1,7 @@
 import m from 'mithril';
 
 import Board from './_board';
+import CurrentUser from '../lib/current_user';
 
 export default class PlayerBoard extends Board {
   view(vnode) {
@@ -8,7 +9,9 @@ export default class PlayerBoard extends Board {
       m('.player-board', [
         super.view(vnode),
         m('.stats', [
-          'hi'
+          (CurrentUser.data.id ?
+            m(m.route.Link, { href: `/profile/${CurrentUser.data.id}` }, CurrentUser.data.username) :
+            'Anon')
         ]),
       ])
     ];

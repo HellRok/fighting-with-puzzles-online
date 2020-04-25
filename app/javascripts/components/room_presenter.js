@@ -29,6 +29,15 @@ export default class RoomPresenter {
     this.player.destroy();
   }
 
+  roomSize() {
+    if (this.player && this.player.opponents) {
+      if (this.player.opponents.length === 0) { return 'solo'; }
+      if (this.player.opponents.length === 1) { return 'full'; }
+    }
+
+    return 'shrink';
+  }
+
   setup(roomId) {
     this.player = new Room(this.playerBoard, null, roomId, Rooms.current.gameServerUrl);
     this.player.gameLoop();
@@ -36,10 +45,13 @@ export default class RoomPresenter {
   }
 
   view() {
-    return m(Layout, [
+    return m(Layout,
       m('h2.text-centre', ['Room: ', Rooms.current.name]),
+      m('.room-presenter', { class: this.roomSize() }, [
       m(this.playerBoard),
-      this.player ? this.player.opponents.map(opponent => m(opponent.playerBoard)) : '',
-    ]);
+      m('.opponents',
+        this.player ? this.player.opponents.map(opponent => m(opponent.playerBoard)) : '',
+      ),
+    ]));
   }
 };
