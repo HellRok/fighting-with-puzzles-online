@@ -10,6 +10,10 @@ $shrink-opponent-width: 192px * 0.50;
     display: inline-block;
   }
 
+  .opponent-count {
+    display: none;
+  }
+
   // When you're the only player in the room
   &.solo { .player-board { width: 100%; } }
 
@@ -39,6 +43,13 @@ $shrink-opponent-width: 192px * 0.50;
         .piece-queue, .lockdelay-progress {
           display: none;
         }
+      }
+    }
+
+    &.shrink {
+      .opponents { display: none; }
+      .opponent-count {
+        display: inline-block;
       }
     }
   }

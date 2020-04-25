@@ -29,6 +29,12 @@ export default class RoomPresenter {
     this.player.destroy();
   }
 
+  playersAlive() {
+    if (!this.player) { return 0; }
+
+    return this.player.opponents.filter(opponent => opponent.playerBoard.player.state === 'playing').length;
+  }
+
   roomSize() {
     if (this.player && this.player.opponents) {
       if (this.player.opponents.length === 0) { return 'solo'; }
@@ -48,10 +54,15 @@ export default class RoomPresenter {
     return m(Layout,
       m('h2.text-centre', ['Room: ', Rooms.current.name]),
       m('.room-presenter', { class: this.roomSize() }, [
-      m(this.playerBoard),
-      m('.opponents',
-        this.player ? this.player.opponents.map(opponent => m(opponent.playerBoard)) : '',
-      ),
-    ]));
+        m(this.playerBoard),
+        m('.opponent-count', [
+          m('.oppenent-count-value', this.playersAlive()),
+          m('.oppenent-count-text', 'Alive'),
+        ]),
+        m('.opponents',
+          this.player ? this.player.opponents.map(opponent => m(opponent.playerBoard)) : '',
+        ),
+      ])
+    );
   }
 };

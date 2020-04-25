@@ -13,21 +13,25 @@ export default class OpponentBoard extends Board {
 
   ready() {
     this.overlay = 'Ready!';
+    this.player.state = 'ready';
     m.redraw();
   }
 
   unready() {
     this.overlay = 'Waiting...';
+    this.player.state = 'unready';
     m.redraw();
   }
 
   lose() {
     this.overlay = 'Topped out.';
+    this.player.state = 'unready';
     m.redraw();
   }
 
   win(timestamp) {
     this.overlay = `Winner! They survived ${ displayMilliseconds(timestamp) }.`;
+    this.player.state = 'unready';
     m.redraw();
   }
 
