@@ -75,6 +75,7 @@ $shrink-opponent-width: 192px * 0.50;
       .player-board {
         margin: 0 3rem;
         width: 30%;
+        min-width: 291px;
       }
 
       .opponents {
