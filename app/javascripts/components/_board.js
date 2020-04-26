@@ -52,6 +52,8 @@ export default class Board {
       this.context2d.font = 'normal normal 10px monospace';
     }
 
+    this.context2d.fillStyle = Settings.site.lightMode ? 'black' : 'white';
+
     return this.context2d;
   }
 
