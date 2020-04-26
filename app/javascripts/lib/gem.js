@@ -105,7 +105,9 @@ export default class Gem {
         (this.aboveGem() && !this.aboveGem().timer && this.aboveGem().colour === this.colour)
       )
     ) {
-      this.smash();
+      return this.smash();
+    } else {
+      return 0;
     }
   }
 
@@ -128,7 +130,10 @@ export default class Gem {
   }
 
   smash() {
-    if (this.toSmash) { return undefined; }
+    if (this.toSmash) { return 0; }
+
+    let damage = 1;
+
     this.toSmash = true;
     this.board.stats.lastScore += this.score();
 
@@ -137,25 +142,32 @@ export default class Gem {
       this.board.stats.lastClusterGemsSmashed += this.cluster.gems.length;
       this.board.stats.clustersSmashed += 1;
 
+      // This is cluster damage - gems because each of the other gems are going
+      // to count as 1 damage, and rejigging that logic seems fiddly and not
+      // worth it, so we just remove it here knowing it'll come back later
+      damage += this.cluster.damage() - this.cluster.gems.length;
+
       this.board.clusters = filter(this.board.clusters, cluster => cluster !== _this.cluster)
       this.cluster.gems.forEach(gem => gem.cluster = undefined);
     }
 
     if (this.canSmash(this.leftGem())) {
-      this.leftGem().smash();
+      damage += this.leftGem().smash();
     }
     if (this.canSmash(this.rightGem())) {
-      this.rightGem().smash();
+      damage += this.rightGem().smash();
     }
     if (this.canSmash(this.belowGem())) {
-      this.belowGem().smash();
+      damage += this.belowGem().smash();
     }
     if (this.canSmash(this.aboveGem())) {
-      this.aboveGem().smash();
+      damage += this.aboveGem().smash();
     }
 
     this.board.stats.gemsSmashed += 1;
     this.board.stats.lastGemsSmashed += 1;
+
+    return damage;
   }
 
   score() {

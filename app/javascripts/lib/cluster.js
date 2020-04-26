@@ -1,5 +1,5 @@
 import { range } from 'lodash/util';
-import { min, max } from 'lodash/math';
+import { floor, min, max } from 'lodash/math';
 import { every } from 'lodash/collection';
 import { offsetPositions } from './helpers';
 
@@ -97,6 +97,13 @@ export default class Cluster {
     }
 
     this.gems.forEach(gem => this.board.setSquare(gem));
+  }
+
+  damage() {
+    const gemCount = this.gems.length;
+    const multiplier = max([0, floor(Math.sqrt(gemCount - 1) - 2) * 0.5]);
+
+    return floor(gemCount * 2) + (gemCount * multiplier);
   }
 
   score() {

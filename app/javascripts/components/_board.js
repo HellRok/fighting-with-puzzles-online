@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { filter, sample, some, uniq } from 'lodash/collection';
-import { min, max } from 'lodash/math';
+import { min, max, sum } from 'lodash/math';
 import { range } from 'lodash/util';
 
 import MobileControls from './_mobile_controls';
@@ -33,12 +33,14 @@ export default class Board {
     this.overlay = undefined;
     this.stats = {
       score: 0,
+      damage: 0,
       gemsSmashed: 0,
       lastGemsSmashed: 0,
       clustersSmashed: 0,
       lastClusterGemsSmashed: 0,
       lastChain: 0,
       lastScore: 0,
+      lastDamage: 0,
       highestChain: 0,
       runningTime: 0,
     }
@@ -63,6 +65,7 @@ export default class Board {
     this.stats.lastGemsSmashed = 0;
     this.stats.lastClusterGemsSmashed = 0;
     this.stats.lastScore = 0;
+    this.stats.lastDamage = 0;
 
     this.countDownTimerGems();
 
@@ -74,6 +77,7 @@ export default class Board {
 
     this.stats.lastGemsSmashed -= this.stats.lastClusterGemsSmashed;
     this.stats.score += this.stats.lastScore;
+    this.stats.damage += this.stats.lastDamage;
 
     m.redraw();
   }
@@ -104,15 +108,18 @@ export default class Board {
     });
 
     if (Settings.debug && this.id === 1) {
-      this.context().fillText(`Game:     ${this.debug.gameTick}ms`,                    2, 10);
-      this.context().fillText(`Render:   ${this.debug.renderTick}ms`,                  2, 20);
-      this.context().fillText(`Gems:     ${filter(this.data, gem => gem).length}`,     2, 30);
-      this.context().fillText(`Clusters: ${this.clusters.length}`,                     2, 40);
-      this.context().fillText(`State:    ${this.game.state.alive ? 'Alive' : 'Dead'}`, 2, 50);
-      this.context().fillText(`LGems:    ${this.stats.lastGemsSmashed}`,               2, 60);
-      this.context().fillText(`LCGems:   ${this.stats.lastClusterGemsSmashed}`,        2, 70);
-      this.context().fillText(`LChain:   ${this.stats.lastChain}`,                     2, 80);
-      this.context().fillText(`LScore:   ${this.stats.lastScore}`,                     2, 90);
+      this.context().fillText(`Game:     ${this.debug.gameTick}ms`,                    2,  10);
+      this.context().fillText(`Render:   ${this.debug.renderTick}ms`,                  2,  20);
+      this.context().fillText(`Score:    ${this.stats.score}`,                         2,  30);
+      this.context().fillText(`Damage:   ${this.stats.damage}`,                        2,  40);
+      this.context().fillText(`Gems:     ${filter(this.data, gem => gem).length}`,     2,  50);
+      this.context().fillText(`Clusters: ${this.clusters.length}`,                     2,  60);
+      this.context().fillText(`State:    ${this.game.state.alive ? 'Alive' : 'Dead'}`, 2,  70);
+      this.context().fillText(`LGems:    ${this.stats.lastGemsSmashed}`,               2,  80);
+      this.context().fillText(`LCGems:   ${this.stats.lastClusterGemsSmashed}`,        2,  90);
+      this.context().fillText(`LChain:   ${this.stats.lastChain}`,                     2, 100);
+      this.context().fillText(`LScore:   ${this.stats.lastScore}`,                     2, 110);
+      this.context().fillText(`LDamage:  ${this.stats.lastDamage}`,                    2, 120);
     }
   }
 
@@ -201,24 +208,33 @@ export default class Board {
     this.growClusters();
     this.createClusters();
 
-    let atLeastOneSmash = false;
 
     const smashers = filter(this.data, gem => (gem && gem.smasher));
-    smashers.forEach(gem => gem.attemptSmash());
+    let damage = sum(smashers.map(gem => gem.attemptSmash()));
 
     this.data.forEach(gem => {
       if (gem && gem.toSmash) {
-        atLeastOneSmash = true;
         this.setSquare(undefined, gem.x, gem.y);
       }
     });
 
     this.data.forEach(gem => { gem && gem.gravity() });
 
-    if (atLeastOneSmash) {
+    if (damage > 0) {
+      // Chain damage
       this.stats.lastChain += 1;
+      if (this.stats.lastChain === 2) {
+        damage += 2;
+      } else if (this.stats.lastChain === 3) {
+        damage += 4;
+      } else if (this.stats.lastChain > 3) {
+        damage += 4 + (6 * (this.stats.lastChain - 3));
+      }
+
       this.growAndCreateClustersAndSmashGems();
     }
+
+    this.stats.lastDamage += damage;
   }
 
   countDownTimerGems() {
