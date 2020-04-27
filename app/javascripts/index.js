@@ -1,6 +1,3 @@
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-
 import m from 'mithril';
 
 import CurrentUser from './lib/current_user';

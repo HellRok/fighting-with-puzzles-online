@@ -6,21 +6,19 @@
     "core-js": "^3.6.5",
     "howler": "^2.1",
     "lodash": "^4.17",
-    "mithril": "^2.0",
-    "regenerator-runtime": "^0.13.5"
+    "mithril": "^2.0"
   },
   "scripts": {
     "javascripts": "webpack --mode development --watch --output ./public/assets/application.js --entry ./app/javascripts/index.js",
     "stylesheets": "yarn node-sass --watch --recursive app/stylesheets/ --output public/assets/",
     "javascripts:build": "webpack --mode production --output ./public/assets/application.js --entry ./app/javascripts/index.js",
     "stylesheets:build": "yarn node-sass --output-style compressed app/stylesheets/application.scss public/assets/application.css",
-    "babel": "babel public/assets/application.js --out-file public/assets/application.js",
-    "production:build": "yarn javascripts:build && yarn babel && yarn stylesheets:build"
+    "production:build": "yarn javascripts:build && yarn stylesheets:build"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
+    "babel-loader": "^8.1.0",
     "node-sass": "^4.12",
     "webpack": "^4.35",
     "webpack-cli": "^3.3"
