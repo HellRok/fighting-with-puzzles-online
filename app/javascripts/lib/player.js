@@ -530,7 +530,7 @@ export default class Player {
 
   queueGarbage(damage, dropPattern) {
     // Mod 6 this bad boy to get the column
-    const colMapping = [2, 3, 1, 4, 0, 5];
+    const colMapping = [4, 1, 5, 0, 2, 3];
 
     for (let i = 0; i < damage; i++) {
       const column = colMapping[i % 6];
