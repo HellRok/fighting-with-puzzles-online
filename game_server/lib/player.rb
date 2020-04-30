@@ -86,7 +86,8 @@ class Player < RedisModel
       uuid:  @uuid,
       id: @id,
       username: @username,
-      state: @state
+      state: @state,
+      dropPattern: @drop_pattern,
     }
   end
 end

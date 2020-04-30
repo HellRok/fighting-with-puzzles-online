@@ -528,6 +528,8 @@ export default class Player {
     }
   }
 
+  sendGarbage(damage) { };
+
   queueGarbage(damage, dropPattern) {
     // Mod 6 this bad boy to get the column
     const colMapping = [4, 1, 5, 0, 2, 3];
@@ -544,6 +546,8 @@ export default class Player {
   }
 
   spawnGarbage() {
+    if (this.garbageQueue.length === 0) { return; }
+
     this.recorder.addMove('spawnGarbage');
 
     this.garbageQueue.forEach(gem => {

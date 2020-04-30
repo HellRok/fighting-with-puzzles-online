@@ -73,6 +73,26 @@ class Server
       response = @parsed['data'].merge(uuid: @parsed['uuid'])
       client.publish @path, { action: 'move', data: response }.to_json;
 
+    when 'attack'
+      target = @room.players_remaining.select { |player| player.uuid != @uuid }.sample
+      log "#{@player.username || 'Anon'}(#{@player.uuid}) attacks #{target.username || 'Anon'}(#{target.uuid}) for #{@parsed['data']['damage']}"
+      log({
+        action: 'attack',
+        data: {
+          uuid: target.uuid,
+          damage: @parsed['data']['damage'],
+          attackerUuid: @uuid
+        }
+      }.to_json)
+      client.publish @path, {
+        action: 'attack',
+        data: {
+          uuid: target.uuid,
+          damage: @parsed['data']['damage'],
+          attackerUuid: @uuid
+        }
+      }.to_json
+
     when 'lose'
       @player.state = 'lost'
       @player.save

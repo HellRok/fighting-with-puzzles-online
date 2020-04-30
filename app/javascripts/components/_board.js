@@ -231,6 +231,8 @@ export default class Board {
         damage += 4 + (6 * (this.stats.lastChain - 3));
       }
 
+      this.game.sendGarbage(damage);
+
       this.growAndCreateClustersAndSmashGems();
     }
 

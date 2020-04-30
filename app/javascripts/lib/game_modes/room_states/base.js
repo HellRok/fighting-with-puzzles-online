@@ -20,6 +20,14 @@ export default class RoomStateBase {
   }
 
   handle(message) {
+    if (message.action === 'attack') {
+      if (message.data.uuid && message.data.uuid === this.game.uuid) {
+        this.attack(message.data);
+      } else {
+        return;
+      }
+    }
+
     if (message.data.uuid && message.data.uuid === this.game.uuid) { return; }
 
     switch(message.action) {
@@ -115,14 +123,17 @@ export default class RoomStateBase {
   }
 
   movePlayer(data, timestamp) {
-    throw 'Need to overload winPlayer in child class';
+    throw 'Need to overload movePlayer in child class';
+  }
+
+  attack(data) {
+    throw 'Need to overload losePlayer in child class';
   }
 
   start() {
     throw "Need to overload start in child class";
   }
 
-  // All of these need to be handled in the respective child class
   connected(data) {
     throw "Need to overload connected in child class";
   }

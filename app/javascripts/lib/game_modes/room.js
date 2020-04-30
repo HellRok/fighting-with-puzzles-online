@@ -1,4 +1,5 @@
 import m from 'mithril';
+import { min } from 'lodash/math';
 
 import Player from '../player';
 import Opponent from '../opponent';
@@ -60,6 +61,17 @@ export default class Room extends Player {
   readyUp() {
     this.recorder.readyUp()
     this.keyState.restartHandled = true;
+  }
+
+  sendGarbage(damage) {
+    const toRemove = min([damage, this.garbageQueue.length]);
+
+    damage -= toRemove;
+    this.garbageQueue.splice(0, toRemove);
+
+    if (damage > 0) {
+      this.gameState.send('attack', { damage: damage });
+    }
   }
 
   win(time) {
