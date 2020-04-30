@@ -31,6 +31,12 @@ export default {
     volume: valueOrDefault('game.volume', 70),
     das:    valueOrDefault('game.das',   183),
     arr:    valueOrDefault('game.arr',    33),
+    dropPattern: [
+      'red', 'orange', 'orange', 'red', 'red', 'orange',
+      'red', 'orange', 'orange', 'red', 'red', 'orange',
+      'blue', 'purple', 'purple', 'blue', 'blue', 'purple',
+      'purple', 'blue', 'blue', 'purple', 'purple', 'blue',
+    ]
   },
 
   populateFrom: function(settings) {

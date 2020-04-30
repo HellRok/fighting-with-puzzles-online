@@ -40,7 +40,13 @@ class Server
       @player.ping
 
     when 'join'
-      @player = Player.create @room, @uuid, @parsed['data']['id'], @parsed['data']['username']
+      @player = Player.create(
+        room: @room,
+        uuid: @uuid,
+        id: @parsed['data']['id'],
+        username: @parsed['data']['username'],
+        drop_pattern: @parsed['data']['dropPattern']
+      )
       client.publish @path, { action: 'join', data: @parsed['data'].merge(uuid: @uuid) }.to_json;
 
     when 'leave'

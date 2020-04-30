@@ -22,7 +22,6 @@ export default class OnlinePresenter {
       }
     }).then(response => {
       Rooms.current = response.data;
-      console.table(Rooms.current);
       Rooms.refresh();
       m.route.set(`/room/${Rooms.current.id}`);
     });

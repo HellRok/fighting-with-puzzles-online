@@ -6,6 +6,7 @@ import RoomStateLost from './lost';
 import OnlineRecorder from '../../online_recorder';
 
 import CurrentUser from '../../current_user';
+import Settings from '../../settings';
 
 export default class RoomStateConnecting extends RoomStateBase {
   setup() {
@@ -32,6 +33,7 @@ export default class RoomStateConnecting extends RoomStateBase {
     this.send('join', {
       id: CurrentUser.data.id,
       username: CurrentUser.data.username,
+      dropPattern: Settings.game.dropPattern,
     });
 
     switch(data.state) {

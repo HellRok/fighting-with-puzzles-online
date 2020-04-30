@@ -6,7 +6,6 @@ export default class RoomStateLost extends RoomStatePlaying {
   setup() {
     this.game.playerBoard.overlay = 'Game in progress, waiting for next round...';
     this.game.opponents.forEach(opponent => {
-      console.log(opponent);
       switch(opponent.playerBoard.player.state) {
         case 'not_ready':
           opponent.playerBoard.overlay = 'Waiting...';

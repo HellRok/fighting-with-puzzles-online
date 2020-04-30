@@ -48,18 +48,4 @@ document.addEventListener("DOMContentLoaded", () => {
       "/how_to_play": HowToPlay,
     });
   });
-
-  //socket1.addEventListener('open', (e) => { socket1.send(`CONNECTING AS ${CurrentUser.data.username}`) });
-  //const socket2 = new WebSocket('ws://localhost:3002/game/2');
-  //socket2.addEventListener('message', (e) => {
-  //  console.log(e);
-  //  socket2.send(`RESPONDING AS ${CurrentUser.data.username}`)
-  //});
-  //socket2.addEventListener('open', (e) => { socket2.send(`CONNECTING AS ${CurrentUser.data.username}`) });
-  //const socket3 = new WebSocket('ws://localhost:3002/game/3');
-  //socket3.addEventListener('message', (e) => {
-  //  console.log(e);
-  //  socket3.send(`RESPONDING AS ${CurrentUser.data.username}`)
-  //});
-  //socket3.addEventListener('open', (e) => { socket3.send(`CONNECTING AS ${CurrentUser.data.username}`) });
 });

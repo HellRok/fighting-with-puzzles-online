@@ -8,26 +8,40 @@ class Player < RedisModel
       player_values = (conn.mget *player_keys).map { |value| JSON.parse(value) }
 
       player_keys.zip(player_values).map { |key, value|
-        Player.new(room, key.split('/').last, value['id'], value['username'], value['state'])
+        Player.new(
+          room: room,
+          uuid: key.split('/').last,
+          id: value['id'],
+          username: value['username'],
+          state: value['state'],
+          drop_pattern: value['drop_pattern'])
       }
     end
   end
 
-  def self.create(room, uuid, id, username)
-    player = self.new(room, uuid, id, username, 'not_ready').save
+  def self.create(room:, uuid:, id:, username:, drop_pattern:)
+    player = self.new(
+      room: room,
+      uuid: uuid,
+      id: id,
+      username: username,
+      state: 'not_ready',
+      drop_pattern: drop_pattern
+    ).save
     player.ping
     player
   end
 
-  attr_reader :room, :uuid, :id, :username
+  attr_reader :room, :uuid, :id, :username, :drop_pattern
   attr_accessor :state
 
-  def initialize(room, uuid, id, username, state)
+  def initialize(room:, uuid:, id:, username:, state:, drop_pattern:)
     @room = room
     @uuid = uuid
     @id = id
     @username = username
     @state = state
+    @drop_pattern = drop_pattern
   end
 
   def save
@@ -37,6 +51,7 @@ class Player < RedisModel
         id: @id,
         username: @username,
         state: @state,
+        drop_pattern: @drop_pattern,
       }
     )
 

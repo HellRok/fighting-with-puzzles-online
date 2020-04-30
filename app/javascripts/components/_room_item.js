@@ -15,7 +15,6 @@ export default class RoomItem {
         "Access-Control-Request-Origin": "http://localhost:3001",
       }
     ).then(response => {
-      console.log(response.data);
       this.state = response.data.state
       this.players = response.data.players;
       this.loading = false;
