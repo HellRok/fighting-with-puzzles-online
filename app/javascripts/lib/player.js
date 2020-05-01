@@ -22,6 +22,7 @@ export default class Player {
     this.lockdelayTimeout = 350;
     this.lockdelayMax = 5000;
     this.garbageQueue = [];
+    this.playSounds = true;
     this.timeValue = document.querySelector('.stats .time .value');
     this.lockdelayElement = document.querySelector('.lockdelay-progress');
 
@@ -516,7 +517,7 @@ export default class Player {
     this.playerBoard.update();
     this.spawnGarbage();
 
-    Audio.lock.play();
+    if (this.playSounds) { Audio.lock.play(); }
 
     if (
       this.playerBoard.getSquare(2, this.playerBoard.height - 1) ||
@@ -589,10 +590,10 @@ export default class Player {
       to restart.
     `);
     m.redraw();
-    Audio.lose.play();
+    if (this.playSounds) { Audio.lose.play(); }
   }
 
   win() {
-    Audio.win.play();
+    if (this.playSounds) { Audio.win.play(); }
   }
 }

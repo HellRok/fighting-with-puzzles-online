@@ -5,7 +5,10 @@ import BagPieceGenerator from './piece_generators/bag_piece_generator';
 import NullRecorder from './null_recorder';
 
 export default class Opponent extends BaseReplayer {
-  setup() { }
+  setup() {
+    this.playSounds = false;
+  }
+
   restart() {
     this.recorder = new NullRecorder();
     this.pieceGenerator = new BagPieceGenerator(this.queueLength, this.seed);
