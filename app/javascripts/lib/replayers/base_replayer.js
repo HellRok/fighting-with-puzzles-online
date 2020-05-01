@@ -89,6 +89,7 @@ export default class BaseReplayer extends Player {
       column, this.playerBoard.height - 1,
       colour, false, 5,
     ));
+    m.redraw();
   }
 
   movesFor(delta) {

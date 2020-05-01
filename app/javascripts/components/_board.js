@@ -246,6 +246,41 @@ export default class Board {
     });
   }
 
+  damageCounter() {
+    let hundreds = -1;
+    let tens = -1;
+    let singles = 0;
+
+    if (this.game) {
+      const damage = this.game.garbageQueue.length;
+      const damageStr = damage.toString();
+
+      // I don't think over 1000 is actually possible, but lets not take any chances
+      if (damage > 999) {
+        hundreds = 9;
+        tens = 9;
+        singles = 9;
+      } else if (damage > 99) {
+        hundreds = damageStr[0];
+        tens = damageStr[1];
+        singles = damageStr[2];
+      } else if (damage > 9) {
+        tens = damageStr[0];
+        singles = damageStr[1];
+      } else {
+        singles = damageStr;
+      }
+    }
+
+    return [hundreds, tens, singles].map(i =>{
+      if (i === -1) {
+        return m('.gem.damage-blank');
+      } else {
+        return m(`.gem.damage-${i}`);
+      }
+    });
+  }
+
   view() {
     const _this = this;
     return [
@@ -260,11 +295,14 @@ export default class Board {
           }),
           m('.lockdelay-progress'),
         ]),
-        m('.piece-queue',
-          this.pieceQueue.map((i,_) => m('.piece', i.map((j,_) => m('.gem', {
-            class: `${j.colour} ${ j.smasher ? 'smasher' : ''} ${ j.timer ? `timer-${j.timer}` : ''}`
-          }))))
-        ),
+        m('.game-info', [
+          m('.piece-queue',
+            this.pieceQueue.map((i,_) => m('.piece', i.map((j,_) => m('.gem', {
+              class: `${j.colour} ${ j.smasher ? 'smasher' : ''} ${ j.timer ? `timer-${j.timer}` : ''}`
+            }))))
+          ),
+          m('.incoming-damage', this.damageCounter()),
+        ]),
         m('.overlay',
           {
             class: (this.overlay ? '' : 'hide'),

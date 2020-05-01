@@ -23,7 +23,7 @@ $shrink-opponent-width: 192px * 0.50;
         .opponent-board {
           position: absolute;
           right: 30px;
-          top: 250px;
+          top: 282px;
         }
 
         canvas {
@@ -40,7 +40,7 @@ $shrink-opponent-width: 192px * 0.50;
           top: 75px;
         }
 
-        .piece-queue, .lockdelay-progress {
+        .game-info, .lockdelay-progress {
           display: none;
         }
       }
@@ -90,7 +90,7 @@ $shrink-opponent-width: 192px * 0.50;
           width: $shrink-opponent-width;
         }
 
-        .piece-queue, .lockdelay-progress {
+        .game-info, .lockdelay-progress {
           display: none;
         }
 
