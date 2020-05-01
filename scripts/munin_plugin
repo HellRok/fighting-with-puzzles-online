@@ -9,6 +9,7 @@ graph_title Stats
 graph_vlabel count
 graph_category Fighting with Puzzles Online
 users.label Users
+online.label Online Matches
 sprints.label Sprints
 ultras.label Ultras
 survivals.label Survivals
@@ -17,6 +18,7 @@ else
   values = JSON.parse(URI.open('https://fighting-with-puzzles-online.herokuapp.com/api/v1/stats.json').read)
   puts <<-STR
 users.value #{values['user_count']}
+online.value #{values['replays']['online_count']}
 sprints.value #{values['replays']['sprint_count']}
 ultras.value #{values['replays']['ultra_count']}
 survivals.value #{values['replays']['survival_count']}

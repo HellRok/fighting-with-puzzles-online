@@ -7,6 +7,7 @@ class Api::V1::StatsController < ApplicationController
     render json: {
       user_count: User.all.count,
       replays: {
+        online_count: replays_by_mode['online'].count,
         sprint_count: replays_by_mode['sprint'].count,
         ultra_count: replays_by_mode['ultra'].count,
         survival_count: replays_by_mode['survival'].count,
