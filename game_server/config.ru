@@ -41,6 +41,8 @@ APP = Proc.new do |env|
       status = 200
       body = {}
 
+      puts "#{Time.now}: GET #{request.path}"
+
       if room
         body = {
           status: 'success',

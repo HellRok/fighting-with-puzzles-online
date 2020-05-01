@@ -8,6 +8,11 @@ export default class RoomItem {
     this.room = vnode.attrs.room;
     this.loading = true;
     this.state = null;
+    this.refresh();
+    this.refreshTimeout;
+  }
+
+  refresh() {
     Api.get(
       `${window.location.protocol}//${this.room.gameServerUrl}/room/${this.room.id}`,
       {
@@ -21,6 +26,12 @@ export default class RoomItem {
     }).catch(error => {
       // Do nothing for now
     });
+
+    this.refreshTimeout = setTimeout(() => { this.refresh() }, (2000 + (Math.random() * 500)));
+  }
+
+  onremove() {
+    clearTimeout(this.refreshTimeout);
   }
 
   playerInfo(player) {
