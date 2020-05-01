@@ -37,7 +37,7 @@ export default class Profile {
     return m(Layout, [
       m('h2.text-centre', this.user.username),
 
-      m('table.max-width-50', [
+      m('table.max-width-960', [
         m('thead',
           m('tr', [
             m('th', 'Mode'),
