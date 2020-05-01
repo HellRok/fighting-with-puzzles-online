@@ -9,10 +9,10 @@ export default class RoomItem {
     this.loading = true;
     this.state = null;
     Api.get(
-      `http://${this.room.gameServerUrl}/room/${this.room.id}`, 
+      `${window.location.protocol}//${this.room.gameServerUrl}/room/${this.room.id}`,
       {
         "Access-Control-Request-Method": "GET",
-        "Access-Control-Request-Origin": "http://localhost:3001",
+        "Access-Control-Request-Origin": "${window.location}",
       }
     ).then(response => {
       this.state = response.data.state
