@@ -32,6 +32,16 @@ export default class OnlinePresenter {
       m('.max-width-960', [
         m('h2.text-centre', 'Online (Alpha)'),
 
+        m('h3', 'Notes'),
+        m('ul', [
+          m('li', "There's no diamond equivalent yet"),
+          m('li', "I want to re-work the piece generation to slowly give more and more smashers as the game goes on"),
+          m('li', "There will eventually be user defined drop patterns, until then it's the same as survival"),
+          m('li', "User defined rooms and private rooms will be done down the line"),
+          m('li', "Remember, this is really early in development so there will be bugs!"),
+          m('li', m('a', { href: "https://twitter.com/hell_rok", target: '_blank' },  "If you find a bug, please report it to me on Twitter")),
+        ]),
+
         //m('form.room-form', {
         //  onsubmit: e => { this.roomSubmit(e) }
         //},[
