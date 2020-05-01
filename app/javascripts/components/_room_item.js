@@ -27,7 +27,7 @@ export default class RoomItem {
       // Do nothing for now
     });
 
-    this.refreshTimeout = setTimeout(() => { this.refresh() }, (2000 + (Math.random() * 500)));
+    this.refreshTimeout = setTimeout(() => { this.refresh() }, (5000 + (Math.random() * 1000)));
   }
 
   onremove() {
