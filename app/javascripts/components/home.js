@@ -10,6 +10,15 @@ export default class Home {
     return m(Layout, [
       m('.home-links-container.max-width-960', [
         m('h2', 'Game Modes'),
+
+        m(m.route.Link, {
+          class: 'home-link',
+          href: '/online',
+        }, [
+          m('h3', 'Online (Alpha)'),
+          m('p', 'Play against others in real time.'),
+        ]),
+
         m(m.route.Link, {
           class: 'home-link',
           href: '/sprint',

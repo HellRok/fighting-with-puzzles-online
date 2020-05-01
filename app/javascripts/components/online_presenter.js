@@ -30,18 +30,18 @@ export default class OnlinePresenter {
   view() {
     return m(Layout,
       m('.max-width-960', [
-        m('h2.text-centre', 'Online'),
+        m('h2.text-centre', 'Online (Alpha)'),
 
-        m('form.room-form', {
-          onsubmit: e => { this.roomSubmit(e) }
-        },[
-          m('fieldset', [
-            m('label', { for: 'name' }, 'Name'),
-            m('input', { id: 'name', for: 'name' }, 'Name'),
+        //m('form.room-form', {
+        //  onsubmit: e => { this.roomSubmit(e) }
+        //},[
+        //  m('fieldset', [
+        //    m('label', { for: 'name' }, 'Name'),
+        //    m('input', { id: 'name', for: 'name' }, 'Name'),
 
-            m('input.width-100', { type: 'submit', disabled: this.submitting })
-          ])
-        ]),
+        //    m('input.width-100', { type: 'submit', disabled: this.submitting })
+        //  ])
+        //]),
 
         m('.rooms-container',
           Rooms.data.map(room => {
