@@ -2,7 +2,7 @@
 
 redis-server &
 cd game_server
-bundle exec iodine -p 3002 config.ru -w 2 -t 16 &
+bundle exec iodine -p 3002 config.ru -w $GAME_SERVER_WORKERS -t $GAME_SERVER_THREADS &
 cd ../
 bundle exec puma config.ru -p 3001 &
 
