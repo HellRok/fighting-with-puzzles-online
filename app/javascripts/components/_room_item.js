@@ -14,7 +14,7 @@ export default class RoomItem {
 
   refresh() {
     Api.get(
-      `${window.location.protocol}//${this.room.gameServerUrl}/room/${this.room.id}`,
+      `${window.location.protocol}//${this.room.gameServerUrl}/room/${this.room.id}?t=${Date.now()}`,
       {
         "Access-Control-Request-Method": "GET",
         "Access-Control-Request-Origin": "${window.location}",
