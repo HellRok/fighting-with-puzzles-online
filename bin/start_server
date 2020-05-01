@@ -4,4 +4,7 @@ redis-server &
 cd game_server
 bundle exec iodine -p 3002 config.ru -w 2 -t 16 &
 cd ../
-bundle exec puma config.ru
+bundle exec puma config.ru -p 3001 &
+
+envsubst \$PORT < nginx.conf.template > nginx.conf
+nginx -c /app/nginx.conf
