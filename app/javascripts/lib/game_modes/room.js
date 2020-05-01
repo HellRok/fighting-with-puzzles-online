@@ -14,7 +14,8 @@ export default class Room extends Player {
   constructor(playerBoard, seed, roomId, gameServerUrl) {
     super(playerBoard);
 
-    this.socket = new WebSocket(`ws://${gameServerUrl}/room/${roomId}`);
+    const protocol = window.location.protocol === 'http:' ? 'ws:' : 'wss:';
+    this.socket = new WebSocket(`${protocol}//${gameServerUrl}/room/${roomId}`);
     this.changeState(RoomStateConnecting);
 
     this.socket.addEventListener('message', (e) => {
