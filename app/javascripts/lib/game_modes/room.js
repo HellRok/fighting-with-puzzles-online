@@ -30,7 +30,17 @@ export default class Room extends Player {
   }
 
   ping() {
-    if (this.recorder) { this.recorder.send('ping'); }
+    if (this.recorder) {
+      if (this.socket.readyState > 1) {
+        Flash.addFlash({
+          level: 'warning',
+          text: 'Lost connection to server...',
+        });
+        m.route.set('/online');
+      }
+
+      this.recorder.send('ping');
+    }
     this.pingTimeout = setTimeout(() => this.ping(), 1000);
   }
 
