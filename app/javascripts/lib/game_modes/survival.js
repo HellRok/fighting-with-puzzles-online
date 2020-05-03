@@ -84,8 +84,9 @@ export default class Sprint extends Player {
 
     this.state.alive = false;
     let newBest = false;
+    let oldBest;
     if (CurrentUser.isPresent()) {
-      const oldBest = CurrentUser.data.bests.survival;
+      oldBest = CurrentUser.data.bests.survival;
       newBest = oldBest ? (this.playerBoard.stats.runningTime > oldBest.time) : false;
       if (newBest) { CurrentUser.refresh(); }
     }
