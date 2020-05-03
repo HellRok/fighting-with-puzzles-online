@@ -2,6 +2,7 @@ import m from 'mithril';
 
 import Player from '../player';
 import ReplayRecorder from '../replay_recorder';
+import SprintPieceGenerator from '../piece_generators/sprint_piece_generator';
 import Settings from '../settings';
 import Flash from '../flash';
 import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
@@ -11,6 +12,9 @@ import CurrentUser from '../current_user';
 export default class Sprint extends Player {
   setup() {
     this.recorder = new ReplayRecorder('sprint', this.seed);
+
+    this.pieceGenerator = new SprintPieceGenerator(this.queueLength, (this.seed ? this.seed : Date.now()));
+    this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
   }
 
   tick(delta) {

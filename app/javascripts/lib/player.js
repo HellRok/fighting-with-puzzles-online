@@ -65,10 +65,10 @@ export default class Player {
   }
 
   restart() {
-    this.setup();
-
     this.pieceGenerator = new BagPieceGenerator(this.queueLength, (this.seed ? this.seed : Date.now()));
     this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
+
+    this.setup();
 
     this.resetKeystate();
     this.resetState();
