@@ -21,7 +21,6 @@ export default class Player {
     this.gravityTimeout = 500;
     this.lockdelayTimeout = 350;
     this.lockdelayMax = 5000;
-    this.garbageQueue = [];
     this.playSounds = true;
     this.timeValue = document.querySelector('.stats .time .value');
     this.lockdelayElement = document.querySelector('.lockdelay-progress');
@@ -39,6 +38,7 @@ export default class Player {
   }
 
   resetState() {
+    this.garbageQueue = [];
     this.state = {
       lastGameLoopTimestamp:   timestamp(),
       lastRenderLoopTimestamp: timestamp(),
