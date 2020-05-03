@@ -142,7 +142,7 @@ export default class Gem {
 
     const belowGem = this.belowGem();
 
-    if (typeof belowGem === undefined) {
+    if (!belowGem) {
       this.board.stats.lastScore += 5000;
       return;
     }
