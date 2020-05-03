@@ -75,12 +75,7 @@ export default class Room extends Player {
   }
 
   sendGarbage(damage) {
-    const toRemove = min([damage, this.garbageQueue.length]);
-
-    damage -= toRemove;
-    this.garbageQueue.splice(0, toRemove);
-
-    if (damage > 0) {
+    if (super.sendGarbage(damage) > 0) {
       this.gameState.send('attack', { damage: damage });
     }
   }

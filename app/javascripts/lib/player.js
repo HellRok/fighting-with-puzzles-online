@@ -529,7 +529,14 @@ export default class Player {
     }
   }
 
-  sendGarbage(damage) { };
+  sendGarbage(damage) {
+    const toRemove = min([damage, this.garbageQueue.length]);
+
+    damage -= toRemove;
+    this.garbageQueue.splice(0, toRemove);
+
+    return damage;
+  }
 
   queueGarbage(damage, dropPattern) {
     // Mod 6 this bad boy to get the column

@@ -51,6 +51,8 @@ export default class Sprint extends Player {
       this.nextDumpAt = 5000 + (1000 * this.dumpMultiplier);
       this.dumpTotal += 1;
       this.dumpMultiplier = min([this.dumpTotal * 2, 24]);
+
+      m.redraw()
     }
   }
 
