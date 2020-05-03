@@ -1,4 +1,5 @@
 import { filter } from 'lodash/collection';
+import { sum } from 'lodash/math';
 import { offsetPositions } from './helpers';
 
 export default class Gem {
@@ -88,6 +89,11 @@ export default class Gem {
       variantOffset = 11 + (5 - this.timer);
     }
 
+    if (this.colour === 'all-smasher') {
+      colourOffset = 4;
+      variantOffset = 1;
+    }
+
     return [
       variantOffset * 32, colourOffset * 32,
       32, 32
@@ -95,6 +101,8 @@ export default class Gem {
   }
 
   attemptSmash() {
+    if (this.colour === 'all-smasher') { return this.allSmash(); }
+
     // If we are a smasher, we must have at least one other gem of the same
     // colour that isn't a timer or we don't smash.
     if (
@@ -127,6 +135,29 @@ export default class Gem {
         gem.timer                      // #5
       )
     );
+  }
+
+  allSmash() {
+    this.toSmash = true;
+
+    const belowGem = this.belowGem();
+
+    if (typeof belowGem === undefined) {
+      this.board.stats.lastScore += 5000;
+      return;
+    }
+
+    let damage = 1
+
+    damage += sum(this.board.forEachGem((gem) => {
+      if (gem && gem.colour === belowGem.colour) {
+        return gem.smash();
+      } else {
+        return 0;
+      }
+    }));
+
+    return Math.floor(damage * 0.7);
   }
 
   smash() {

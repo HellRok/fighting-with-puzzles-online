@@ -7,6 +7,7 @@ import BasePieceGenerator from './base_piece_generator';
 export default class BagPieceGenerator extends BasePieceGenerator{
   setup() {
     this.bag = [];
+    this.pieceCount = 0;
   }
 
   generatePiece() {
@@ -17,6 +18,11 @@ export default class BagPieceGenerator extends BasePieceGenerator{
   }
 
   pullFromBag() {
+    this.pieceCount += 1;
+    if (this.pieceCount % 25 === 0) {
+      return new Gem(undefined, 0, 0, 'all-smasher', true);
+    }
+
     if (this.bag.length === 0) { this.fillBag(); };
     return pullAt(this.bag, this.prng.max(this.bag.length))[0];
   }

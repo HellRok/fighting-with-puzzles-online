@@ -148,6 +148,11 @@ export default class Board {
     }).flat();
   }
 
+  forEachGem(func) {
+    const _this = this;
+    return this.forEachSquare((x, y) => func(_this.getSquare(x, y)));
+  }
+
   getSquare(x, y) {
     return this.data[
       x + (y * this.width)

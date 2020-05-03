@@ -68,15 +68,20 @@ export default {
           colour. When a smasher is placed on a gem of the same colour it will
           smash all of the attached matching gems giving you points. Each gem
           will give you 100 points, including the smasher.`),
+        m('p', `The All Smasher is a special gem that will smash all gems of
+          the same colour on the board that you drop it on including timer gems,
+          if you drop it on the bottom of the field you'll get 5000 extra points
+          instead.  This piece is special and comes exactly every 25th gem.`),
         m('table', [
           m('thead',
             m('tr', [m('td', 'Colour'), m('td', 'Normal'), m('td', 'Smasher'), m('td', 'Timer')])
           ),
           m('tbody', [
-            m('tr', [m('td', 'Red'),    m('td', m('.gem.red')),    m('td', m('.gem.red.smasher')),    m('td', m('.gem.red.timer-5'))]),
-            m('tr', [m('td', 'Blue'),   m('td', m('.gem.blue')),   m('td', m('.gem.blue.smasher')),   m('td', m('.gem.blue.timer-5'))]),
-            m('tr', [m('td', 'Orange'), m('td', m('.gem.orange')), m('td', m('.gem.orange.smasher')), m('td', m('.gem.orange.timer-5'))]),
-            m('tr', [m('td', 'Purple'), m('td', m('.gem.purple')), m('td', m('.gem.purple.smasher')), m('td', m('.gem.purple.timer-5'))]),
+            m('tr', [m('td', 'Red'),         m('td', m('.gem.red')),    m('td', m('.gem.red.smasher')),    m('td', m('.gem.red.timer-5'))]),
+            m('tr', [m('td', 'Blue'),        m('td', m('.gem.blue')),   m('td', m('.gem.blue.smasher')),   m('td', m('.gem.blue.timer-5'))]),
+            m('tr', [m('td', 'Orange'),      m('td', m('.gem.orange')), m('td', m('.gem.orange.smasher')), m('td', m('.gem.orange.timer-5'))]),
+            m('tr', [m('td', 'Purple'),      m('td', m('.gem.purple')), m('td', m('.gem.purple.smasher')), m('td', m('.gem.purple.timer-5'))]),
+            m('tr', [m('td', 'All Smasher'), m('td', ''),               m('td', m('.gem.all-smasher')),    m('td', '')]),
           ])
         ]),
         m('p', `There is also the timer blocks which are sent to you in

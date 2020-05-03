@@ -33,8 +33,8 @@ export default class OnlinePresenter {
         m('h2.text-centre', 'Online (Alpha)'),
 
         m('h3', 'Notes'),
-        m('ul', [
-          m('li', "There's no diamond equivalent yet"),
+        m('ul.notes', [
+          m('li', [m('span.complete', "There's no diamond equivalent yet"), ' We now have the all-smasher!']),
           m('li', "I want to re-work the piece generation to slowly give more and more smashers as the game goes on"),
           m('li', "There will eventually be user defined drop patterns, until then it's the same as survival"),
           m('li', "User defined rooms and private rooms will be done down the line"),
