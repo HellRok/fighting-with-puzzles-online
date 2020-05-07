@@ -6,6 +6,10 @@ $shrink-opponent-width: 192px * 0.50;
   vertical-align: top;
   display: flex;
 
+  .stats {
+    user-select: none;
+  }
+
   .opponents {
     display: inline-block;
   }
