@@ -11,7 +11,7 @@ import { timestamp, offsetPositions, keyboardMap } from './helpers';
 
 export default class Player {
   constructor(playerBoard, seed) {
-    this.seed = seed;
+    this.forcedSeed = seed;
     this.playerBoard = playerBoard;
     this.playerBoard.debug.show = true;
     this.playerBoard.game = this;
@@ -64,11 +64,15 @@ export default class Player {
     };
   }
 
-  restart() {
-    this.pieceGenerator = new BagPieceGenerator(this.queueLength, (this.seed ? this.seed : Date.now()));
+  setupPieceGenerator() {
+    this.pieceGenerator = new BagPieceGenerator(this.queueLength, this.seed);
     this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
+  }
 
+  restart() {
+    this.seed = (this.forcedSeed || Date.now());
     this.setup();
+    this.setupPieceGenerator();
 
     this.resetKeystate();
     this.resetState();
@@ -516,6 +520,8 @@ export default class Player {
 
     this.playerBoard.update();
     this.spawnGarbage();
+
+    this.recorder.addBoardData(this.playerBoard);
 
     if (this.playSounds) { Audio.lock.play(); }
 

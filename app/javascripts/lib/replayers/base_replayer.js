@@ -63,6 +63,7 @@ export default class BaseReplayer extends Player {
       case 'spawnGarbage': this.spawnGarbage(); break;
       case 'win': this.win(move.timestamp); break;
       case 'lose': this.lose(move.timestamp); break;
+      case 'boardData': this.checkSync(move.options.data); break;
       default:
         if (Settings.debug) {
           console.log(`${move.move} not recognised`);
@@ -82,6 +83,14 @@ export default class BaseReplayer extends Player {
     this.nextDumpAt = 5000 + (1000 * this.dumpMultiplier);
     this.dumpTotal += 1;
     this.dumpMultiplier = min([this.dumpTotal * 2, 24]);
+  }
+
+  checkSync(board) {
+    if (board !== this.playerBoard.toString()) {
+      console.log("DESYNC DETECTED");
+      console.log(`Expected: ${board}`);
+      console.log(`Got:      ${this.playerBoard.toString()}`);
+    }
   }
 
   queueGarbage(column, colour) {

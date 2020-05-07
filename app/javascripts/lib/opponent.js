@@ -21,4 +21,8 @@ export default class Opponent extends BaseReplayer {
 
     this.state.lockdelayTotal = 0;
   }
+
+  checkSync(board) {
+    // Do nothing for now
+  }
 }

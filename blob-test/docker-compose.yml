@@ -8,9 +8,9 @@ services:
     depends_on:
       - pg
     ports:
-      - "9998:3002"
-      - "9999:3000"
+      - "9999:9999"
     environment:
+      - PORT=9999
       - RAILS_ENV=test
       - DATABASE_URL=postgres://postgres:password@pg:5432/fwpo
       - SECRET_KEY_BASE=teiceekahphaexe5Xuajoath4DooLae3

@@ -228,6 +228,13 @@ export default class Gem {
     }
   }
 
+  toString() {
+    let colour = this.colour[0];
+    if (this.smasher) { colour = colour.toUpperCase(); }
+
+    return `${colour}${this.timer}`
+  }
+
   differentOrUndefined(gem) {
     return (
       gem === undefined ||

@@ -29,6 +29,10 @@ export default class ReplayRecorder {
     });
   }
 
+  addBoardData(board) {
+    this.addMove('boardData', { data: board.toString() });
+  }
+
   output() {
     return {
       gameMode: this.gameMode,

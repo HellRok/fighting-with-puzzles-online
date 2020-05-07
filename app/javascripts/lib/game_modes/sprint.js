@@ -12,7 +12,9 @@ import CurrentUser from '../current_user';
 export default class Sprint extends Player {
   setup() {
     this.recorder = new ReplayRecorder('sprint', this.seed);
+  }
 
+  setupPieceGenerator() {
     this.pieceGenerator = new SprintPieceGenerator(this.queueLength, (this.seed ? this.seed : Date.now()));
     this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
   }

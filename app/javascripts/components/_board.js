@@ -286,6 +286,10 @@ export default class Board {
     });
   }
 
+  toString() {
+    return this.forEachGem(gem => gem ? gem.toString() : '  ').join('');
+  }
+
   view() {
     const _this = this;
     return [
