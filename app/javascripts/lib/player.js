@@ -533,7 +533,7 @@ export default class Player {
     const toRemove = min([damage, this.garbageQueue.length]);
 
     damage -= toRemove;
-    this.garbageQueue.splice(0, toRemove);
+    this.garbageQueue.length -= toRemove;
 
     return damage;
   }
