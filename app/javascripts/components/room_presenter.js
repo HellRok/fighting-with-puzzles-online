@@ -79,7 +79,7 @@ export default class RoomPresenter {
           m('.oppenent-count-text', this.opponentState()),
         ]),
         m('.opponents',
-          this.player ? this.player.opponents.map(opponent => m(opponent.playerBoard)) : '',
+          this.player ? this.player.opponents.map(opponent => m(opponent.playerBoard, { key: opponent.playerBoard.id })): '',
         ),
       ])
     );
