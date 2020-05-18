@@ -60,6 +60,10 @@ export default class Room extends Player {
     this.state.ready = false;
   }
 
+  setSeed() {
+    // Do nothing since setting the seed is handled by the gamestate
+  }
+
   tick(delta)  { this.gameState.tick(delta); }
   input(delta) { this.gameState.input(delta); }
 

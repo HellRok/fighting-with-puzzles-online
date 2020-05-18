@@ -69,8 +69,12 @@ export default class Player {
     this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
   }
 
-  restart() {
+  setSeed() {
     this.seed = (this.forcedSeed || Date.now());
+  }
+
+  restart() {
+    this.setSeed();
     this.setup();
     this.setupPieceGenerator();
 
