@@ -8,6 +8,7 @@ gem 'puma'
 gem 'bcrypt'
 gem 'cancancan'
 gem 'jbuilder'
+gem 'lz_string'
 
 group :production do
   gem 'tzinfo-data' # Needed to run on Heroku apparently

@@ -30,6 +30,10 @@ export default {
     });
   },
 
+  replaysAll: function() {
+    return this.loadAll('/api/v1/replays', ReplayModel);
+  },
+
   replaysFind: function(id) {
     return this.load('/api/v1/replays/:id', id, ReplayModel);
   },

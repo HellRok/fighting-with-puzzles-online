@@ -1,4 +1,4 @@
-import kissc from '../vendor/kissc';
+import { compressToUTF16 } from 'lz-string';
 
 import Settings from './settings';
 import Api from './api';
@@ -47,10 +47,7 @@ export default class ReplayRecorder {
   }
 
   toString() {
-    return kissc.compress(
-      JSON.stringify(this.output()),
-      6
-    );
+    return compressToUTF16(JSON.stringify(this.output()));
   }
 
   persist(mode, time, score) {

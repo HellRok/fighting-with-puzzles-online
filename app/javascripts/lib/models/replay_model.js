@@ -1,4 +1,4 @@
-import kissc from '../../vendor/kissc';
+import { decompressFromUTF16 } from 'lz-string';
 
 import Api from '../api';
 import BaseModel from './base_model';
@@ -18,7 +18,7 @@ export default class ReplayModel extends BaseModel {
   }
 
   parsedData() {
-    return JSON.parse(kissc.decompress(this.data));
+    return JSON.parse(decompressFromUTF16(this.data));
   }
 
   save() {
