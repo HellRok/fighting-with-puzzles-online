@@ -1,4 +1,5 @@
 import m from 'mithril';
+import { concat, chunk } from 'lodash/array';
 
 import Nav from './nav';
 import Settings from '../lib/settings';
@@ -14,9 +15,13 @@ export default class SettingsForm {
     this.unsaved.game.volume = document.querySelector('.settings-form #volume').value;
     this.unsaved.game.das = document.querySelector('.settings-form #das').value;
     this.unsaved.game.arr = document.querySelector('.settings-form #arr').value;
+    this.unsaved.game.dropPattern = concat(...chunk(this.unsaved.game.dropPattern, 6).reverse());
+
     this.unsaved.site.displayMobileControls = document.querySelector('.settings-form #displayMobileControls').checked ? 1 : 0;
     this.unsaved.site.lightMode = document.querySelector('.settings-form #lightMode').checked ? 1 : 0;
+
     Settings.save(this.unsaved);
+
     this.resetUnsaved();
     Audio.setVolume(Settings.game.volume);
     Settings.applySiteSettings();
@@ -25,6 +30,7 @@ export default class SettingsForm {
 
   resetUnsaved() {
     this.unsaved = { site: {}, keys: {}, game: {} };
+    this.unsaved.game.dropPattern = concat(...chunk(Settings.game.dropPattern, 6).reverse());
   }
 
   valueFor(group, key) {
@@ -50,6 +56,24 @@ export default class SettingsForm {
         target.value = keyboardMap[event.keyCode];
       });
     });
+  }
+
+  displayDropPatternInput() {
+    return this.unsaved.game.dropPattern.map((gem, index) => {
+      return [
+        m(`.gem.${gem}`, {
+          onclick: () => {
+            switch(this.unsaved.game.dropPattern[index]) {
+              case 'red':    this.unsaved.game.dropPattern[index] = 'orange'; break;
+              case 'orange': this.unsaved.game.dropPattern[index] = 'blue';   break;
+              case 'blue':   this.unsaved.game.dropPattern[index] = 'purple'; break;
+              case 'purple': this.unsaved.game.dropPattern[index] = 'red';    break;
+            }
+          }
+        }),
+        ((index +1) % 6 == 0) ? m('br') : ''
+      ];
+    })
   }
 
   view(vnode) {
@@ -121,6 +145,9 @@ export default class SettingsForm {
               'data-setting': 'arr',
               value: this.valueFor('game', 'arr'),
             }),
+
+            m('label', { for: 'dropPattern' }, 'Drop Pattern'),
+            m('.drop-pattern-input', this.displayDropPatternInput()),
 
             m('h2', 'Controls'),
 

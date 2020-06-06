@@ -1,3 +1,5 @@
+import { concat, chunk } from 'lodash/array';
+
 import CurrentUser from './current_user';
 import { isBigScreen } from './helpers';
 
@@ -5,6 +7,12 @@ function valueOrDefault(key, defaultValue) {
   const storedValue = localStorage.getItem(key);
   if (storedValue === null) { return defaultValue; }
   return parseInt(storedValue);
+};
+
+function valueOrDefaultArray(key, defaultValue) {
+  const storedValue = localStorage.getItem(key);
+  if (storedValue === null) { return defaultValue; }
+  return JSON.parse(storedValue);
 };
 
 export default {
@@ -31,12 +39,14 @@ export default {
     volume: valueOrDefault('game.volume', 70),
     das:    valueOrDefault('game.das',   183),
     arr:    valueOrDefault('game.arr',    33),
-    dropPattern: [
-      'red', 'orange', 'orange', 'red', 'red', 'orange',
-      'red', 'orange', 'orange', 'red', 'red', 'orange',
-      'blue', 'purple', 'purple', 'blue', 'blue', 'purple',
-      'purple', 'blue', 'blue', 'purple', 'purple', 'blue',
-    ]
+    dropPattern: valueOrDefaultArray('game.dropPattern',
+      [
+        'red', 'orange', 'orange', 'red', 'red', 'orange',
+        'red', 'orange', 'orange', 'red', 'red', 'orange',
+        'blue', 'purple', 'purple', 'blue', 'blue', 'purple',
+        'purple', 'blue', 'blue', 'purple', 'purple', 'blue',
+      ]
+    )
   },
 
   populateFrom: function(settings) {
@@ -56,9 +66,10 @@ export default {
     }
 
     if (settings.game) {
-      if (settings.game.volume) { this.game.volume = settings.game.volume; }
-      if (settings.game.das)    { this.game.das    = settings.game.das; }
-      if (settings.game.arr)    { this.game.arr    = settings.game.arr; }
+      if (settings.game.volume)      { this.game.volume      = settings.game.volume; }
+      if (settings.game.das)         { this.game.das         = settings.game.das; }
+      if (settings.game.arr)         { this.game.arr         = settings.game.arr; }
+      if (settings.game.dropPattern) { this.game.dropPattern = settings.game.dropPattern; }
     }
   },
 
@@ -69,17 +80,18 @@ export default {
     localStorage.setItem('site.displayMobileControls', toSave.site.displayMobileControls);
     localStorage.setItem('site.lightMode',             toSave.site.lightMode);
 
-    if (toSave.keys.restart)  { localStorage.setItem('keys.restart',               toSave.keys.restart); }
-    if (toSave.keys.left)     { localStorage.setItem('keys.left',                  toSave.keys.left); }
-    if (toSave.keys.right)    { localStorage.setItem('keys.right',                 toSave.keys.right); }
-    if (toSave.keys.hardDrop) { localStorage.setItem('keys.hardDrop',              toSave.keys.hardDrop); }
-    if (toSave.keys.softDrop) { localStorage.setItem('keys.softDrop',              toSave.keys.softDrop); }
-    if (toSave.keys.ccw)      { localStorage.setItem('keys.ccw',                   toSave.keys.ccw); }
-    if (toSave.keys.cw)       { localStorage.setItem('keys.cw',                    toSave.keys.cw); }
-    if (toSave.keys.switch)   { localStorage.setItem('keys.switch',                toSave.keys.switch); }
-    if (toSave.game.volume)   { localStorage.setItem('game.volume',                toSave.game.volume); }
-    if (toSave.game.das)      { localStorage.setItem('game.das',                   toSave.game.das); }
-    if (toSave.game.arr)      { localStorage.setItem('game.arr',                   toSave.game.arr); }
+    if (toSave.keys.restart)     { localStorage.setItem('keys.restart',     toSave.keys.restart); }
+    if (toSave.keys.left)        { localStorage.setItem('keys.left',        toSave.keys.left); }
+    if (toSave.keys.right)       { localStorage.setItem('keys.right',       toSave.keys.right); }
+    if (toSave.keys.hardDrop)    { localStorage.setItem('keys.hardDrop',    toSave.keys.hardDrop); }
+    if (toSave.keys.softDrop)    { localStorage.setItem('keys.softDrop',    toSave.keys.softDrop); }
+    if (toSave.keys.ccw)         { localStorage.setItem('keys.ccw',         toSave.keys.ccw); }
+    if (toSave.keys.cw)          { localStorage.setItem('keys.cw',          toSave.keys.cw); }
+    if (toSave.keys.switch)      { localStorage.setItem('keys.switch',      toSave.keys.switch); }
+    if (toSave.game.volume)      { localStorage.setItem('game.volume',      toSave.game.volume); }
+    if (toSave.game.das)         { localStorage.setItem('game.das',         toSave.game.das); }
+    if (toSave.game.arr)         { localStorage.setItem('game.arr',         toSave.game.arr); }
+    if (toSave.game.dropPattern) { localStorage.setItem('game.dropPattern', JSON.stringify(toSave.game.dropPattern)); }
 
     this.populateFrom(toSave);
 
@@ -112,6 +124,7 @@ export default {
     localStorage.removeItem('game.volume');
     localStorage.removeItem('game.das');
     localStorage.removeItem('game.arr');
+    localStorage.removeItem('game.dropPattern');
 
     this.site.displayMobileControls = valueOrDefault('site.displayMobileControls', isBigScreen() ? 0 : 1);
     this.site.lightMode = valueOrDefault('site.lightMode', 0);
@@ -128,6 +141,14 @@ export default {
     this.game.volume = valueOrDefault('game.volume', 70);
     this.game.das = valueOrDefault('game.das',   183);
     this.game.arr = valueOrDefault('game.arr',    33);
+    this.game.dropPattern = valueOrDefaultArray('game.dropPattern',
+      [
+        'red', 'orange', 'orange', 'red', 'red', 'orange',
+        'red', 'orange', 'orange', 'red', 'red', 'orange',
+        'blue', 'purple', 'purple', 'blue', 'blue', 'purple',
+        'purple', 'blue', 'blue', 'purple', 'purple', 'blue',
+      ]
+    );
 
     this.save(this);
   },

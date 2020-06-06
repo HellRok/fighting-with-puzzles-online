@@ -14,3 +14,14 @@ fieldset.error {
   max-width: 360px;
   margin: auto;
 }
+
+.light-mode { .drop-pattern-input { border: .1rem solid $colour-light-quaternary } }
+.dark-mode { .drop-pattern-input { border: .1rem solid $colour-dark-quaternary } }
+.drop-pattern-input {
+  font-size: 0;
+  display: inline-block;
+
+  .gem {
+    display: inline-block;
+  }
+}
