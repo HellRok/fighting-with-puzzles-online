@@ -13,6 +13,10 @@ export default class RoomStateNotReady extends RoomStateBase {
     } else {
       this.game.playerBoard.overlay = `Press ${keyboardMap[Settings.keys.restart]} to ready up.`;
     }
+    this.game.playerBoard.displayDropPattern(Settings.game.dropPattern);
+    this.game.opponents.forEach(opponent => {
+      opponent.playerBoard.displayDropPattern(opponent.playerBoard.player.dropPattern);
+    });
     m.redraw();
   }
 

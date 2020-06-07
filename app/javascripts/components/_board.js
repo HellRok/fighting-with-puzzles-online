@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { filter, sample, some, uniq } from 'lodash/collection';
-import { min, max, sum } from 'lodash/math';
+import { floor, min, max, sum } from 'lodash/math';
 import { range } from 'lodash/util';
 
 import MobileControls from './_mobile_controls';
@@ -283,6 +283,14 @@ export default class Board {
       } else {
         return m(`.gem.damage-${i}`);
       }
+    });
+  }
+
+  displayDropPattern(dropPattern) {
+    dropPattern.forEach((gem, index) => {
+      const x = index % 6;
+      const y = floor(index / 6);
+      this.setSquare(new Gem(this, x, y, gem, false));
     });
   }
 

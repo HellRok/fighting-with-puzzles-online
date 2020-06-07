@@ -34,9 +34,11 @@ export default class OnlinePresenter {
 
         m('h3', 'Notes'),
         m('ul.notes', [
-          m('li', [m('span.complete', "There's no diamond equivalent yet"), ' We now have the all-smasher!']),
+          m('li', [m('span.complete', "There's no diamond equivalent yet"),
+            ' We now have the all-smasher!']),
           m('li', "I want to re-work the piece generation to slowly give more and more smashers as the game goes on"),
-          m('li', "There will eventually be user defined drop patterns, until then it's the same as survival"),
+          m('li', [m('span.complete', "There will eventually be user defined drop patterns, until then it's the same as survival"),
+            ' You can now set your drop pattern in the settings']),
           m('li', "User defined rooms and private rooms will be done down the line"),
           m('li', "Remember, this is really early in development so there will be bugs!"),
           m('li', m('a', { href: "https://twitter.com/hell_rok", target: '_blank' },  "If you find a bug, please report it to me on Twitter")),

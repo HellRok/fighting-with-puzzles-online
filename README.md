@@ -3,8 +3,6 @@
 ## TODO:
 
  * Real 0 ARR
- * Mobile controls
- * Live vs (one day...)
 
 ## Bugs:
 
@@ -16,6 +14,7 @@
 
 Run these three things in different terminals:
 $ bundle exec rails server
+$ cd ./game_sever && bundle exec iodine config.ru -p 3002
 $ yarn stylesheets
 $ yarn javascripts
 
@@ -24,3 +23,8 @@ $ yarn javascripts
 The Dockerfile should take care of that for you, just make sure you have docker
 installed and run
 $ make
+
+### How do I run tests?
+
+$ cd ./blob-test
+$ ./run_test.sh
