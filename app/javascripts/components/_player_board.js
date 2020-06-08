@@ -11,7 +11,8 @@ export default class PlayerBoard extends Board {
         m('.stats', [
           (CurrentUser.data.id ?
             m(m.route.Link, { href: `/profile/${CurrentUser.data.id}` }, CurrentUser.data.username) :
-            'Anon')
+            'Anon'),
+          m('.gpm', { title: 'Garbage per minute' }, `GPM: ${this.stats.gpm}`),
         ]),
       ])
     ];

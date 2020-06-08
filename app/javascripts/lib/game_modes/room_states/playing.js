@@ -25,8 +25,15 @@ export default class RoomStatePlaying extends RoomStateBase {
 
     this.game.aliveInput(delta);
 
+    this.game.updateGPM();
+
     this.game.playerBoard.stats.runningTime += delta;
     this.game.recorder.currentTime = this.game.playerBoard.stats.runningTime;
+
+    this.game.opponents.forEach(opponent => {
+      opponent.playerBoard.stats.runningTime = this.game.playerBoard.stats.runningTime;
+      opponent.updateGPM()
+    });
 
     this.game.gravity(delta);
   }

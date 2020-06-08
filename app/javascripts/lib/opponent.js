@@ -20,6 +20,7 @@ export default class Opponent extends BaseReplayer {
     this.playerBoard.pieceQueue = this.pieceGenerator.queue;
 
     this.state.lockdelayTotal = 0;
+    this.state.alive = true;
   }
 
   checkSync(board) {

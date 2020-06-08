@@ -43,6 +43,7 @@ export default class Board {
       lastDamage: 0,
       highestChain: 0,
       runningTime: 0,
+      gpm: 0,
     }
 
     m.redraw();
@@ -121,6 +122,8 @@ export default class Board {
       this.context().fillText(`LScore:   ${this.stats.lastScore}`,                     2, 110);
       this.context().fillText(`LDamage:  ${this.stats.lastDamage}`,                    2, 120);
     }
+
+    m.redraw();
   }
 
   /* This will get passed an array of objects that respond to .x and .y */

@@ -42,7 +42,8 @@ export default class OpponentBoard extends Board {
         m('.stats', [
           (this.player.id ?
             m(m.route.Link, { href: `/profile/${this.player.id}` }, this.player.username) :
-            'Anon')
+            'Anon'),
+          m('.gpm', { title: 'Garbage per minute' }, `GPM: ${this.stats.gpm}`),
         ]),
       ])
     ];

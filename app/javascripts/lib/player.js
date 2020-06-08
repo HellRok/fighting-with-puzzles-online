@@ -1,7 +1,7 @@
 import m from 'mithril';
-import { sortBy } from 'lodash/collection';
+import { filter, sortBy } from 'lodash/collection';
 import { last } from 'lodash/array';
-import { min, max } from 'lodash/math';
+import { min, max, sum } from 'lodash/math';
 
 import Gem from './gem';
 import Settings from './settings';
@@ -39,6 +39,7 @@ export default class Player {
 
   resetState() {
     this.garbageQueue = [];
+    this.garbageSent = [];
     this.state = {
       lastGameLoopTimestamp:   timestamp(),
       lastRenderLoopTimestamp: timestamp(),
@@ -539,8 +540,14 @@ export default class Player {
     }
   }
 
+  updateGPM() {
+    this.playerBoard.stats.gpm = (sum(this.garbageSent) * 60 / (this.playerBoard.stats.runningTime / 1000)).toFixed(2);
+  }
+
   sendGarbage(damage) {
     const toRemove = min([damage, this.garbageQueue.length]);
+
+    this.garbageSent.push(damage);
 
     damage -= toRemove;
     this.garbageQueue.length -= toRemove;
