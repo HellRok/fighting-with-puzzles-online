@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_18_041003) do
+ActiveRecord::Schema.define(version: 2020_06_08_072941) do
 
   create_table "replays", force: :cascade do |t|
     t.integer "user_id"
@@ -21,6 +21,11 @@ ActiveRecord::Schema.define(version: 2020_03_18_041003) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "version"
+    t.float "gpm"
+    t.index ["gpm"], name: "index_replays_on_gpm"
+    t.index ["mode"], name: "index_replays_on_mode"
+    t.index ["score"], name: "index_replays_on_score"
+    t.index ["time"], name: "index_replays_on_time"
     t.index ["user_id"], name: "index_replays_on_user_id"
   end
 

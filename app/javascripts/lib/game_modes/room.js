@@ -106,7 +106,8 @@ export default class Room extends Player {
   }
 
   save() {
-    this.recorder.persist(3, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
+    this.updateGPM();
+    this.recorder.persist(3, this.playerBoard.stats.runningTime, this.playerBoard.stats.score, this.playerBoard.stats.gpm).then(response => {
       this.lastReplay = response.data;
       Flash.addFlash({
         text: 'Replay saved',

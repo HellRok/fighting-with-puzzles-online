@@ -45,10 +45,11 @@ export default class Sprint extends Player {
   }
 
   win(time) {
-    super.win(time);
+    this.updateGPM();
     this.recorder.addMove('win');
-
     this.state.alive = false;
+    super.win(time);
+
     let newBest = false;
     let oldBest;
 
@@ -61,7 +62,7 @@ export default class Sprint extends Player {
       }
     }
 
-    this.recorder.persist(0, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
+    this.recorder.persist(0, this.playerBoard.stats.runningTime, this.playerBoard.stats.score, this.playerBoard.stats.gpm).then(response => {
       if (newBest) { CurrentUser.refresh(); }
       this.lastReplay = response.data;
       Flash.addFlash({

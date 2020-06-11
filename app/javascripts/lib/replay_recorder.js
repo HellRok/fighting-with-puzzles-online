@@ -50,11 +50,12 @@ export default class ReplayRecorder {
     return compressToUTF16(JSON.stringify(this.output()));
   }
 
-  persist(mode, time, score) {
+  persist(mode, time, score, gpm) {
     return Api.replaysCreate({
       mode: mode,
       time: time,
       score: score,
+      gpm: gpm,
       version: replayVersion(),
       data: this.toString(),
     });

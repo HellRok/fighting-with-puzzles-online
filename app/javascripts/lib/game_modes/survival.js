@@ -72,8 +72,9 @@ export default class Sprint extends Player {
     super.win(time);
     this.recorder.addMove('lose');
     this.state.alive = false;
+    this.updateGPM();
 
-    this.recorder.persist(2, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
+    this.recorder.persist(2, this.playerBoard.stats.runningTime, this.playerBoard.stats.score, this.playerBoard.stats.gpm).then(response => {
       this.lastReplay = response.data;
       Flash.addFlash({
         text: 'Replay saved',

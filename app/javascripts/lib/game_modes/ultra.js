@@ -41,8 +41,9 @@ export default class Ultra extends Player {
   win(time) {
     super.win(time);
     this.recorder.addMove('win');
-
     this.state.alive = false;
+    this.updateGPM();
+
     let newBest = false;
     let oldBest;
 
@@ -55,7 +56,7 @@ export default class Ultra extends Player {
       }
     }
 
-    this.recorder.persist(1, this.playerBoard.stats.runningTime, this.playerBoard.stats.score).then(response => {
+    this.recorder.persist(1, this.playerBoard.stats.runningTime, this.playerBoard.stats.score, this.playerBoard.stats.gpm).then(response => {
       if (newBest) { CurrentUser.refresh(); }
       this.lastReplay = response.data;
       Flash.addFlash({
