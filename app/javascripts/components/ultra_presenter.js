@@ -11,7 +11,6 @@ import CurrentUser from '../lib/current_user';
 export default class UltraPresenter {
   constructor() {
     this.playerBoard = new Board();
-
   }
 
   oncreate(vnode) {
