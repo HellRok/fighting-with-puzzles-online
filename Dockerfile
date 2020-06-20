@@ -18,6 +18,7 @@ RUN gem install bundler && \
   rm -f /var/cache/apk/*
 
 RUN bundle config set without 'development test' && \
+  bundle config build.nokogiri --use-system-libraries && \
   bundle install && \
   cd game_server && \
   bundle install && \
