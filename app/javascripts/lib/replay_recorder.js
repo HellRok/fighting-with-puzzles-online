@@ -1,4 +1,4 @@
-import { compressToUTF16 } from 'lz-string';
+import { compressToBase64 } from 'lz-string';
 
 import Settings from './settings';
 import Api from './api';
@@ -47,7 +47,7 @@ export default class ReplayRecorder {
   }
 
   toString() {
-    return compressToUTF16(JSON.stringify(this.output()));
+    return compressToBase64(JSON.stringify(this.output()));
   }
 
   persist(mode, time, score, gpm) {

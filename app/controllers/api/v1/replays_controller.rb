@@ -16,7 +16,19 @@ class Api::V1::ReplaysController < ApplicationController
   def show; end
 
   def create
+    # Sadly browsers (specifically safari) don't send UTF16 back from the
+    # browser properly so I've configured it to send the Base64.
+    # SOURCE: https://github.com/pieroxy/lz-string/issues/92
+    #
+    # Converting from Base64 to UTF16 seems pretty dumb, but the data speaks for itself:
+    #   irb(main):011:0> r.parsed_data.size
+    #   => 5242
+    #   irb(main):012:0> LZString::Base64.compress(r.parsed_data).size
+    #   => 1784
+    #   irb(main):013:0> r.data.size
+    #   => 714
     @replay.user = @current_user if @current_user
+    @replay.data = LZString::UTF16.compress(LZString::Base64.decompress(@replay.data))
     @replay.save
   end
 
