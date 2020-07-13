@@ -17,7 +17,6 @@ export default class BaseReplayer extends Player {
     this.pieceGenerator = new ReplayPieceGenerator(this.queueLength);
     this.playerBoard.pieceQueue = this.pieceGenerator.queue;
     this.playerBoard.clear();
-    this.playerBoard.pieceQueue = this.pieceGenerator.queue;
     this.state.alive = false;
     this.state.replay = true;
     this.state.lockdelayTotal = 0;
@@ -37,10 +36,24 @@ export default class BaseReplayer extends Player {
     });
   }
 
+  loadReplay(replay) {
+    this.setup();
+    this.user = replay.user;
+    this.gameMode = replay.parsedData().gameMode;
+    this.pieces = replay.parsedData().pieces;
+    this.moves = replay.parsedData().moves;
+    this.pieceGenerator.load(this.pieces);
+    this.playerBoard.activePiece = this.nextPiece();
+    this.loading = false;
+  }
+
   tick(delta) {
     if (this.state.alive) {
       this.playerBoard.stats.runningTime += delta;
-      this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
+      if (this.timeValue) {
+        this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
+      }
+
       this.movesFor(delta).forEach(move => {
         this.executeMove(move, delta);
       });

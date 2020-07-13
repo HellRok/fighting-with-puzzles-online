@@ -1,0 +1,48 @@
+.battle {
+  text-align: center;
+  vertical-align: top;
+  display: flex;
+
+  .stats {
+    user-select: none;
+  }
+
+  .opponents {
+    display: inline-block;
+  }
+
+  @media screen and (max-width: 767px) {
+      .opponent-board {
+        position: absolute;
+        right: 30px;
+        top: 282px;
+      }
+
+      canvas {
+        width: $mobile-opponent-width;
+      }
+
+      .stats {
+        padding-right: 0;
+        width: $shrink-opponent-width;
+      }
+
+      .overlay{
+        width: $shrink-opponent-width;
+        top: 75px;
+      }
+
+      .game-info, .lockdelay-progress {
+        display: none;
+      }
+  }
+
+  @media screen and (min-width: 768px) {
+    .player-board, .opponent-board {
+      margin: 0 3rem;
+    }
+    .player-board, .opponent-board {
+      width: 50%;
+    }
+  }
+}

@@ -38,6 +38,16 @@ export default {
     return this.load('/api/v1/replays/:id', id, ReplayModel);
   },
 
+  replaysFindBattle: function(gpm) {
+    return this.get(`/api/v1/replays/battle`, { params: { gpm: gpm } }).then((response) => {
+      if (response.success) {
+        return new ReplayModel(response.data);
+      } else {
+        return response;
+      }
+    });
+  },
+
   replaysForUser: function(userId) {
     return this.get('/api/v1/users/:id/replays/leader_board', { params: { id: userId } }).then((response) => {
       if (response.success) {

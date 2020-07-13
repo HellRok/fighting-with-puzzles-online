@@ -20,6 +20,8 @@ import SurvivalReplayPresenter from './components/survival_replay_presenter';
 import OnlinePresenter from './components/online_presenter';
 import RoomPresenter from './components/room_presenter';
 
+import BattlePresenter from './components/battle_presenter';
+
 import LeaderBoard from './components/leader_board';
 
 import HowToPlay from './components/how_to_play';
@@ -43,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "/survival/replay/:key": SurvivalReplayPresenter,
       "/online": OnlinePresenter,
       "/room/:key": RoomPresenter,
+      "/battle": BattlePresenter,
 
       "/leader_board": LeaderBoard,
       "/how_to_play": HowToPlay,

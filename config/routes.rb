@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
       resource :sessions, only: [:show, :create, :update]
 
+      get '/replays/battle', controller: 'Replay#battle'
       resources :replays, only: [:index, :show, :create] do
         collection do
           get :leader_board

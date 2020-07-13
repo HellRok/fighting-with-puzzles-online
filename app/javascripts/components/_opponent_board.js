@@ -30,7 +30,7 @@ export default class OpponentBoard extends Board {
   }
 
   win(timestamp) {
-    this.overlay = `Winner! They survived ${ displayMilliseconds(timestamp) }.`;
+    this.overlay = `Winner! They survived ${displayMilliseconds(timestamp)}.`;
     this.player.state = 'unready';
     m.redraw();
   }
@@ -43,7 +43,7 @@ export default class OpponentBoard extends Board {
           (this.player.id ?
             m(m.route.Link, { href: `/profile/${this.player.id}` }, this.player.username) :
             'Anon'),
-          m('.gpm', { title: 'Garbage per minute' }, `GPM: ${this.stats.gpm}`),
+          m('.gpm', { title: 'Garbage per minute' }, `GPM: ${this.stats.gpm.toFixed(2)}`),
         ]),
       ])
     ];

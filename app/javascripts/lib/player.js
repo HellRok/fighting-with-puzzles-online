@@ -37,6 +37,11 @@ export default class Player {
     this.setup();
   }
 
+  changeState(newState) {
+    if (this.gameState) { this.gameState.teardown(); }
+    this.gameState = new newState(this);
+  }
+
   resetState() {
     this.garbageQueue = [];
     this.garbageSent = [];
@@ -49,6 +54,9 @@ export default class Player {
       alive:                   false,
       toBeDestroyed:           false,
     };
+    this.battleState = {
+      lines:                   0,
+    }
   }
 
   resetKeystate() {
@@ -106,6 +114,9 @@ export default class Player {
         this.playerBoard.overlay = undefined;
         m.redraw();
         this.state.alive = true;
+        if (this.opponentBoard) {
+          this.opponentBoard.player.state.alive = true;
+        }
         this.playerBoard.stats.start = timestamp();
       }, 250);
     }, 1000);
@@ -145,6 +156,10 @@ export default class Player {
     this.opponents.forEach(opponent => opponent.playerBoard.render());
     if (!this.state.toBeDestroyed) {
       window.requestAnimationFrame(() => _this.renderLoop())
+    }
+
+    if (this.opponentBoard) {
+      this.opponentBoard.render();
     }
   }
 
@@ -530,6 +545,10 @@ export default class Player {
 
     if (this.playSounds) { Audio.lock.play(); }
 
+    this.spawnNextPiece();
+  }
+
+  spawnNextPiece() {
     if (
       this.playerBoard.getSquare(2, this.playerBoard.height - 1) ||
       this.playerBoard.getSquare(3, this.playerBoard.height - 1)
@@ -541,7 +560,7 @@ export default class Player {
   }
 
   updateGPM() {
-    this.playerBoard.stats.gpm = (sum(this.garbageSent) * 60 / (this.playerBoard.stats.runningTime / 1000)).toFixed(2);
+    this.playerBoard.stats.gpm = (sum(this.garbageSent) * 60 / (this.playerBoard.stats.runningTime / 1000));
   }
 
   sendGarbage(damage) {

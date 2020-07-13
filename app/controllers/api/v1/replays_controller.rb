@@ -15,6 +15,11 @@ class Api::V1::ReplaysController < ApplicationController
 
   def show; end
 
+  def battle
+    # Basically: gpm > 0 mode = (ultra || battle) should do the trick
+    @replay = Replay.find_battle(gpm: params[:gpm])
+  end
+
   def create
     # Sadly browsers (specifically safari) don't send UTF16 back from the
     # browser properly so I've configured it to send the Base64.

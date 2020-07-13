@@ -21,6 +21,14 @@ export default class Home {
 
         m(m.route.Link, {
           class: 'home-link',
+          href: '/battle',
+        }, [
+          m('h3', 'Battle'),
+          m('p', '1v1 to get the most KOs in 2 minutes.'),
+        ]),
+
+        m(m.route.Link, {
+          class: 'home-link',
           href: '/sprint',
         }, [
           m('h3', 'Sprint'),

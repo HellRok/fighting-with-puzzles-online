@@ -57,10 +57,11 @@ const Nav = {
             m(SidebarLink, { href: '/register', }, 'Register'),
           ],
 
+          m(SidebarLink, { href: '/online', }, 'Online (Alpha)'),
+          m(SidebarLink, { href: '/battle', }, 'Battle'),
           m(SidebarLink, { href: '/sprint', }, 'Sprint'),
           m(SidebarLink, { href: '/ultra', }, 'Ultra'),
           m(SidebarLink, { href: '/survival', }, 'Survival'),
-          m(SidebarLink, { href: '/online', }, 'Online (Alpha)'),
           m(SidebarLink, { href: '/leader_board', }, 'Leader Board'),
 
           CurrentUser.data.id ? [

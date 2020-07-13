@@ -43,7 +43,7 @@ export default class Board {
       lastDamage: 0,
       highestChain: 0,
       runningTime: 0,
-      gpm: 0,
+      gpm: 0.00,
     }
 
     m.redraw();

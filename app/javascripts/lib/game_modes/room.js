@@ -44,11 +44,6 @@ export default class Room extends Player {
     this.pingTimeout = setTimeout(() => this.ping(), 1000);
   }
 
-  changeState(newState) {
-    if (this.gameState) { this.gameState.teardown(); }
-    this.gameState = new newState(this);
-  }
-
   destroy() {
     this.socket.close();
     clearTimeout(this.pingTimeout);
