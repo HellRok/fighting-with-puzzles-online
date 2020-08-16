@@ -14,7 +14,9 @@ export default class Player {
     this.forcedSeed = seed;
     this.playerBoard = playerBoard;
     this.playerBoard.debug.show = true;
+    // TODO: Bring these two to just be player (or change replay to use game)
     this.playerBoard.game = this;
+    this.playerBoard.player = this;
 
     this.opponents = [];
     this.queueLength = 3;
@@ -55,6 +57,7 @@ export default class Player {
       toBeDestroyed:           false,
     };
     this.battleState = {
+      lineQueue:               0,
       lines:                   0,
     }
   }
@@ -580,6 +583,28 @@ export default class Player {
     return damage;
   }
 
+  sendLines(lines) {
+    console.log(lines);
+    const lineTotal = this.battleState.lineQueue + this.battleState.lines;
+    console.table({
+      lines,
+      queue: this.battleState.lineQueue,
+      current_lines: this.battleState.lines,
+    });
+
+    if (lines <= this.battleState.lineQueue) {
+      this.battleState.lineQueue -= lines;
+    } else if (lines <= lineTotal) {
+      this.battleState.lines = lines - this.battleState.lineQueue;
+      this.battleState.lineQueue = 0;
+    } else {
+      const damageLines = lines - (this.battleState.lines + this.battleState.lineQueue);
+      this.battleState.lines = 0;
+      this.battleState.lineQueue = 0;
+      this.opponentBoard.player.receiveLines(damageLines);
+    }
+  }
+
   queueGarbage(damage, dropPattern) {
     // Mod 6 this bad boy to get the column
     const colMapping = [4, 1, 5, 0, 2, 3];
@@ -610,9 +635,9 @@ export default class Player {
     this.garbageQueue = [];
   }
 
-  recieveLines(lines) {
+  receiveLines(lines) {
     this.recorder.addMove('currentLines', { lines: lines });
-    this.battleState.lines += lines;
+    this.battleState.lineQueue += lines;
   }
 
   tick(delta) {

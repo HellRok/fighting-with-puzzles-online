@@ -32,12 +32,16 @@ export default class Battle extends Player {
     this.restart();
   }
 
+  spawnGarbage() {
+    console.log("GARBAGE SPAWNING");
+    this.battleState.lines += this.battleState.lineQueue;
+    console.log(this.battleState.lines);
+    this.battleState.lineQueue = 0;
+    this.recorder.addMove('currentLines', { lines: this.battleState.lines });
+  }
+
   sendGarbage(damage) {
     const damageLines = Math.floor(super.sendGarbage(damage) / 6.0);
-    const toRemove = min([damage, this.battleState.lines]);
-
-    this.battleState.lines -= toRemove;
-    this.recorder.addMove('currentLines', { lines: this.battleState.lines });
-    this.opponentBoard.player.recieveLines(damageLines - toRemove);
+    this.sendLines(damageLines);
   }
 }

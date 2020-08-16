@@ -28,11 +28,13 @@ export default class BattleOpponent extends BaseReplayer {
     // Do nothing for now
   }
 
+  spawnGarbage() {
+    this.battleState.lines += this.battleState.lineQueue;
+    this.battleState.lineQueue = 0;
+  }
+
   sendGarbage(damage) {
     const damageLines = Math.floor(super.sendGarbage(damage) / 6.0);
-    const toRemove = min([damage, this.battleState.lines]);
-
-    this.battleState.lines -= toRemove;
-    this.opponentBoard.game.recieveLines(damageLines - toRemove);
+    this.sendLines(damageLines);
   }
 }
