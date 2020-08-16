@@ -1,4 +1,5 @@
 import m from 'mithril';
+import { min } from 'lodash/math';
 
 import BaseReplayer from './replayers/base_replayer';
 import ReplayPieceGenerator from './piece_generators/replay_piece_generator';
@@ -10,6 +11,7 @@ export default class BattleOpponent extends BaseReplayer {
     this.recorder = new NullRecorder();
     this.pieceGenerator = new ReplayPieceGenerator(this.queueLength, this.seed);
     this.playerBoard.pieceQueue = this.pieceGenerator.queue;
+    this.battleState.replayLines = 0;
   }
 
   restart() {
@@ -24,5 +26,13 @@ export default class BattleOpponent extends BaseReplayer {
 
   checkSync(board) {
     // Do nothing for now
+  }
+
+  sendGarbage(damage) {
+    const damageLines = Math.floor(super.sendGarbage(damage) / 6.0);
+    const toRemove = min([damage, this.battleState.lines]);
+
+    this.battleState.lines -= toRemove;
+    this.opponentBoard.game.recieveLines(damageLines - toRemove);
   }
 }

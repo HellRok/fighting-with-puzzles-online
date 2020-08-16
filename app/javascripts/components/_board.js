@@ -100,13 +100,15 @@ export default class Board {
     this.blank();
 
     this.activePiece.forEach((gem, _) => {
-      gem.render(_this.context());
+      gem.render(_this.context(), this.offset());
     });
 
     this.forEachSquare((x, y) => {
       const square = _this.getSquare(x, y);
-      if (square) { square.render(_this.context()); }
+      if (square) { square.render(_this.context(), this.offset()); }
     });
+
+    this.renderLines();
 
     if (Settings.debug && this.id === 1) {
       this.context().fillText(`Game:     ${this.debug.gameTick}ms`,                    2,  10);
@@ -124,6 +126,26 @@ export default class Board {
     }
 
     m.redraw();
+  }
+
+  renderLines() {
+    if (!this.game) { return; }
+
+    range(0, this.game.battleState.lines).map(line => {
+      range(0, this.width).map(x => {
+        this.context().drawImage(
+          this.theme,
+          0, 128,
+          32, 32,
+          x * 32, (this.height - line - 1) * 32,
+          32, 32,
+        )
+      });
+    });
+  }
+
+  offset() {
+    return { x: 0, y: this.game.battleState.lines };
   }
 
   /* This will get passed an array of objects that respond to .x and .y */

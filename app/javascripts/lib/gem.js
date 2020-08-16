@@ -14,11 +14,11 @@ export default class Gem {
     this.cluster;
   }
 
-  render(context) {
+  render(context, offset) {
     context.drawImage(
       this.board.theme,
       ...this.sprite(),
-      this.x * 32, (this.board.height - this.y - 1) * 32,
+      (this.x + offset.x) * 32, (this.board.height - (this.y + offset.y) - 1) * 32,
       32, 32,
     )
   }

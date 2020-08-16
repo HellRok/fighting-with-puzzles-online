@@ -6,6 +6,7 @@ import BattleStateLoading from './loading';
 import CurrentUser from '../../current_user';
 import Settings from '../../settings';
 import Api from '../../api';
+import { keyboardMap } from '../../helpers';
 
 export default class BattleStateWaiting extends BattleStateBase {
   setup() {

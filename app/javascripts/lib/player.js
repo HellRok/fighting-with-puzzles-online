@@ -166,16 +166,25 @@ export default class Player {
   nextPiece() {
     this.gravityTotal = 0;
     const gems = this.pieceGenerator.nextPiece();
+    const positions = this.spawnPositions();
     gems[0].board = this.playerBoard;
-    gems[0].x = 2;
-    gems[0].y = this.playerBoard.height - 1;
+    gems[0].x = positions[0].x;
+    gems[0].y = positions[0].y;
     gems[1].board = this.playerBoard;
-    gems[1].x = 3;
-    gems[1].y = this.playerBoard.height - 1;
+    gems[1].x = positions[1].x;
+    gems[1].y = positions[1].y;
 
     this.recorder.addPiece(last(this.pieceGenerator.queue));
 
     return gems;
+  }
+
+  spawnPositions() {
+    const y = this.playerBoard.height - 1 - this.playerBoard.offset().y;
+    return [
+      { x: 2, y },
+      { x: 3, y }
+    ];
   }
 
   moveActivePieceRight() {
@@ -549,13 +558,10 @@ export default class Player {
   }
 
   spawnNextPiece() {
-    if (
-      this.playerBoard.getSquare(2, this.playerBoard.height - 1) ||
-      this.playerBoard.getSquare(3, this.playerBoard.height - 1)
-    ) {
-      this.lose(this.playerBoard.stats.runningTime);
-    } else {
+    if (this.playerBoard.isClear(this.spawnPositions())) {
       this.playerBoard.activePiece = this.nextPiece();
+    } else {
+      this.lose(this.playerBoard.stats.runningTime);
     }
   }
 
@@ -602,6 +608,11 @@ export default class Player {
     });
 
     this.garbageQueue = [];
+  }
+
+  recieveLines(lines) {
+    this.recorder.addMove('currentLines', { lines: lines });
+    this.battleState.lines += lines;
   }
 
   tick(delta) {

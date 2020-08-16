@@ -28,6 +28,7 @@ export default class BattleStateConnecting extends BattleStateBase {
     Api.replaysFindBattle().then(replay => {
       this.game.opponentBoard.player = new BattleOpponent(this.game.opponentBoard);
       this.game.opponentBoard.player.loadReplay(replay);
+      this.game.opponentBoard.player.opponentBoard = this.game.playerBoard;
       this.game.changeState(BattleStatePlaying);
     });
   }
