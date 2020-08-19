@@ -16,10 +16,10 @@ export default class BattleStatePlaying extends BattleStateBase {
   }
 
   tick(delta) {
+    if (!this.game.state.alive) { return; }
+
     this.game.playerBoard.stats.runningTime += delta;
     this.game.recorder.currentTime = this.game.playerBoard.stats.runningTime;
-
-    if (!this.game.state.alive) { return; }
 
     this.game.aliveInput(delta);
 
