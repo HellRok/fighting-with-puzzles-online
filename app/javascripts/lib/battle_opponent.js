@@ -28,6 +28,14 @@ export default class BattleOpponent extends BaseReplayer {
     // Do nothing for now
   }
 
+  spawnPositions() {
+    const y = this.playerBoard.height - 1 - this.battleState.replayLines;
+    return [
+      { x: 2, y },
+      { x: 3, y }
+    ];
+  }
+
   spawnGarbage() {
     this.battleState.lines += this.battleState.lineQueue;
     this.battleState.lineQueue = 0;

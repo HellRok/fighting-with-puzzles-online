@@ -59,6 +59,7 @@ export default class Player {
     this.battleState = {
       lineQueue:               0,
       lines:                   0,
+      replayLines:             0,
     }
   }
 

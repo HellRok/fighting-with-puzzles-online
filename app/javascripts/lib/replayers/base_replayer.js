@@ -74,6 +74,7 @@ export default class BaseReplayer extends Player {
       case 'dump': this.dump(); break;
       case 'queueGarbage': this.queueGarbage(move.options.column, move.options.colour); break;
       case 'spawnGarbage': this.spawnGarbage(); break;
+      case 'currentLines': this.battleState.replayLines = move.options.lines; break;
       case 'win': this.win(move.timestamp); break;
       case 'lose': this.lose(move.timestamp); break;
       case 'boardData': this.checkSync(move.options.data); break;
