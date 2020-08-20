@@ -276,13 +276,17 @@ export default class Board {
     });
   }
 
+  damage() {
+    return this.game.garbageQueue.length;
+  }
+
   damageCounter() {
     let hundreds = -1;
     let tens = -1;
     let singles = 0;
 
     if (this.game) {
-      const damage = this.game.garbageQueue.length;
+      const damage = this.damage();
       const damageStr = damage.toString();
 
       // I don't think over 1000 is actually possible, but lets not take any chances

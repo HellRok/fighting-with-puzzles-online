@@ -53,8 +53,13 @@ export default class BattleStatePlaying extends BattleStateBase {
     // expect, we just fudge the numbers slightly to make it look exact.
     this.game.timeValue.innerText = displayMilliseconds(0);
 
-    // TODO: actual win/lose conditions
-    this.win(time);
+    if (this.game.battleState.kos > this.game.opponentBoard.player.battleState.kos) {
+      this.win(time);
+    } else if (this.game.battleState.kos > this.game.opponentBoard.player.battleState.kos) {
+      this.lose(time);
+    } else {
+      this.draw(time);
+    }
 
     this.game.changeState(BattleStateWaiting);
   }
@@ -62,9 +67,22 @@ export default class BattleStatePlaying extends BattleStateBase {
   win(time) {
     this.game.win(time);
 
-    this.game.playerBoard.overlay = m.trust(`
-      <h3>Finished</h3>
-    `);
+    this.game.playerBoard.overlay = m.trust(`<h3>Victory!</h3>`);
+    this.game.opponentBoard.overlay = m.trust(`<h3>Lose</h3>`);
+    m.redraw();
+  }
+
+  lose(time) {
+    this.game.lose(time);
+
+    this.game.playerBoard.overlay = m.trust(`<h3>Lose</h3>`);
+    this.game.opponentBoard.overlay = m.trust(`<h3>Victory!</h3>`);
+    m.redraw();
+  }
+
+  draw(time) {
+    this.game.playerBoard.overlay = m.trust(`<h3>Draw</h3>`);
+    this.game.opponentBoard.overlay = m.trust(`<h3>Draw</h3>`);
     m.redraw();
   }
 

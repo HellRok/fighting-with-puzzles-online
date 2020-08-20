@@ -1,8 +1,8 @@
 import m from 'mithril';
 
 import Layout from './layout';
-import PlayerBoard from './_player_board';
-import OpponentBoard from './_opponent_board';
+import BattleBoard from './_battle_board';
+import BattleOpponentBoard from './_battle_opponent_board';
 import Settings from '../lib/settings';
 import Battle from '../lib/game_modes/battle';
 import { displayMilliseconds, displayScore, keyboardMap } from '../lib/helpers';
@@ -11,8 +11,8 @@ import CurrentUser from '../lib/current_user';
 
 export default class BattlePresenter {
   constructor() {
-    this.playerBoard = new PlayerBoard();
-    this.opponentBoard = new OpponentBoard({ uuid: 'opponent-board' });
+    this.playerBoard = new BattleBoard();
+    this.opponentBoard = new BattleOpponentBoard({ uuid: 'opponent-board' });
   }
 
   oncreate(vnode) {

@@ -57,6 +57,7 @@ export default class Player {
       toBeDestroyed:           false,
     };
     this.battleState = {
+      kos:                     0,
       lineQueue:               0,
       lines:                   0,
       replayLines:             0,
@@ -565,8 +566,17 @@ export default class Player {
     if (this.playerBoard.isClear(this.spawnPositions())) {
       this.playerBoard.activePiece = this.nextPiece();
     } else {
-      this.lose(this.playerBoard.stats.runningTime);
+      if (this.battleState.lines === 0) {
+        this.lose(this.playerBoard.stats.runningTime);
+      } else {
+        this.ko(this.playerBoard.stats.runningTime);
+      }
     }
+  }
+
+  ko() {
+    this.battleState.lines = 0;
+    this.opponentBoard.player.battleState.kos += 1;
   }
 
   updateGPM() {
