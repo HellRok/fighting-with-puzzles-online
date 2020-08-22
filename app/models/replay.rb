@@ -4,9 +4,19 @@ class Replay < ApplicationRecord
   enum result: %w(win lose draw)
 
   def self.find_battle(gpm:)
-    # TODO: This should actually do something based on GPM instead of returning
-    # the last battle mode replay
-    self.where(mode: [Replay.modes[:battle], Replay.modes[:ultra]]).last
+    replays = []
+    variance = 5
+
+    until replays.size >= 10
+      replays = self.where(
+        mode: [Replay.modes[:battle], Replay.modes[:ultra]],
+        gpm: (gpm - variance)..(gpm + variance)
+      ).limit(50)
+
+      variance += 5
+    end
+
+    replays.sample
   end
 
   def parsed_data

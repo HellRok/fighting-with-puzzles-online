@@ -24,8 +24,15 @@ export default class BattleStateConnecting extends BattleStateBase {
     m.redraw();
   }
 
+  averageGpm() {
+    return (
+      CurrentUser.data.averageGpm ||
+      this.game.lastGpm
+    )
+  }
+
   load() {
-    Api.replaysFindBattle().then(replay => {
+    Api.replaysFindBattle(this.averageGpm()).then(replay => {
       this.game.opponentBoard.player = new BattleOpponent(this.game.opponentBoard);
       this.game.opponentBoard.player.loadReplay(replay);
       this.game.opponentBoard.player.opponentBoard = this.game.playerBoard;

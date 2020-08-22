@@ -9,6 +9,7 @@ export default class UserModel extends BaseModel {
     this.id = opts.id;
     this.token = opts.token;
     this.username = opts.username;
+    this.averageGpm = opts.averageGpm;
     this.createdAt = opts.createdAt;
     this.updatedAt = opts.updatedAt;
 

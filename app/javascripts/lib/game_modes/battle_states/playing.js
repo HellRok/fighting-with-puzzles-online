@@ -50,6 +50,7 @@ export default class BattleStatePlaying extends BattleStateBase {
     // Because we're very rarely going to end on the exact millisecond we
     // expect, we just fudge the numbers slightly to make it look exact.
     this.game.timeValue.innerText = displayMilliseconds(0);
+    this.game.lastGpm = this.game.playerBoard.stats.gpm;
 
     if (this.game.battleState.kos > this.game.opponentBoard.player.battleState.kos) {
       this.win(time);

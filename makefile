@@ -5,6 +5,8 @@ digest-assets:
 	./bin/digest_asset public/assets/audio/lock.mp3 public/assets/application.js
 	./bin/digest_asset public/assets/audio/lose.mp3 public/assets/application.js
 	./bin/digest_asset public/assets/audio/win.mp3 public/assets/application.js
+	./bin/digest_asset public/assets/audio/ko.mp3 public/assets/application.js
+	./bin/digest_asset public/assets/audio/kod.mp3 public/assets/application.js
 	./bin/digest_asset public/assets/gems.png app/views/home/index.html.erb public/assets/application.css
 	./bin/digest_asset public/assets/application.js app/views/home/index.html.erb
 	./bin/digest_asset public/assets/application.css app/views/home/index.html.erb

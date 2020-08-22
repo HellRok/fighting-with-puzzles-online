@@ -36,4 +36,16 @@ class User < ApplicationRecord
       order('replays.time DESC').
       map(&:best_survival).compact
   end
+
+  def average_gpm
+    gpms = replays.where.not(gpm: nil).last(10).pluck(:gpm).sort
+
+    return 50 unless gpms.any?
+
+    # Good replays are worth twice the weight of bad replays
+    best = gpms[(gpms.size / 2)..gpms.size] * 2
+    worst = gpms[0...(gpms.size / 2)]
+
+    (best + worst).sum / (best + worst).size
+  end
 end

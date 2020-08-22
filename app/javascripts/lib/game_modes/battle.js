@@ -18,6 +18,7 @@ export default class Battle extends Player {
     this.battleTime = 120000; // 2 minutes
     this.timeValue = document.querySelector('.time .value');
     this.changeState(BattleStateWaiting);
+    this.lastGpm = 50;
   }
 
   tick(delta) {
