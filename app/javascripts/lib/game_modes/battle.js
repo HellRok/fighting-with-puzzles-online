@@ -5,6 +5,7 @@ import Player from '../player';
 import BattleStateWaiting from './battle_states/waiting';
 import BattleStateLoading from './battle_states/loading';
 import ReplayRecorder from '../replay_recorder';
+import Audio from '../audio';
 import Settings from '../settings';
 import Flash from '../flash';
 import { timestamp, displayMilliseconds, displayScore, keyboardMap, restartButtonText } from '../helpers';
@@ -38,6 +39,11 @@ export default class Battle extends Player {
   sendGarbage(damage) {
     const damageLines = Math.floor(super.sendGarbage(damage) / 6.0);
     this.sendLines(damageLines);
+  }
+
+  ko() {
+    Audio.kod.play()
+    super.ko();
   }
 
   lose(time) {

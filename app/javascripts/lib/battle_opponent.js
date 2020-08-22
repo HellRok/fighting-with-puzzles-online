@@ -4,6 +4,7 @@ import { min } from 'lodash/math';
 import BaseReplayer from './replayers/base_replayer';
 import ReplayPieceGenerator from './piece_generators/replay_piece_generator';
 import NullRecorder from './null_recorder';
+import Audio from './audio';
 
 export default class BattleOpponent extends BaseReplayer {
   setup() {
@@ -60,5 +61,10 @@ export default class BattleOpponent extends BaseReplayer {
   sendGarbage(damage) {
     const damageLines = Math.floor(super.sendGarbage(damage) / 6.0);
     this.sendLines(damageLines);
+  }
+
+  ko() {
+    Audio.ko.play()
+    super.ko();
   }
 }
