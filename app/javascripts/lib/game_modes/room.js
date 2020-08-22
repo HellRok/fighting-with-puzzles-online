@@ -112,7 +112,6 @@ export default class Room extends Player {
     });
   }
 
-
   // Can't restart a live match, so just do nothing
   attemptRestart() { }
 }

@@ -1,7 +1,7 @@
 import m from 'mithril';
 
 import Flash from '../../flash';
-import { displayMilliseconds } from '../../helpers';
+import { displayMilliseconds, restartButtonText } from '../../helpers';
 
 import BattleStateBase from './base';
 import BattleStateWaiting from './waiting';
@@ -16,7 +16,10 @@ export default class BattleStatePlaying extends BattleStateBase {
   }
 
   tick(delta) {
-    if (!this.game.state.alive) { return; }
+    if (!this.game.state.alive) {
+      this.game.deadInput(delta);
+      return;
+    }
 
     this.game.playerBoard.stats.runningTime += delta;
     this.game.recorder.currentTime = this.game.playerBoard.stats.runningTime;
@@ -60,24 +63,21 @@ export default class BattleStatePlaying extends BattleStateBase {
     } else {
       this.draw(time);
     }
-
-    this.game.changeState(BattleStateWaiting);
   }
 
   win(time) {
     this.game.win(time);
 
-    this.game.playerBoard.overlay = m.trust(`<h3>Victory!</h3>`);
+    this.game.playerBoard.overlay = m.trust(`
+      <h3>Victory!</h3>
+      Press ${restartButtonText()} to play again.
+    `);
     this.game.opponentBoard.overlay = m.trust(`<h3>Lose</h3>`);
     m.redraw();
   }
 
   lose(time) {
     this.game.lose(time);
-
-    this.game.playerBoard.overlay = m.trust(`<h3>Lose</h3>`);
-    this.game.opponentBoard.overlay = m.trust(`<h3>Victory!</h3>`);
-    m.redraw();
   }
 
   draw(time) {

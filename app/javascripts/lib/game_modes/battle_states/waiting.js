@@ -6,15 +6,11 @@ import BattleStateLoading from './loading';
 import CurrentUser from '../../current_user';
 import Settings from '../../settings';
 import Api from '../../api';
-import { keyboardMap } from '../../helpers';
+import { keyboardMap, restartButtonText } from '../../helpers';
 
 export default class BattleStateWaiting extends BattleStateBase {
   setup() {
-    if (Settings.site.displayMobileControls) {
-      this.game.playerBoard.overlay = m.trust(`Press <span class="icon-restart"></span> to start.`);
-    } else {
-      this.game.playerBoard.overlay = `Press ${keyboardMap[Settings.keys.restart]} to start.`;
-    }
+    this.game.playerBoard.overlay = m.trust(`Press ${restartButtonText()} to start.`);
     m.redraw();
   }
 

@@ -24,8 +24,24 @@ export default class BattleOpponent extends BaseReplayer {
     this.state.alive = true;
   }
 
+
   checkSync(board) {
-    // Do nothing for now
+    if (board !== this.playerBoard.toString()) {
+      console.log("DESYNC");
+    }
+  }
+
+  spawnNextPiece() {
+    if (this.playerBoard.isClear(super.spawnPositions())) {
+      this.playerBoard.activePiece = this.nextPiece();
+    } else {
+      if (this.battleState.lines === 0) {
+        this.lose(this.playerBoard.stats.runningTime);
+      } else {
+        this.ko(this.playerBoard.stats.runningTime);
+        this.playerBoard.activePiece = this.nextPiece();
+      }
+    }
   }
 
   spawnPositions() {

@@ -1,5 +1,8 @@
 import { padStart } from 'lodash/string';
+import { chunk } from 'lodash/array';
+
 import Random from './random';
+import Settings from './settings';
 
 export function timestamp() {
   return Date.now();
@@ -49,8 +52,18 @@ export function isBigScreen() {
   return window.innerWidth > 1024;
 }
 
+export function restartButtonText() {
+  return Settings.site.displayMobileControls ?
+    '<span class="icon-restart"></span>' : keyboardMap[Settings.keys.restart];
+}
+
 export function replayVersion() {
   return '0.2';
+}
+
+export function printBoard(board) {
+  console.log("BOARD");
+  chunk(board, 12).reverse().forEach(r => console.log(r.join('')));
 }
 
 // Borrowed from https://stackoverflow.com/a/23377822

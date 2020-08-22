@@ -570,6 +570,7 @@ export default class Player {
         this.lose(this.playerBoard.stats.runningTime);
       } else {
         this.ko(this.playerBoard.stats.runningTime);
+        this.playerBoard.activePiece = this.nextPiece();
       }
     }
   }
@@ -595,13 +596,7 @@ export default class Player {
   }
 
   sendLines(lines) {
-    console.log(lines);
     const lineTotal = this.battleState.lineQueue + this.battleState.lines;
-    console.table({
-      lines,
-      queue: this.battleState.lineQueue,
-      current_lines: this.battleState.lines,
-    });
 
     if (lines <= this.battleState.lineQueue) {
       this.battleState.lineQueue -= lines;
