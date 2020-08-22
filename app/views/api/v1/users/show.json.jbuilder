@@ -27,5 +27,11 @@ json.data do
       json.count @user.replays.where(mode: Replay.modes[:online]).count
       json.time @user.replays.where(mode: Replay.modes[:online]).sum(:time)
     end
+
+    json.battle do
+      json.count @user.replays.where(mode: Replay.modes[:battle]).count
+      json.time @user.replays.where(mode: Replay.modes[:battle]).sum(:time)
+      json.wins @user.replays.where(mode: Replay.modes[:battle], result: Replay.results[:win]).count
+    end
   end
 end

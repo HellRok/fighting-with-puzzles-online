@@ -1,6 +1,7 @@
 class Replay < ApplicationRecord
   belongs_to :user, optional: true
   enum mode: %w(sprint ultra survival online battle)
+  enum result: %w(win lose draw)
 
   def self.find_battle(gpm:)
     # TODO: This should actually do something based on GPM instead of returning

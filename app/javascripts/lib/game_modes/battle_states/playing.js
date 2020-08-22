@@ -40,17 +40,12 @@ export default class BattleStatePlaying extends BattleStateBase {
   }
 
   finish(time) {
+    let result;
+
     this.game.state.alive = false;
     this.game.opponentBoard.player.state.alive = false;
     this.game.updateGPM();
     this.game.opponentBoard.player.updateGPM(0);
-
-    this.game.recorder.persist(
-      4,
-      this.game.playerBoard.stats.runningTime,
-      this.game.playerBoard.stats.score,
-      this.game.playerBoard.stats.gpm
-    );
 
     // Because we're very rarely going to end on the exact millisecond we
     // expect, we just fudge the numbers slightly to make it look exact.
@@ -58,11 +53,22 @@ export default class BattleStatePlaying extends BattleStateBase {
 
     if (this.game.battleState.kos > this.game.opponentBoard.player.battleState.kos) {
       this.win(time);
-    } else if (this.game.battleState.kos > this.game.opponentBoard.player.battleState.kos) {
+      result = 0;
+    } else if (this.game.battleState.kos < this.game.opponentBoard.player.battleState.kos) {
       this.lose(time);
+      result = 1;
     } else {
       this.draw(time);
+      result = 2;
     }
+
+    this.game.recorder.persist(
+      4,
+      this.game.playerBoard.stats.runningTime,
+      this.game.playerBoard.stats.score,
+      this.game.playerBoard.stats.gpm,
+      result
+    );
   }
 
   win(time) {

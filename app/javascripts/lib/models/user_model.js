@@ -24,6 +24,7 @@ export default class UserModel extends BaseModel {
     this.stats = {
       games: { count: 0, time: 0 },
       online: { count: 0, time: 0 },
+      battle: { count: 0, wins: 0, time: 0 },
       sprints: { count: 0, time: 0 },
       ultras: { count: 0, time: 0 },
       survivals: { count: 0, time: 0 },

@@ -52,6 +52,11 @@ export default class Profile {
             m('td', displayHumanMilliseconds(this.user.stats.online.time)),
           ]),
           m('tr', [
+            m('td', 'Battle'),
+            m('td', `${this.user.stats.battle.count} (${this.user.stats.battle.wins} wins)`),
+            m('td', displayHumanMilliseconds(this.user.stats.battle.time)),
+          ]),
+          m('tr', [
             m('td', 'Sprint'),
             m('td', this.user.stats.sprints.count),
             m('td', displayHumanMilliseconds(this.user.stats.sprints.time)),
