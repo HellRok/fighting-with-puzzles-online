@@ -58,7 +58,7 @@ export default class Home {
           href: '/survival',
         }, [
           m('h3', 'Survival'),
-          m('p', 'Survive as long as you can against an onslaugh of attacks.'),
+          m('p', 'Survive as long as you can against an onslaught of attacks.'),
           CurrentUser.isPresent() ?
             m('p', CurrentUser.data.bests.survival ?
               `Personal Best: ${displayMilliseconds(CurrentUser.data.bests.survival.time)}` :
