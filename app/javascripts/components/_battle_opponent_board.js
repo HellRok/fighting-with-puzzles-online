@@ -19,8 +19,8 @@ export default class BattleOpponentBoard extends Board {
       m('.opponent-board', [
         super.view(vnode),
         m('.stats', [
-          (this.player.id ?
-            m(m.route.Link, { href: `/profile/${this.player.id}` }, this.player.username) :
+          (this.player.user?.id ?
+            m(m.route.Link, { href: `/profile/${this.player.user.id}` }, this.player.user.username) :
             'Anon'),
           m('.gpm', { title: 'Garbage per minute' }, `GPM: ${this.stats.gpm.toFixed(2)}`),
           m('.kos', { title: 'KOs' }, `KOs: ${this.game && this.game.battleState.kos || 0}`),

@@ -16,7 +16,7 @@ class Api::V1::ReplaysController < ApplicationController
   def show; end
 
   def battle
-    @replay = Replay.find_battle(gpm: Float(params[:gpm]))
+    @replay = Replay.find_battle(gpm: Float(params[:gpm]), user: current_user)
   end
 
   def create
