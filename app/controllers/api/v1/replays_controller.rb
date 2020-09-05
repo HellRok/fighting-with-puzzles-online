@@ -8,6 +8,7 @@ class Api::V1::ReplaysController < ApplicationController
   end
 
   def leader_board
+    @battlers = User.best_battlers unless @user.present?
     @sprints = (@user.presence || User).best_sprints
     @ultras = (@user.presence || User).best_ultras
     @survivals = (@user.presence || User).best_survivals

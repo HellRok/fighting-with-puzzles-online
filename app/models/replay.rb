@@ -9,11 +9,12 @@ class Replay < ApplicationRecord
     replays = []
     variance = 5
 
-    until replays.size >= 10 || (gpm - variance < -50)
+    until replays.count >= 10 || (gpm - variance < -50)
       replays = self.where(
+        result: Replay.results[:win],
         mode: [Replay.modes[:battle], Replay.modes[:ultra]],
         gpm: (gpm - variance)..(gpm + variance)
-      ).limit(50)
+      )
 
       replays = replays.where.not(user: user) if user.present?
 

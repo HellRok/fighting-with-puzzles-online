@@ -186,6 +186,7 @@ export default {
       sprints: replays.sprints.map(replay => (new ReplayModel(replay))),
       ultras: replays.ultras.map(replay => (new ReplayModel(replay))),
       survivals: replays.survivals.map(replay => (new ReplayModel(replay))),
+      battlers: replays.battlers,
     };
   },
 }

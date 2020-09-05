@@ -3,6 +3,8 @@ class User < ApplicationRecord
   has_secure_token
   serialize :settings
 
+  attr_accessor :battle_wins
+
   validates_uniqueness_of :username
 
   has_many :replays
@@ -13,6 +15,7 @@ class User < ApplicationRecord
   has_many :best_ultras, -> { won.where(mode: Replay.modes[:ultra]).order(score: :desc).limit(10) }, class_name: 'Replay'
   has_one :best_survival, -> { won.where(mode: Replay.modes[:survival]).order(time: :desc) }, class_name: 'Replay'
   has_many :best_survivals, -> { won.where(mode: Replay.modes[:survival]).order(time: :desc).limit(10) }, class_name: 'Replay'
+  has_many :battles, -> { where(mode: Replay.modes[:battle]) }, class_name: 'Replay'
 
 
   # TODO: Come back and fix this properly, it currently will load a _lot_ of stuff
@@ -35,6 +38,15 @@ class User < ApplicationRecord
       where.not(replays: { id: nil}).
       order('replays.time DESC').
       map(&:best_survival).compact
+  end
+
+  def self.best_battlers
+    # This is particularly horrendous, will really need to optimise if I get
+    # many users
+    User.includes(:battles).
+      each { |user| user.battle_wins = user.battles.count(&:win?) }.
+      sort_by { |user| -user.battle_wins }.
+      reject { |user| user.battle_wins.zero? }
   end
 
   def average_gpm

@@ -40,8 +40,6 @@ export default class BattleStatePlaying extends BattleStateBase {
   }
 
   finish(time) {
-    let result;
-
     this.game.state.alive = false;
     this.game.opponentBoard.player.state.alive = false;
     this.game.updateGPM();
@@ -54,16 +52,11 @@ export default class BattleStatePlaying extends BattleStateBase {
 
     if (this.game.battleState.kos > this.game.opponentBoard.player.battleState.kos) {
       this.win(time);
-      result = 0;
     } else if (this.game.battleState.kos < this.game.opponentBoard.player.battleState.kos) {
       this.lose(time);
-      result = 1;
     } else {
       this.draw(time);
-      result = 2;
     }
-
-    this.game.persist(4, result);
   }
 
   win(time) {
@@ -75,6 +68,7 @@ export default class BattleStatePlaying extends BattleStateBase {
     `);
     this.game.opponentBoard.overlay = m.trust(`<h3>Lose</h3>`);
     m.redraw();
+    this.game.persist(4, 0);
   }
 
   lose(time) {
@@ -85,6 +79,7 @@ export default class BattleStatePlaying extends BattleStateBase {
     this.game.playerBoard.overlay = m.trust(`<h3>Draw</h3>`);
     this.game.opponentBoard.overlay = m.trust(`<h3>Draw</h3>`);
     m.redraw();
+    this.game.persist(4, 2);
   }
 
   attack(data) {

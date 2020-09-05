@@ -55,6 +55,7 @@ export default class Battle extends Player {
     `);
     this.opponentBoard.overlay = m.trust(`<h3>Victory!</h3>`);
     m.redraw();
+    this.persist(4, 1);
   }
 
   attemptRestart() {

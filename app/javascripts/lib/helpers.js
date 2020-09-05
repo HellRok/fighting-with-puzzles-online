@@ -17,6 +17,10 @@ export function offsetPositions(objs, offset) {
   });
 }
 
+export function displayAsPercent(number) {
+  return `${(number * 100).toFixed(2)}%`;
+}
+
 export function displayMilliseconds(time) {
   const minutes = Math.floor(time / 1000 / 60);
   const seconds = Math.floor(time / 1000 - minutes * 60);
