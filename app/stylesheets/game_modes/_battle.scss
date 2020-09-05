@@ -12,11 +12,10 @@
   }
 
   @media screen and (max-width: 767px) {
-      .opponent-board {
-        position: absolute;
-        right: 30px;
-        top: 282px;
-      }
+    .opponent-board {
+      position: absolute;
+      right: 30px;
+      top: 310px;
 
       canvas {
         width: $mobile-opponent-width;
@@ -35,6 +34,7 @@
       .game-info, .lockdelay-progress {
         display: none;
       }
+    }
   }
 
   @media screen and (min-width: 768px) {
