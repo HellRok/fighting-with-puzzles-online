@@ -8,6 +8,7 @@ class Api::V1::StatsController < ApplicationController
       user_count: User.all.count,
       replays: {
         online_count: replays_by_mode['online'].count,
+        battle_count: replays_by_mode['battle'].count,
         sprint_count: replays_by_mode['sprint'].count,
         ultra_count: replays_by_mode['ultra'].count,
         survival_count: replays_by_mode['survival'].count,
