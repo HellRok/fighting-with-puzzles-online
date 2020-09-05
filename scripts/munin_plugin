@@ -10,6 +10,7 @@ graph_vlabel count
 graph_category Fighting with Puzzles Online
 users.label Users
 online.label Online Matches
+battles.label Battles
 sprints.label Sprints
 ultras.label Ultras
 survivals.label Survivals
@@ -19,6 +20,7 @@ else
   puts <<-STR
 users.value #{values['user_count']}
 online.value #{values['replays']['online_count']}
+battles.value #{values['replays']['battle_count']}
 sprints.value #{values['replays']['sprint_count']}
 ultras.value #{values['replays']['ultra_count']}
 survivals.value #{values['replays']['survival_count']}
