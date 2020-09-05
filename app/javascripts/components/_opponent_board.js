@@ -5,9 +5,10 @@ import Board from './_board';
 import { displayMilliseconds }  from '../lib/helpers';
 
 export default class OpponentBoard extends Board {
-  constructor(player) {
+  constructor(player, dropPattern) {
     super(player.uuid);
     this.player = player;
+    this.dropPattern = dropPattern
     this.unready();
   }
 

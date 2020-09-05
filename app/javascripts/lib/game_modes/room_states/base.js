@@ -84,10 +84,10 @@ export default class RoomStateBase {
   input(delta) { }
 
   addPlayer(player) {
-    const newBoard = new OpponentBoard(player);
+    const newBoard = new OpponentBoard(player, player.dropPattern);
     const newOpponent = new Opponent(newBoard);
     this.game.opponents.push(newOpponent);
-    newBoard.displayDropPattern(player.dropPattern);
+    newBoard.displayDropPattern(newBoard.dropPattern);
 
     if (player.state === 'ready') {
       newOpponent.ready();

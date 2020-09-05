@@ -15,7 +15,7 @@ export default class RoomStateNotReady extends RoomStateBase {
     }
     this.game.playerBoard.displayDropPattern(Settings.game.dropPattern);
     this.game.opponents.forEach(opponent => {
-      opponent.playerBoard.displayDropPattern(opponent.playerBoard.player.dropPattern);
+      opponent.playerBoard.displayDropPattern(opponent.playerBoard.dropPattern);
     });
     m.redraw();
   }

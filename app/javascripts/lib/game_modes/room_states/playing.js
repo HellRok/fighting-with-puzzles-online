@@ -75,7 +75,7 @@ export default class RoomStatePlaying extends RoomStateBase {
 
   attack(data) {
     const attacker = this.findPlayer(data.attackerUuid);
-    this.game.queueGarbage(data.damage, attacker.playerBoard.player.dropPattern);
+    this.game.queueGarbage(data.damage, attacker.playerBoard.dropPattern);
     m.redraw();
   }
 }
