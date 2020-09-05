@@ -6,6 +6,7 @@ import { min, max, sum } from 'lodash/math';
 import Gem from './gem';
 import Settings from './settings';
 import Audio from './audio';
+import Flash from './flash';
 import BagPieceGenerator from './piece_generators/bag_piece_generator';
 import { timestamp, offsetPositions, keyboardMap } from './helpers';
 
@@ -581,7 +582,9 @@ export default class Player {
   }
 
   updateGPM() {
-    this.playerBoard.stats.gpm = (sum(this.garbageSent) * 60 / (this.playerBoard.stats.runningTime / 1000));
+    this.playerBoard.stats.gpm = (
+      sum(this.garbageSent) * 60 / (this.playerBoard.stats.runningTime / 1000)
+    );
   }
 
   sendGarbage(damage) {
@@ -680,5 +683,23 @@ export default class Player {
 
   win() {
     if (this.playSounds) { Audio.win.play(); }
+  }
+
+  persist(mode, result) {
+    if (result === undefined) { result = 0; }
+    this.recorder.persist(
+      mode,
+      this.playerBoard.stats.runningTime,
+      this.playerBoard.stats.score,
+      this.playerBoard.stats.gpm,
+      result
+    ).then(response => {
+      this.lastReplay = response.data;
+      Flash.addFlash({
+        text: 'Replay saved',
+        href: response.data.link,
+        timeout: 5000,
+      });
+    });
   }
 }

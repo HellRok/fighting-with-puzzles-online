@@ -5,7 +5,6 @@ import Player from '../player';
 import Gem from '../gem';
 import ReplayRecorder from '../replay_recorder';
 import Settings from '../settings';
-import Flash from '../flash';
 import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 
 import CurrentUser from '../current_user';
@@ -74,14 +73,7 @@ export default class Sprint extends Player {
     this.state.alive = false;
     this.updateGPM();
 
-    this.recorder.persist(2, this.playerBoard.stats.runningTime, this.playerBoard.stats.score, this.playerBoard.stats.gpm).then(response => {
-      this.lastReplay = response.data;
-      Flash.addFlash({
-        text: 'Replay saved',
-        href: `/survival/replay/${this.lastReplay.id}`,
-        timeout: 5000,
-      });
-    });
+    this.persist(2, 0);
 
     this.state.alive = false;
     let newBest = false;

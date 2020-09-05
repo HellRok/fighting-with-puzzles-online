@@ -4,6 +4,7 @@ json.score replay.score
 json.mode replay.mode
 json.version replay.version
 json.createdAt replay.created_at
+json.link "/#{replay.mode}/replay/#{replay.id}"
 
 if replay.user
   json.user do

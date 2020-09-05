@@ -3,6 +3,8 @@ class Replay < ApplicationRecord
   enum mode: %w(sprint ultra survival online battle)
   enum result: %w(win lose draw)
 
+  scope :won, -> { where(result: Replay.results[:win]) }
+
   def self.find_battle(gpm:, user:)
     replays = []
     variance = 5

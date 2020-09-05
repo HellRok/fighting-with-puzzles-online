@@ -3,7 +3,6 @@ import m from 'mithril';
 import Player from '../player';
 import ReplayRecorder from '../replay_recorder';
 import Settings from '../settings';
-import Flash from '../flash';
 import { timestamp, displayMilliseconds, displayScore, keyboardMap } from '../helpers';
 
 import CurrentUser from '../current_user';
@@ -38,6 +37,11 @@ export default class Ultra extends Player {
     this.restart();
   }
 
+  lose(time) {
+    super.lose(time);
+    this.persist(1, 1);
+  }
+
   win(time) {
     super.win(time);
     this.recorder.addMove('win');
@@ -54,17 +58,10 @@ export default class Ultra extends Player {
       } else {
         newBest = true;
       }
+      CurrentUser.refresh();
     }
 
-    this.recorder.persist(1, this.playerBoard.stats.runningTime, this.playerBoard.stats.score, this.playerBoard.stats.gpm).then(response => {
-      if (newBest) { CurrentUser.refresh(); }
-      this.lastReplay = response.data;
-      Flash.addFlash({
-        text: 'Replay saved',
-        href: `/ultra/replay/${this.lastReplay.id}`,
-        timeout: 5000,
-      });
-    });
+    this.persist(1, 0);
 
     // Because we're very rarely going to end on the exact millisecond we
     // expect, we just fudge the numbers slightly to make it look exact.

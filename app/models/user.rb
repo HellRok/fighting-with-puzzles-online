@@ -7,12 +7,12 @@ class User < ApplicationRecord
 
   has_many :replays
 
-  has_one :best_sprint, -> { where(mode: Replay.modes[:sprint]).order(time: :asc) }, class_name: 'Replay'
-  has_many :best_sprints, -> { where(mode: Replay.modes[:sprint]).order(time: :asc).limit(10) }, class_name: 'Replay'
-  has_one :best_ultra, -> { where(mode: Replay.modes[:ultra]).order(score: :desc) }, class_name: 'Replay'
-  has_many :best_ultras, -> { where(mode: Replay.modes[:ultra]).order(score: :desc).limit(10) }, class_name: 'Replay'
-  has_one :best_survival, -> { where(mode: Replay.modes[:survival]).order(time: :desc) }, class_name: 'Replay'
-  has_many :best_survivals, -> { where(mode: Replay.modes[:survival]).order(time: :desc).limit(10) }, class_name: 'Replay'
+  has_one :best_sprint, -> { won.where(mode: Replay.modes[:sprint]).order(time: :asc) }, class_name: 'Replay'
+  has_many :best_sprints, -> { won.where(mode: Replay.modes[:sprint]).order(time: :asc).limit(10) }, class_name: 'Replay'
+  has_one :best_ultra, -> { won.where(mode: Replay.modes[:ultra]).order(score: :desc) }, class_name: 'Replay'
+  has_many :best_ultras, -> { won.where(mode: Replay.modes[:ultra]).order(score: :desc).limit(10) }, class_name: 'Replay'
+  has_one :best_survival, -> { won.where(mode: Replay.modes[:survival]).order(time: :desc) }, class_name: 'Replay'
+  has_many :best_survivals, -> { won.where(mode: Replay.modes[:survival]).order(time: :desc).limit(10) }, class_name: 'Replay'
 
 
   # TODO: Come back and fix this properly, it currently will load a _lot_ of stuff
@@ -38,7 +38,7 @@ class User < ApplicationRecord
   end
 
   def average_gpm
-    gpms = replays.where.not(gpm: nil).last(10).pluck(:gpm).sort
+    gpms = replays.won.where.not(gpm: nil).last(10).pluck(:gpm).sort
 
     return 50 unless gpms.any?
 

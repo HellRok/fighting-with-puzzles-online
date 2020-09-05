@@ -5,7 +5,6 @@ import Player from '../player';
 import Opponent from '../opponent';
 import RoomStateConnecting from './room_states/connecting';
 import Settings from '../settings';
-import Flash from '../flash';
 import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 
 import CurrentUser from '../current_user';
@@ -85,7 +84,7 @@ export default class Room extends Player {
 
     this.state.alive = false;
 
-    this.save();
+    this.save(0);
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>
       You survived ${displayMilliseconds(time)}!
@@ -95,21 +94,14 @@ export default class Room extends Player {
 
   lose() {
     super.lose();
-    this.save();
+    this.save(1);
     this.playerBoard.overlay = 'Oh no, you topped out!';
     this.gameState.send('lose', { timestamp: this.recorder.currentTime });
   }
 
-  save() {
+  save(result) {
     this.updateGPM();
-    this.recorder.persist(3, this.playerBoard.stats.runningTime, this.playerBoard.stats.score, this.playerBoard.stats.gpm).then(response => {
-      this.lastReplay = response.data;
-      Flash.addFlash({
-        text: 'Replay saved',
-        //href: `/online/replay/${this.lastReplay.id}`,
-        timeout: 5000,
-      });
-    });
+    this.persist(3, result);
   }
 
   // Can't restart a live match, so just do nothing

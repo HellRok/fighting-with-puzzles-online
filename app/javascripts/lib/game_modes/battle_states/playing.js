@@ -63,13 +63,7 @@ export default class BattleStatePlaying extends BattleStateBase {
       result = 2;
     }
 
-    this.game.recorder.persist(
-      4,
-      this.game.playerBoard.stats.runningTime,
-      this.game.playerBoard.stats.score,
-      this.game.playerBoard.stats.gpm,
-      result
-    );
+    this.game.persist(4, result);
   }
 
   win(time) {

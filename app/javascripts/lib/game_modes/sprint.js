@@ -4,7 +4,6 @@ import Player from '../player';
 import ReplayRecorder from '../replay_recorder';
 import SprintPieceGenerator from '../piece_generators/sprint_piece_generator';
 import Settings from '../settings';
-import Flash from '../flash';
 import { timestamp, displayMilliseconds, keyboardMap } from '../helpers';
 
 import CurrentUser from '../current_user';
@@ -44,6 +43,11 @@ export default class Sprint extends Player {
     this.restart();
   }
 
+  lose(time) {
+    super.lose(time);
+    this.persist(0, 1);
+  }
+
   win(time) {
     this.updateGPM();
     this.recorder.addMove('win');
@@ -62,15 +66,7 @@ export default class Sprint extends Player {
       }
     }
 
-    this.recorder.persist(0, this.playerBoard.stats.runningTime, this.playerBoard.stats.score, this.playerBoard.stats.gpm).then(response => {
-      if (newBest) { CurrentUser.refresh(); }
-      this.lastReplay = response.data;
-      Flash.addFlash({
-        text: 'Replay saved',
-        href: `/sprint/replay/${this.lastReplay.id}`,
-        timeout: 5000,
-      });
-    });
+    this.persist(0, 0);
 
     this.playerBoard.overlay = m.trust(`
       <h3>Finished</h3>

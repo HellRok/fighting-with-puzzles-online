@@ -13,6 +13,7 @@ export default class ReplayModel extends BaseModel {
     this.mode = opts.mode;
     this.version = opts.version;
     this.createdAt = opts.createdAt;
+    this.link = opts.link;
     this.user = opts.user;
     this.data = opts.data;
   }
