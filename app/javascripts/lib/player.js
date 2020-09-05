@@ -571,13 +571,14 @@ export default class Player {
         this.lose(this.playerBoard.stats.runningTime);
       } else {
         this.ko(this.playerBoard.stats.runningTime);
-        this.playerBoard.activePiece = this.nextPiece();
+        this.spawnNextPiece();
       }
     }
   }
 
   ko() {
     this.battleState.lines = 0;
+    this.battleState.lineQueue = 0;
     this.opponentBoard.player.battleState.kos += 1;
   }
 
