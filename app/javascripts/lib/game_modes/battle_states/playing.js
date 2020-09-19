@@ -54,6 +54,14 @@ export default class BattleStatePlaying extends BattleStateBase {
       this.win(time);
     } else if (this.game.battleState.kos < this.game.opponentBoard.player.battleState.kos) {
       this.lose(time);
+    } else if (
+      (this.game.battleState.lines + this.game.battleState.lineQueue) <
+        (this.game.opponentBoard.player.battleState.lines + this.game.opponentBoard.player.battleState.lineQueue)) {
+      this.win(time);
+    } else if (
+      (this.game.opponentBoard.player.battleState.lines + this.game.opponentBoard.player.battleState.lineQueue) <
+        (this.game.battleState.lines + this.game.battleState.lineQueue)) {
+      this.lose(time);
     } else {
       this.draw(time);
     }
