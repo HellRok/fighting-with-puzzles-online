@@ -29,7 +29,7 @@ export default class BattlePresenter {
   view() {
     return m(Layout,[
       m('h2.text-centre', 'Battle'),
-      m('.time.text-centre', 'Time: ', m('span.value', displayMilliseconds(this.player?.battleTime || 0 ))),
+      m('.battle-time.time.text-centre.value', m('span.value', displayMilliseconds(this.player?.battleTime || 0 ))),
       m('.battle', [
         m(this.playerBoard),
         m(this.opponentBoard),

@@ -1,3 +1,11 @@
+.battle-time {
+  font-size: 3rem;
+
+  @media screen and (max-width: 767px) {
+    line-height: 3rem;
+  }
+}
+
 .battle {
   text-align: center;
   vertical-align: top;
