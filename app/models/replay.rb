@@ -1,4 +1,5 @@
 class Replay < ApplicationRecord
+  VERSION = '0.2'
   belongs_to :user, optional: true
   enum mode: %w(sprint ultra survival online battle)
   enum result: %w(win lose draw)
@@ -13,7 +14,8 @@ class Replay < ApplicationRecord
       replays = self.where(
         result: Replay.results[:win],
         mode: [Replay.modes[:battle], Replay.modes[:ultra]],
-        gpm: (gpm - variance)..(gpm + variance)
+        gpm: (gpm - variance)..(gpm + variance),
+        version: Replay::VERSION
       )
 
       replays = replays.where.not(user: user) if user.present?
