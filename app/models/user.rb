@@ -46,7 +46,7 @@ class User < ApplicationRecord
     User.includes(:battles).
       each { |user| user.battle_wins = user.battles.count(&:win?) }.
       sort_by { |user| -user.battle_wins }.
-      reject { |user| user.battle_wins.zero? }
+      reject { |user| user.battles.none? }
   end
 
   def average_gpm
