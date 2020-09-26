@@ -1,6 +1,7 @@
 import m from 'mithril';
 
 import Board from './_board';
+import PlayerLink from './_player_link';
 
 import { displayMilliseconds }  from '../lib/helpers';
 
@@ -19,9 +20,7 @@ export default class BattleOpponentBoard extends Board {
       m('.opponent-board', [
         super.view(vnode),
         m('.stats', [
-          (this.player.user?.id ?
-            m(m.route.Link, { href: `/profile/${this.player.user.id}` }, this.player.user.username) :
-            'Anon'),
+          m(PlayerLink, { user: this.player.user, state: this.game?.state }),
           m('.gpm', { title: 'Garbage per minute' }, `GPM: ${this.stats.gpm.toFixed(2)}`),
           m('.kos', { title: 'KOs' }, `KOs: ${this.game && this.game.battleState.kos || 0}`),
         ]),

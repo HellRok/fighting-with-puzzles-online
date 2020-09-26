@@ -1,13 +1,17 @@
 import m from 'mithril';
 
 import Board from './_board';
+import PlayerLink from './_player_link';
 
 import { displayMilliseconds }  from '../lib/helpers';
 
 export default class OpponentBoard extends Board {
   constructor(player, dropPattern) {
     super(player.uuid);
+    // Since player gets mutated outside of here we keep a second instance we
+    // know wont get changed for displaying the link
     this.player = player;
+    this.playerData = player;
     this.dropPattern = dropPattern
     this.unready();
   }
@@ -41,9 +45,7 @@ export default class OpponentBoard extends Board {
       m('.opponent-board', [
         super.view(vnode),
         m('.stats', [
-          (this.player.id ?
-            m(m.route.Link, { href: `/profile/${this.player.id}` }, this.player.username) :
-            'Anon'),
+          m(PlayerLink, { user: this.playerData, state: this.game?.state }),
           m('.gpm', { title: 'Garbage per minute' }, `GPM: ${this.stats.gpm.toFixed(2)}`),
         ]),
       ])
