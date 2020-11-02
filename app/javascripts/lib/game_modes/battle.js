@@ -21,14 +21,19 @@ export default class Battle extends Player {
     this.lastGpm = 50;
   }
 
-  tick(delta) {
+  modeTick(delta) {
     this.gameState.tick(delta);
   }
 
   deadInput() {
-    if (this.keyState.restart) {
-      this.attemptRestart();
-    }
+    this.gameState.deadInput();
+  }
+
+  updateInterface() {
+    this.timeValue.innerText = displayMilliseconds(this.battleTime - this.playerBoard.stats.runningTime);
+    this.updateGPM();
+
+    this.opponentBoard.player.updateGPM();
   }
 
   spawnGarbage() {

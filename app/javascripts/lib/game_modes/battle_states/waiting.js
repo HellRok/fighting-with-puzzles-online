@@ -19,11 +19,7 @@ export default class BattleStateWaiting extends BattleStateBase {
     m.redraw();
   }
 
-  tick(delta) {
-    this.input(delta);
-  }
-
-  input(delta) {
+  deadInput(delta) {
     if (this.game.keyState.restart && !this.game.keyState.restartHandled) {
       this.startLoading();
     }

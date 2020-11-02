@@ -15,24 +15,14 @@ export default class BattleStatePlaying extends BattleStateBase {
     m.redraw();
   }
 
-  tick(delta) {
-    if (!this.game.state.alive) {
-      this.game.deadInput(delta);
-      return;
+  deadInput() {
+    if (this.game.keyState.restart) {
+      this.game.attemptRestart();
     }
+  }
 
-    this.game.playerBoard.stats.runningTime += delta;
-    this.game.recorder.currentTime = this.game.playerBoard.stats.runningTime;
-
-    this.game.aliveInput(delta);
-
-    this.game.timeValue.innerText = displayMilliseconds(this.game.battleTime - this.game.playerBoard.stats.runningTime);
-    this.game.updateGPM();
-
-    this.game.gravity(delta);
-
+  tick(delta) {
     this.game.opponentBoard.player.tick(delta);
-    this.game.opponentBoard.player.updateGPM();
 
     if (this.game.playerBoard.stats.runningTime >= this.game.battleTime) {
       this.finish();

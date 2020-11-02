@@ -9,5 +9,5 @@ export default class BattleStateBase {
   setup() { }
   teardown() { }
   tick(delta) { }
-  input(delta) { }
+  deadInput(delta) { }
 }

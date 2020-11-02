@@ -24,18 +24,13 @@ export default class Sprint extends Player {
     ]
   }
 
-  tick(delta) {
-    this.playerBoard.stats.runningTime += delta;
-    this.recorder.currentTime = this.playerBoard.stats.runningTime;
-    this.input(delta);
-
-    if (!this.state.alive) { return; }
-
-    this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
-    this.dumpText.innerText = `${this.dumpMultiplier} garbage in ${displayMilliseconds(this.nextDumpAt)}`;
-
+  modeTick(delta) {
     this.dump(delta);
-    this.gravity(delta);
+  }
+
+  updateInterface() {
+    super.updateInterface();
+    this.dumpText.innerText = `${this.dumpMultiplier} garbage in ${displayMilliseconds(this.nextDumpAt)}`;
   }
 
   dump(delta) {

@@ -18,18 +18,7 @@ export default class Sprint extends Player {
     this.pieceGenerator.queue.forEach(gems => this.recorder.addPiece(gems));
   }
 
-  tick(delta) {
-    this.input(delta);
-
-    if (!this.state.alive) { return; }
-
-    this.playerBoard.stats.runningTime += delta;
-    this.recorder.currentTime = this.playerBoard.stats.runningTime;
-
-    this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
-
-    this.gravity(delta);
-
+  modeTick(delta) {
     if (this.playerBoard.stats.gemsSmashed >= 140) { this.win(); }
   }
 

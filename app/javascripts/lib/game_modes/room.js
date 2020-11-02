@@ -58,18 +58,11 @@ export default class Room extends Player {
     // Do nothing since setting the seed is handled by the gamestate
   }
 
-  tick(delta)  { this.gameState.tick(delta); }
-  input(delta) { this.gameState.input(delta); }
+  modeTick(delta)  { this.gameState.tick(delta); }
+  deadInput(delta) { this.gameState.deadInput(delta); }
 
-  deadInput() {
-    if (this.keyState.restart && !this.keyState.restartHandled) {
-      this.readyUp();
-    }
-  }
-
-  readyUp() {
-    this.recorder.readyUp()
-    this.keyState.restartHandled = true;
+  updateInterface() {
+    this.updateGPM();
   }
 
   sendGarbage(damage) {

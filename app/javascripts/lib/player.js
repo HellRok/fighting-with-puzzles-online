@@ -8,7 +8,7 @@ import Settings from './settings';
 import Audio from './audio';
 import Flash from './flash';
 import BagPieceGenerator from './piece_generators/bag_piece_generator';
-import { timestamp, offsetPositions, keyboardMap } from './helpers';
+import { displayMilliseconds, timestamp, offsetPositions, keyboardMap } from './helpers';
 
 export default class Player {
   constructor(playerBoard, seed) {
@@ -651,7 +651,25 @@ export default class Player {
   }
 
   tick(delta) {
-    throw 'Tick must be overloaded in child class';
+    this.input(delta);
+
+    if (!this.state.alive) { return; }
+
+    this.playerBoard.stats.runningTime += delta;
+    this.recorder.currentTime = this.playerBoard.stats.runningTime;
+
+    this.updateInterface();
+
+    this.modeTick(delta);
+    this.gravity(delta);
+  }
+
+  updateInterface() {
+    this.timeValue.innerText = displayMilliseconds(this.playerBoard.stats.runningTime);
+  }
+
+  modeTick(delta) {
+    throw 'modeTick must be overloaded in child class';
   }
 
   deadInput() {

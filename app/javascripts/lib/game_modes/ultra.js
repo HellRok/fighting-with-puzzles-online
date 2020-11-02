@@ -13,18 +13,12 @@ export default class Ultra extends Player {
     this.ultraTime = 180000; // 3 minutes
   }
 
-  tick(delta) {
-    this.playerBoard.stats.runningTime += delta;
-    this.recorder.currentTime = this.playerBoard.stats.runningTime;
-    this.input(delta);
-
-    if (!this.state.alive) { return; }
-
-    this.timeValue.innerText = displayMilliseconds(this.ultraTime - this.playerBoard.stats.runningTime);
-
-    this.gravity(delta);
-
+  modeTick(delta) {
     if (this.playerBoard.stats.runningTime >= this.ultraTime) { this.win(); }
+  }
+
+  updateInterface() {
+    this.timeValue.innerText = displayMilliseconds(this.ultraTime - this.playerBoard.stats.runningTime);
   }
 
   deadInput() {

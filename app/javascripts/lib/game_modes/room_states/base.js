@@ -81,7 +81,7 @@ export default class RoomStateBase {
   }
 
   tick(delta) { }
-  input(delta) { }
+  deadInput(delta) { }
 
   addPlayer(player) {
     const newBoard = new OpponentBoard(player, player.dropPattern);
