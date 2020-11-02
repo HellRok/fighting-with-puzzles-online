@@ -2,9 +2,9 @@ GEM
   remote: https://rubygems.org/
   specs:
     connection_pool (2.2.3)
-    iodine (0.7.40)
+    iodine (0.7.42)
     rack (2.2.3)
-    redis (4.2.1)
+    redis (4.2.2)
 
 PLATFORMS
   ruby
