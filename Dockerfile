@@ -1,7 +1,9 @@
 FROM node:alpine AS node_build
 WORKDIR /app
 COPY package.json yarn.lock /app/
-RUN yarn install
+RUN apk update && \
+  apk add make g++ python && \
+  yarn install
 COPY webpack.config.js webpack.config.js
 COPY babel.config.json babel.config.json
 COPY app/javascripts app/javascripts/
