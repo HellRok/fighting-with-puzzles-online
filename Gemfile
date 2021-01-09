@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0'
 gem 'sqlite3', groups: [:development, :test]
 gem 'pg', '>= 0.18', '< 2.0', groups: [:production]
 gem 'puma'
